@@ -8,9 +8,13 @@
 
     </head>
     <body>
-        @include('inc.navbar')
-        <div class="container">
-            @yield('content')
+        <div id="app">
+            @include('inc.navbar')
+            <div class="container">
+                @yield('content')
+            </div>
         </div>
+
+        <script type="text/javascript" src="{!! asset('js/app.js') !!}"></script>
     </body>
 </html>

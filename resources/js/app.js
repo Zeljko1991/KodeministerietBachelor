@@ -31,3 +31,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 const app = new Vue({
     el: '#app'
 });
+
+//Materialize Element Initialization
+$(document).ready(function(){
+    //Jquery Inits
+});

@@ -1008,6 +1008,11 @@ var app = new Vue({
   el: '#app'
 });
 
+//Materialize Element Initialization
+$(document).ready(function () {
+  //Jquery Inits
+});
+
 /***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
