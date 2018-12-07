@@ -35,4 +35,5 @@ const app = new Vue({
 //Materialize Element Initialization
 $(document).ready(function(){
     //Jquery Inits
+    $('.collapsible').collapsible();
 });

@@ -13,6 +13,7 @@
 
 Route::get('/', 'PagesController@index');
 Route::get('/billing', 'PagesController@billing');
-Route::get('/planning', 'PagesController@planning');
 Route::get('/marketing', 'PagesController@marketing');
-Route::resource('ProjectCases', 'ProjectCaseController');
+
+
+Route::resource('planning', 'PlanningController');

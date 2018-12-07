@@ -21,8 +21,4 @@ class PagesController extends Controller
         return view('marketing.marketing')->with('title', $title);
     }
 
-    public function planning(){
-        $title = 'Planning';
-        return view('planning.planning')->with('title', $title);
-    }
 }

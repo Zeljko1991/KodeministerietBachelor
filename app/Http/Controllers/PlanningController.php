@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ProjectCase;
+use DB;
 
-class ProjectCaseController extends Controller
+class PlanningController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +15,8 @@ class ProjectCaseController extends Controller
      */
     public function index()
     {
-        //
+        $ProjectCases = ProjectCase::orderBy('created_at', 'asc')->paginate(5);
+        return view('planning.index')->with('ProjectCases', $ProjectCases);
     }
 
     /**
@@ -45,7 +48,8 @@ class ProjectCaseController extends Controller
      */
     public function show($id)
     {
-        //
+        $ProjectCase = ProjectCase::find($id);
+        return view('planning.show')->with('ProjectCase', $ProjectCase);
     }
 
     /**
