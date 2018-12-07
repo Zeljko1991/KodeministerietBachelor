@@ -36,4 +36,5 @@ const app = new Vue({
 $(document).ready(function(){
     //Jquery Inits
     $('.collapsible').collapsible();
+    $('.modal').modal();
 });

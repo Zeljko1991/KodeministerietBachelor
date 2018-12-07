@@ -4,7 +4,7 @@
     <div class="row center">
         <div class="card center col s12 m6 offset-m3">
             <div class="card-content">
-                <a href="" class="waves-effect waves-light btn-large"><i class="left material-icons">add</i>Create Project</a>
+                <a href="/createcase" class="waves-effect waves-light btn-large"><i class="left material-icons">add</i>Create Project</a>
             </div>
         </div>
         @if (count($ProjectCases) > 0)
@@ -19,7 +19,6 @@
                 @endforeach
                 {{$ProjectCases->links()}}
             </div>
-
         @else
             <p>No Project Cases found</p>
         @endif

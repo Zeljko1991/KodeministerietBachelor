@@ -17,3 +17,4 @@ Route::get('/marketing', 'PagesController@marketing');
 
 
 Route::resource('planning', 'PlanningController');
+Route::resource('createcase', 'ProjectCaseController');
