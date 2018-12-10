@@ -1,7 +1,7 @@
 <!-- Dropdown Structure -->
 <ul id="dropdown1" class="dropdown-content">
-    <li><a href="/planning">All Cases</a></li>
-    <li><a href="/createcase">Create Case</a></li>
+    <li><a href="/projectcase">All Cases</a></li>
+    <li><a href="/projectcase/create">Create Case</a></li>
   </ul>
 <nav>
     <div class="nav-wrapper">
@@ -10,7 +10,7 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/">Dashboard</a></li>
                 <!-- Dropdown Trigger -->
-                <li><a class="dropdown-trigger" href="planning" data-target="dropdown1">Planning<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="projectcase" data-target="dropdown1">Project Cases<i class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a href="/billing">Billing</a></li>
                 <li><a href="/marketing">Marketing</a></li>
             </ul>

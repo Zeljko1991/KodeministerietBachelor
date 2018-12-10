@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="card">
-    {!! Form::open(['action' => ['PlanningController@update', $ProjectCase->id], 'method' => 'POST']) !!}
+    {!! Form::open(['action' => ['ProjectCaseController@update', $ProjectCase->id], 'method' => 'POST']) !!}
     <div class="card-content">
         <div class="input-field col s12 l6">
             {{Form::label('title', 'Title', ['for' => 'textinput1'])}}

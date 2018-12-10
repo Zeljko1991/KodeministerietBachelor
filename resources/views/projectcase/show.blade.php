@@ -7,9 +7,14 @@
             <div>{!!$ProjectCase->description!!}</div>
             <small>{{$ProjectCase->created_at}}</small>
             <hr>
-            <a href="/planning/{{$ProjectCase->id}}/edit" class="btn btn-default">Edit</a>
+            <a href="/projectcase/{{$ProjectCase->id}}/edit" class="btn">Edit</a>
+            {!!Form::open(['action' => ['ProjectCaseController@destroy', $ProjectCase->id], 'method' => 'POST', 'class'])!!}
+                {{Form::hidden('_method', 'DELETE')}}
+                {{Form::submit('Delete', ['class' => 'btn red'])}}
+            {!!Form::close()!!}
     </div>
 </div>
+
 <ul class="collapsible">
     <li>
       <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>

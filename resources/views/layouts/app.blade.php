@@ -11,7 +11,6 @@
         <div id="app">
             @include('inc.navbar')
             <div class="container">
-                @include('inc.messages')
                 @yield('content')
             </div>
         </div>
@@ -22,5 +21,6 @@
         <script>
             CKEDITOR.replace( 'article-ckeditor' );
         </script>
+         @include('inc.messages')
     </body>
 </html>

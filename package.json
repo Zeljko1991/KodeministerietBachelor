@@ -19,5 +19,8 @@
         "materialize-css": "^1.0.0",
         "popper.js": "^1.12",
         "vue": "^2.5.17"
+    },
+    "dependencies": {
+        "sweetalert2": "^7.32.2"
     }
 }

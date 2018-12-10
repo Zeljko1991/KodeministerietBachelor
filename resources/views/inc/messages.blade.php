@@ -1,19 +1,18 @@
 @if (count($errors) > 0)
-    @foreach ($errors->all() as $error)
-        <div class="danger red">
-            {{$error}}
-        </div>
-    @endforeach
+    <script>
+        swal({title: "Error", html: '<?php foreach($errors->all() as $error){ echo $error; echo "<br>"; }?>', type: "error"});
+    </script>
+
 @endif
 
 @if (session('success'))
-    <div class="success green">
-        {{session('success')}}
-    </div>
+    <script>
+    swal({title: "Great success", html: "{{session('success')}}", type: "success"});
+    </script>
 @endif
 
 @if (session('error'))
-    <div class="data-error"></div>
-        {{session('error')}}
-    </div>
+    <script>
+        swal({title: "Whoopsie dasie!", html: "{{session('error')}}", type: "error"});
+    </script>
 @endif

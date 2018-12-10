@@ -4,14 +4,14 @@
     <div class="row center">
         <div class="card center col s12 m6 offset-m3">
             <div class="card-content">
-                <a href="/createcase" class="waves-effect waves-light btn-large"><i class="left material-icons">add</i>Create Project</a>
+                <a href="/projectcase/create" class="waves-effect waves-light btn-large"><i class="left material-icons">add</i>Create Project</a>
             </div>
         </div>
         @if (count($ProjectCases) > 0)
             <div class="card center col s12 m6 offset-m3">
                 @foreach ($ProjectCases as $ProjectCase)
                     <div class="card-content row">
-                    <a href="/planning/{{$ProjectCase->id}}" class="waves-effect waves-light btn-large col s12">{{$ProjectCase->title}}</a>
+                    <a href="/projectcase/{{$ProjectCase->id}}" class="waves-effect waves-light btn-large col s12">{{$ProjectCase->title}}</a>
                     </div>
                     @if (!$loop->last)
                         <hr>
