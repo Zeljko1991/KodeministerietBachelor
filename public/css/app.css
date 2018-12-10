@@ -9504,3 +9504,15 @@ html {
   font-family: Palanquin;
 }
 
+.background-image {
+  background-image: url("/img/site/login_photo.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.opacity {
+  background: #fff;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  opacity: .8;
+}
+

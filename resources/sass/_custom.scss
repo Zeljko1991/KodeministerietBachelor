@@ -1,6 +1,19 @@
 html
 {
+
     font-family:Palanquin;
 }
 
 $primary-color: color("indigo", "lighten-2") !default;
+
+.background-image{
+    background-image: url("/img/site/login_photo.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.opacity {
+    background: #fff;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    opacity: .8;
+  }

@@ -4,10 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="{{asset('css/app.css')}}">
+	    <!-- CSRF Token -->
+    	<meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{config('app.name', 'Kodeministeriet')}}</title>
-
     </head>
-    <body>
+    <body class="{{ Request::path() == 'login' ? 'background-image' : ''}}">
         <div id="app">
             @include('inc.navbar')
             <div class="container">

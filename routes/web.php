@@ -16,3 +16,8 @@ Route::get('/billing', 'PagesController@billing');
 Route::get('/marketing', 'PagesController@marketing');
 
 Route::resource('/projectcase', 'ProjectCaseController');
+Auth::routes();
+
+Route::get('/dashboard', 'DashboardController@index');
+
+
