@@ -40,7 +40,13 @@ class ProjectCaseController extends Controller
             'description' => 'required'
         ]);
 
-        return 123;
+        // Create Case
+        $ProjectCase = new ProjectCase;
+        $ProjectCase->title = $request->input('title');
+        $ProjectCase->description = $request->input('description');
+        $ProjectCase->save();
+
+        return redirect('/planning')->with('success', 'Post Created');
     }
 
     /**

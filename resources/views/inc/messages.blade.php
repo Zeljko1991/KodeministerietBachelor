@@ -7,7 +7,7 @@
 @endif
 
 @if (session('success'))
-    <div class="chip">
+    <div class="success green">
         {{session('success')}}
     </div>
 @endif
@@ -17,4 +17,3 @@
         {{session('error')}}
     </div>
 @endif
-

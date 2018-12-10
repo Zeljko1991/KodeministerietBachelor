@@ -1013,6 +1013,9 @@ $(document).ready(function () {
   //Jquery Inits
   $('.collapsible').collapsible();
   $('.modal').modal();
+  $(".dropdown-trigger").dropdown({
+    coverTrigger: false
+  });
 });
 
 /***/ }),

@@ -15,7 +15,7 @@ class PlanningController extends Controller
      */
     public function index()
     {
-        $ProjectCases = ProjectCase::orderBy('created_at', 'asc')->paginate(5);
+        $ProjectCases = ProjectCase::orderBy('created_at', 'desc')->paginate(5);
         return view('planning.index')->with('ProjectCases', $ProjectCases);
     }
 
