@@ -14,7 +14,7 @@ class ProjectCaseController extends Controller
      */
     public function index()
     {
-        return view('projectcase.index');
+        return view('projectcase.create');
     }
 
     /**

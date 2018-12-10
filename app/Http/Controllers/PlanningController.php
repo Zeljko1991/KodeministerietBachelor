@@ -60,7 +60,8 @@ class PlanningController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ProjectCase = ProjectCase::find($id);
+        return view('planning.edit')->with('ProjectCase', $ProjectCase);
     }
 
     /**

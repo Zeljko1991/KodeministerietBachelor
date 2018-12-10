@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card ">
+<div class="card">
     <div class="card-content">
         <span class="card-title">{{$ProjectCase->title}}</span>
-            <p>{{$ProjectCase->description}}</p>
+            <div>{!!$ProjectCase->description!!}</div>
             <small>{{$ProjectCase->created_at}}</small>
+            <hr>
+            <a href="/planning/{{$ProjectCase->id}}/edit" class="btn btn-default">Edit</a>
     </div>
 </div>
 <ul class="collapsible">
