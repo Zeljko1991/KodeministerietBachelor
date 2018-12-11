@@ -8,7 +8,7 @@
     	<meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{config('app.name', 'Kodeministeriet')}}</title>
     </head>
-    <body class="{{ Request::path() == 'login' ? 'background-image' : ''}}">
+    <body class="{{ Request::path() == '/' ? 'background-image' : ''}}">
         <div id="app">
             @include('inc.navbar')
             <div class="container">

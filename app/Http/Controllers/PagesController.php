@@ -8,7 +8,7 @@ class PagesController extends Controller
 {
     public function index() {
         $title = 'Welcome to Kodeministeriet';
-        return view('pages.index')->with('title', $title);
+        return view('auth.login')->with('title', $title);
     }
 
     public function billing() {

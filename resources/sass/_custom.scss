@@ -6,14 +6,21 @@ html
 
 $primary-color: color("indigo", "lighten-2") !default;
 
+// Background image on login screen
 .background-image{
     background-image: url("/img/site/login_photo.jpeg");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
+// Login background image opacity
 .opacity {
     background: #fff;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
     opacity: .8;
   }
+
+
+.navbar-fixed {
+    position: absolute;z-index:999999999;
+}

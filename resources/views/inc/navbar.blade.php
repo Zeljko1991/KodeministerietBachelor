@@ -1,4 +1,15 @@
 <!-- Dropdown Structure -->
+@guest
+<div class="navbar fixed">
+    <nav class="transparent z-depth-0">
+        <div class="nav-wrapper">
+            <div class="container">
+                <a href="/" class="brand-logo">{{config('app.name', 'Kodeministeriet')}}</a>
+            </div>
+        </div>
+    </nav>
+</div>
+@else
 <ul id="dropdown1" class="dropdown-content">
     <li><a href="/projectcase">All Cases</a></li>
     <li><a href="/projectcase/create">Create Case</a></li>
@@ -14,7 +25,7 @@
 <nav>
     <div class="nav-wrapper">
         <div class="container">
-            <a href="/" class="brand-logo">{{config('app.name', 'Kodeministeriet')}}</a>
+            <a href="/dashboard" class="brand-logo">{{config('app.name', 'Kodeministeriet')}}</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <!-- Importing guest stuff -->
                 @guest
@@ -28,7 +39,7 @@
                     </li>
                 @endif
                 @else
-                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
                     <!-- Dropdown Trigger -->
                     <li><a class="dropdown-trigger" href="projectcase" data-target="dropdown1">Project Cases<i class="material-icons right">arrow_drop_down</i></a></li>
                     <li><a href="/billing">Billing</a></li>
@@ -41,3 +52,4 @@
         </div>
     </div>
 </nav>
+@endguest
