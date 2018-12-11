@@ -6,9 +6,18 @@ use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
+ /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index() {
-        $title = 'Welcome to Kodeministeriet';
-        return view('auth.login')->with('title', $title);
+            return view('/dashboard');
     }
 
     public function billing() {

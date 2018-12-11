@@ -11,13 +11,20 @@
 |
 */
 
+
 Route::get('/', 'PagesController@index');
+
 Route::get('/billing', 'PagesController@billing');
 Route::get('/marketing', 'PagesController@marketing');
+Route::get('/dashboard', 'DashboardController@index');
+Route::get('subcase/create/{id}', 'SubCaseController@create');
 
-Route::resource('/projectcase', 'ProjectCaseController');
 Auth::routes();
 
-Route::get('/dashboard', 'DashboardController@index');
+Route::resource('/subcase', 'SubCaseController');
+Route::resource('/projectcase', 'ProjectCaseController');
+
+
+
 
 

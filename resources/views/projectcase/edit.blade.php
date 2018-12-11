@@ -4,7 +4,7 @@
 <div class="card">
     {!! Form::open(['action' => ['ProjectCaseController@update', $ProjectCase->id], 'method' => 'POST']) !!}
     <div class="card-content">
-        <div class="input-field col s12 l6">
+        <div class="input-field col s12 l6"></div>
             {{Form::label('title', 'Title', ['for' => 'textinput1'])}}
             {{Form::text('title', $ProjectCase->title, ['class' => 'validate', 'id' => 'textinput1'])}}
         </div>

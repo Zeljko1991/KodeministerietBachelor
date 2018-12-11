@@ -8,7 +8,7 @@
     	<meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{config('app.name', 'Kodeministeriet')}}</title>
     </head>
-    <body class="{{ Request::path() == '/' ? 'background-image' : ''}}">
+    <body class="@guest background-image @endif">
         <div id="app">
             @include('inc.navbar')
             <div class="container">
@@ -21,6 +21,7 @@
         <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
         <script>
             CKEDITOR.replace( 'article-ckeditor' );
+            CKEDITOR.replace( 'deliverables' );
         </script>
          @include('inc.messages')
     </body>

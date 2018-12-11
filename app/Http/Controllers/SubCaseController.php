@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ProjectCase;
 use App\Models\SubCase;
-use DB;
 
-class ProjectCaseController extends Controller
+class SubCaseController extends Controller
 {
       /**
      * Create a new controller instance.
@@ -25,8 +24,7 @@ class ProjectCaseController extends Controller
      */
     public function index()
     {
-        $ProjectCases = ProjectCase::orderBy('created_at', 'desc')->paginate(5);
-        return view('/projectcase.index')->with('ProjectCases', $ProjectCases);
+        //
     }
 
     /**
@@ -34,9 +32,10 @@ class ProjectCaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view('/projectcase.create');
+        $ProjectCase = ProjectCase::find($id);
+        return view('subcase.create', ['ProjectCase' => $ProjectCase]);
     }
 
     /**
@@ -49,16 +48,20 @@ class ProjectCaseController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'deliverables' => 'required',
+            'price' => 'required'
         ]);
 
-        // Create Case
-        $ProjectCase = new ProjectCase;
-        $ProjectCase->title = $request->input('title');
-        $ProjectCase->description = $request->input('description');
-        $ProjectCase->save();
+        $SubCase = new SubCase;
+        $SubCase->title = $request->input('title');
+        $SubCase->description = $request->input('description');
+        $SubCase->deliverables = $request->input('deliverables');
+        $SubCase->price = $request->input('price');
+        $SubCase->project_case_id = $request->input('project_case_id');
+        $SubCase->save();
 
-        return redirect('/projectcase/'.$ProjectCase->id)->with('success', 'Case Created');
+        return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase: '.$SubCase->title.' created');
     }
 
     /**
@@ -69,9 +72,7 @@ class ProjectCaseController extends Controller
      */
     public function show($id)
     {
-        $ProjectCase = ProjectCase::find($id);
-        $SubCases = SubCase::whereIn('project_case_id', $ProjectCase)->get();
-        return view('projectcase.show')->with(['ProjectCase' => $ProjectCase, 'SubCases' => $SubCases]);
+        //
     }
 
     /**
@@ -82,8 +83,7 @@ class ProjectCaseController extends Controller
      */
     public function edit($id)
     {
-        $ProjectCase = ProjectCase::find($id);
-        return view('projectcase.edit')->with('ProjectCase', $ProjectCase);
+        //
     }
 
     /**
@@ -95,18 +95,7 @@ class ProjectCaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'description' => 'required'
-        ]);
-
-        // Create Case
-        $ProjectCase = new ProjectCase;
-        $ProjectCase->title = $request->input('title');
-        $ProjectCase->description = $request->input('description');
-        $ProjectCase->save();
-
-        return redirect('/projectcase')->with('success', 'Case Updated');
+        //
     }
 
     /**
@@ -117,8 +106,6 @@ class ProjectCaseController extends Controller
      */
     public function destroy($id)
     {
-        $ProjectCase = ProjectCase::find($id);
-        $ProjectCase->delete();
-        return redirect('/projectcase')->with('success', 'Case Removed');
+        //
     }
 }
