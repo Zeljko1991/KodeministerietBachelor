@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProjectCase;
+use App\Models\SubCase;
 use DB;
 
 class ProjectCaseController extends Controller
@@ -60,7 +61,8 @@ class ProjectCaseController extends Controller
     public function show($id)
     {
         $ProjectCase = ProjectCase::find($id);
-        return view('projectcase.show')->with('ProjectCase', $ProjectCase);
+        $SubCases = SubCase::whereIn('project_case_id', $ProjectCase)->get();
+        return view('projectcase.show')->with(['ProjectCase' => $ProjectCase, 'SubCases' => $SubCases]);
     }
 
     /**
@@ -108,6 +110,6 @@ class ProjectCaseController extends Controller
     {
         $ProjectCase = ProjectCase::find($id);
         $ProjectCase->delete();
-        return redirect('/projectcase')->with('success', 'Post Removed');
+        return redirect('/projectcase')->with('success', 'Case Removed');
     }
 }

@@ -15,18 +15,20 @@
     </div>
 </div>
 
+<h5>Sub Cases</h5>
 <ul class="collapsible">
+    @foreach ($SubCases as $SubCase)
     <li>
-      <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
-      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+        <div class="collapsible-header">{{$SubCase->title}}</div>
+        <div class="collapsible-body">
+            <div class="row">
+                {{$SubCase->description}}
+            </div>
+            <div class="row">
+                {{$SubCase->deliverables}}
+            </div>
+        </div>
     </li>
-    <li>
-      <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
-      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-    </li>
-    <li>
-      <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
-      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-    </li>
-  </ul>
+    @endforeach
+</ul>
 @endsection

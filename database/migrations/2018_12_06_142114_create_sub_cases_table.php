@@ -19,6 +19,8 @@ class CreateSubCasesTable extends Migration
             $table->string('description');
             $table->string('deliverables');
             $table->decimal('price', 10, 2);
+            $table->integer('project_case_id')->unsigned();
+            $table->foreign('project_case_id')->references('id')->on('project_cases');
         });
     }
 
