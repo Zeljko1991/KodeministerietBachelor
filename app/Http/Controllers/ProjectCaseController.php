@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ProjectCase;
 use App\Models\SubCase;
+use App\Models\CaseStatus;
 use DB;
 
 class ProjectCaseController extends Controller
@@ -36,7 +37,8 @@ class ProjectCaseController extends Controller
      */
     public function create()
     {
-        return view('/projectcase.create');
+        $CaseStatus = CaseStatus::pluck('stage', 'id');
+        return view('/projectcase.create')->with('CaseStatus', $CaseStatus);
     }
 
     /**
@@ -49,13 +51,15 @@ class ProjectCaseController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'status' => 'required'
         ]);
 
         // Create Case
         $ProjectCase = new ProjectCase;
         $ProjectCase->title = $request->input('title');
         $ProjectCase->description = $request->input('description');
+        $ProjectCase->case_status_id = $request->input('status');
         $ProjectCase->save();
 
         return redirect('/projectcase/'.$ProjectCase->id)->with('success', 'Case Created');
@@ -101,7 +105,7 @@ class ProjectCaseController extends Controller
         ]);
 
         // Create Case
-        $ProjectCase = new ProjectCase;
+        $ProjectCase = ProjectCase::find($id);
         $ProjectCase->title = $request->input('title');
         $ProjectCase->description = $request->input('description');
         $ProjectCase->save();

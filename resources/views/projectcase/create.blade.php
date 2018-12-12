@@ -13,6 +13,10 @@
         <div class="input-field col s12 l6">
             {{Form::textarea('description', '', ['id' => 'article-ckeditor','class' => 'validate materialize-textarea'])}}
         </div>
+        {{Form::label('status', 'Status', ['for' => 'status'])}}
+        <div class="input-field col s12 l6">
+            {{Form::select('status', $CaseStatus, ['id' => 'status'])}}
+        </div>
         {{Form::submit('Submit', ['class' => 'btn btn-large'])}}
     </div>
     {!! Form::close() !!}

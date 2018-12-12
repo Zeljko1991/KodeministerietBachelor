@@ -50,7 +50,6 @@ class SubCaseController extends Controller
             'title' => 'required',
             'description' => 'required',
             'deliverables' => 'required',
-            'price' => 'required'
         ]);
 
         $SubCase = new SubCase;
@@ -72,7 +71,7 @@ class SubCaseController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -83,7 +82,9 @@ class SubCaseController extends Controller
      */
     public function edit($id)
     {
-        //
+        $SubCase = SubCase::find($id);
+        $ProjectCase = $SubCase->ProjectCase;
+        return view('subcase.edit')->with(['SubCase' => $SubCase, 'ProjectCase' => $ProjectCase]);
     }
 
     /**
@@ -95,7 +96,21 @@ class SubCaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'deliverables' => 'required',
+        ]);
+
+        $SubCase = SubCase::find($id);
+        $SubCase->title = $request->input('title');
+        $SubCase->description = $request->input('description');
+        $SubCase->deliverables = $request->input('deliverables');
+        $SubCase->price = $request->input('price');
+        $SubCase->project_case_id = $request->input('project_case_id');
+        $SubCase->save();
+
+        return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase: '.$SubCase->title.' created');
     }
 
     /**
@@ -106,6 +121,8 @@ class SubCaseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $SubCase = SubCase::find($id);
+        $SubCase->delete();
+        return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase removed');
     }
 }

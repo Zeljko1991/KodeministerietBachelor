@@ -9,4 +9,8 @@ class ProjectCase extends Model
     public function SubCases() {
         return $this->hasMany('App\Models\SubCase');
     }
+
+    public function CaseStatus() {
+        return $this->belongsTo('App\Models\CaseStatus');
+    }
 }

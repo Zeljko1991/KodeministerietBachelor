@@ -1017,6 +1017,7 @@ $(document).ready(function () {
   $(".dropdown-trigger").dropdown({
     coverTrigger: false
   });
+  $('select:not(.swal2-select)').formSelect();
 });
 
 /***/ }),
