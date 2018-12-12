@@ -118,6 +118,7 @@ class ProjectCaseController extends Controller
     public function destroy($id)
     {
         $ProjectCase = ProjectCase::find($id);
+        $ProjectCase->SubCases()->delete();
         $ProjectCase->delete();
         return redirect('/projectcase')->with('success', 'Case Removed');
     }
