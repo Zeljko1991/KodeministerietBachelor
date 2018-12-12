@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ProjectCase;
 use App\Models\SubCase;
+use App\Models\CaseStatus;
 
 class SubCaseController extends Controller
 {
@@ -34,9 +35,9 @@ class SubCaseController extends Controller
      */
     public function create($id)
     {
-        $CaseStatus = CaseStatus::whereNotIn('id', [2])->pluck('stage', 'id');
+        $CaseStatus = CaseStatus::pluck('stage', 'id');
         $ProjectCase = ProjectCase::find($id);
-        return view('subcase.create', ['ProjectCase' => $ProjectCase]);
+        return view('subcase.create', ['ProjectCase' => $ProjectCase, 'CaseStatus' => $CaseStatus]);
     }
 
     /**
@@ -51,6 +52,7 @@ class SubCaseController extends Controller
             'title' => 'required',
             'description' => 'required',
             'deliverables' => 'required',
+            'status' => 'required'
         ]);
 
         $SubCase = new SubCase;
@@ -59,6 +61,7 @@ class SubCaseController extends Controller
         $SubCase->deliverables = $request->input('deliverables');
         $SubCase->price = $request->input('price');
         $SubCase->project_case_id = $request->input('project_case_id');
+        $SubCase->case_status_id = $request->input('status');
         $SubCase->save();
 
         return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase: '.$SubCase->title.' created');
@@ -83,9 +86,10 @@ class SubCaseController extends Controller
      */
     public function edit($id)
     {
+        $CaseStatus = CaseStatus::pluck('stage', 'id');
         $SubCase = SubCase::find($id);
         $ProjectCase = $SubCase->ProjectCase;
-        return view('subcase.edit')->with(['SubCase' => $SubCase, 'ProjectCase' => $ProjectCase]);
+        return view('subcase.edit')->with(['SubCase' => $SubCase, 'ProjectCase' => $ProjectCase, 'CaseStatus' => $CaseStatus]);
     }
 
     /**
@@ -101,6 +105,7 @@ class SubCaseController extends Controller
             'title' => 'required',
             'description' => 'required',
             'deliverables' => 'required',
+            'status' => 'required'
         ]);
 
         $SubCase = SubCase::find($id);
@@ -109,9 +114,10 @@ class SubCaseController extends Controller
         $SubCase->deliverables = $request->input('deliverables');
         $SubCase->price = $request->input('price');
         $SubCase->project_case_id = $request->input('project_case_id');
+        $SubCase->case_status_id = $request->input('status');
         $SubCase->save();
 
-        return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase: '.$SubCase->title.' created');
+        return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase: '.$SubCase->title.' updated');
     }
 
     /**

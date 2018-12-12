@@ -1006,18 +1006,31 @@ Vue.component('example-component', __webpack_require__(40));
  */
 
 var app = new Vue({
-  el: '#app'
+    el: '#app'
 });
 
 //Materialize Element Initialization
 $(document).ready(function () {
-  //Jquery Inits
-  $('.collapsible').collapsible();
-  $('.modal').modal();
-  $(".dropdown-trigger").dropdown({
-    coverTrigger: false
-  });
-  $('select:not(.swal2-select)').formSelect();
+    //Jquery Inits
+    $('.collapsible').collapsible();
+    $('.modal').modal();
+    $(".dropdown-trigger").dropdown({
+        coverTrigger: false
+    });
+    $('select:not(.swal2-select)').formSelect();
+    $('.fak').on('click', function (event) {
+        event.preventDefault();
+        return swal({
+            title: "Are you sure you want to delete this subcase?",
+            text: "There won't be any going back!",
+            type: "warning",
+            showCancelButton: true
+        }).then(function (result) {
+            if (result.value) {
+                document.getElementById(event.target.id).closest('form').submit();
+            }
+        });
+    });
 });
 
 /***/ }),

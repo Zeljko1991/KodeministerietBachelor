@@ -4,7 +4,7 @@
     <div class="card">
             {!! Form::open(['action' => 'SubCaseController@store', 'method' => 'POST']) !!}
             <div class="card-content">
-                <span class="card-title">{{$ProjectCase->title}}</span>
+                <span class="card-title">Create subcase for: <strong>{{$ProjectCase->title}}</strong></span>
                 <div class="input-field col s12 l6">
                     {{Form::label('title', 'Title', ['for' => 'textinput1'])}}
                     {{Form::text('title', '', ['class' => 'validate', 'id' => 'textinput1'])}}
@@ -21,6 +21,10 @@
                 {{Form::label('price', 'Price', ['for' => 'price'])}}
                 <div class="input-field col s12 l6">
                     {{Form::number('price', '', ['id' => 'price','class' => 'validate materialize-textarea'])}}
+                </div>
+                {{Form::label('status', 'Status', ['for' => 'status'])}}
+                <div class="input-field col s12 l6">
+                    {{Form::select('status', $CaseStatus, ['id' => 'status'])}}
                 </div>
                 {{Form::number('project_case_id', $ProjectCase->id, ['hidden'])}}
                 {{Form::submit('Submit', ['class' => 'btn btn-large'])}}

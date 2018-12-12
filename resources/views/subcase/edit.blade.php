@@ -22,6 +22,10 @@
                 <div class="input-field col s12 l6">
                     {{Form::number('price', $SubCase->price, ['id' => 'price','class' => 'validate materialize-textarea'])}}
                 </div>
+                {{Form::label('status', 'Status', ['for' => 'status'])}}
+                <div class="input-field col s12 l6">
+                    {{Form::select('status', $CaseStatus, $ProjectCase->case_status_id)}}
+                </div>
                 {{Form::number('project_case_id', $SubCase->project_case_id, ['hidden'])}}
                 {{Form::hidden('_method', 'PUT')}}
                 {{Form::submit('Submit', ['class' => 'btn btn-large'])}}

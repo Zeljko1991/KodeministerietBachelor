@@ -10,4 +10,7 @@ class SubCase extends Model
         return $this->belongsTo('App\Models\ProjectCase');
     }
 
+    public function CaseStatus() {
+        return $this->belongsTo('App\Models\CaseStatus');
+    }
 }

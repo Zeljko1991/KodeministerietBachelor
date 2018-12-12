@@ -9523,6 +9523,7 @@ html {
 
 nav {
   height: 120px;
+  margin-bottom: 80px;
 }
 
 .user_badge {
@@ -9530,6 +9531,3 @@ nav {
   background-size: cover;
 }
 
-.btn-floating-container {
-    position:relative;
-}

@@ -42,4 +42,17 @@ $(document).ready(function(){
         coverTrigger: false,
     });
     $('select:not(.swal2-select)').formSelect();
+    $('.fak').on('click', (event) => {
+        event.preventDefault();
+        return swal({
+                title: "Are you sure you want to delete this subcase?",
+                text: "There won't be any going back!",
+                type: "warning",
+                showCancelButton: true,
+            }).then((result) => {
+                    if(result.value) {
+                        document.getElementById(event.target.id).closest('form').submit();
+                    }
+                });
+    });
 });

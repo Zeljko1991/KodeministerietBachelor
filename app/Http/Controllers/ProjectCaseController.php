@@ -113,7 +113,7 @@ class ProjectCaseController extends Controller
         $ProjectCase->case_status_id = $request->input('status');
         $ProjectCase->save();
 
-        return redirect('/projectcase')->with('success', 'Case Updated');
+        return redirect('/projectcase/'.$ProjectCase->id)->with('success', 'Case: '.$ProjectCase->title.' Updated');
     }
 
     /**

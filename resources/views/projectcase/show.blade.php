@@ -3,7 +3,7 @@
 @section('content')
 <div class="card">
     <div class="card-content">
-        <span class="card-title">Case: {{$ProjectCase->title}}</span>
+    <span class="card-title">Case: <strong>{{$ProjectCase->title}}</strong><span class="badge">{{$ProjectCase->CaseStatus->stage}}</span></span>
             <div>Description: {!!$ProjectCase->description!!}</div>
             <small>Created at: {{$ProjectCase->created_at}}</small>
             <div class="card-action">
@@ -21,7 +21,10 @@
     @if (count($SubCases) > 0)
         @foreach ($SubCases as $SubCase)
         <li>
-            <div class="collapsible-header"><strong>{{$SubCase->title}}</strong></div>
+            <div class="collapsible-header">
+                <strong>{{$SubCase->title}}</strong>
+            <span class="badge">{{$SubCase->CaseStatus->stage}}</span>
+            </div>
             <div class="collapsible-body">
                 <div class="row">
                     <strong>Description:</strong>
@@ -31,11 +34,16 @@
                 <div class="row">
                     <strong>Deliverables:</strong>
                     <p>{!!$SubCase->deliverables!!}</p>
+                    <hr>
+                    <p>
+                        <strong>Price:</strong>
+                        {!!$SubCase->price!!}
+                    </p>
                 </div>
-                {!!Form::open(['action' => ['SubCaseController@destroy', $SubCase->id], 'method' => 'POST', 'class', 'id' => 'delsub'])!!}
+                {!!Form::open(['action' => ['SubCaseController@destroy', $SubCase->id], 'method' => 'POST', 'class', 'id' => $SubCase->id])!!}
                     <a href="/subcase/{{$SubCase->id}}/edit" class="btn">Edit</a>
                     {{Form::hidden('_method', 'DELETE')}}
-                    {{Form::submit('Delete', ['class' => 'btn red', 'onclick' => 'confirmDeleteSub(event)'])}}
+                    {{Form::submit('Delete', ['class' => 'btn red fak', 'id' => 'del'.$SubCase->id])}}
                 {!!Form::close()!!}
             </div>
         </li>
@@ -59,20 +67,6 @@
         }).then((result) => {
                 if(result.value) {
                     document.getElementById("delcase").submit();
-                }
-            });
-        }
-        function confirmDeleteSub(event) {
-        event.preventDefault();
-        return swal({
-            title: "Are you sure you want to delete this subcase?",
-            text: "There won't be any going back!",
-            type: "warning",
-            showCancelButton: true,
-            closeOnConfirm: false
-        }).then((result) => {
-                if(result.value) {
-                    document.getElementById("delsub").submit();
                 }
             });
         }
