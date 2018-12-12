@@ -34,6 +34,7 @@ class SubCaseController extends Controller
      */
     public function create($id)
     {
+        $CaseStatus = CaseStatus::whereNotIn('id', [2])->pluck('stage', 'id');
         $ProjectCase = ProjectCase::find($id);
         return view('subcase.create', ['ProjectCase' => $ProjectCase]);
     }

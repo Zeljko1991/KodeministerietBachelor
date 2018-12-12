@@ -11,6 +11,7 @@
             <div class="card center col s12 m6 offset-m3">
                 @foreach ($ProjectCases as $ProjectCase)
                     <div class="card-content row">
+                    <span class="badge left">{{$ProjectCase->CaseStatus->stage}}</span>
                     <a href="/projectcase/{{$ProjectCase->id}}" class="waves-effect waves-light btn-large col s12">{{$ProjectCase->title}}</a>
                     </div>
                     @if (!$loop->last)

@@ -86,8 +86,9 @@ class ProjectCaseController extends Controller
      */
     public function edit($id)
     {
+        $CaseStatus = CaseStatus::pluck('stage', 'id');
         $ProjectCase = ProjectCase::find($id);
-        return view('projectcase.edit')->with('ProjectCase', $ProjectCase);
+        return view('projectcase.edit')->with(['ProjectCase' => $ProjectCase, 'CaseStatus' => $CaseStatus]);
     }
 
     /**
@@ -101,13 +102,15 @@ class ProjectCaseController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'status' => 'required'
         ]);
 
         // Create Case
         $ProjectCase = ProjectCase::find($id);
         $ProjectCase->title = $request->input('title');
         $ProjectCase->description = $request->input('description');
+        $ProjectCase->case_status_id = $request->input('status');
         $ProjectCase->save();
 
         return redirect('/projectcase')->with('success', 'Case Updated');
