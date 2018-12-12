@@ -20,7 +20,11 @@
                 {{$ProjectCases->links()}}
             </div>
         @else
-            <p>No Project Cases found</p>
+        <div class="row">
+            <div class="card col s12 m6 offset-m3">
+                <p>No projects found</p>
+            </div>
+        </div>
         @endif
     </div>
 @endsection
