@@ -23,7 +23,7 @@
     </form>
 </ul>
 <nav>
-    <div class="nav-wrapper">
+    <div class="nav-wrapper valign-wrapper">
         <div class="container">
             <a href="/dashboard" class="brand-logo">{{config('app.name', 'Kodeministeriet')}}</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -45,7 +45,7 @@
                     <li><a href="/billing">Billing</a></li>
                     <li><a href="/marketing">Marketing</a></li>
                     <!-- User dropdown trigger -->
-                    <li><a class="dropdown-trigger" data-target="dropdown2">{{Auth::user()->name}}<i class="material-icons right">arrow_drop_down</i></a></li>
+                    <li><a class="dropdown-trigger btn-floating btn-large user_badge" data-target="dropdown2" style="background-image: url('{{Auth::user()->user_img}}');"><i class="material-icons">arrow_drop_down</i></a>{{Auth::user()->name}}</li>
             </ul>
         </div>
                 @endguest

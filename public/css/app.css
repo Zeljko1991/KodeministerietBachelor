@@ -9521,3 +9521,15 @@ html {
   z-index: 999999999;
 }
 
+nav {
+  height: 120px;
+}
+
+.user_badge {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.btn-floating-container {
+    position:relative;
+}

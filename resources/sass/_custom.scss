@@ -20,7 +20,15 @@ $primary-color: color("indigo", "lighten-2") !default;
     opacity: .8;
   }
 
-
 .navbar-fixed {
     position: absolute;z-index:999999999;
+}
+
+nav {
+    height: 120px;
+}
+
+.user_badge{
+    background-repeat: no-repeat;
+    background-size: cover;
 }
