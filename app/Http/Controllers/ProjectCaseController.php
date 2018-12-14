@@ -75,7 +75,7 @@ class ProjectCaseController extends Controller
     public function show($id)
     {
         $ProjectCase = ProjectCase::find($id);
-        $SubCases = SubCase::whereIn('project_case_id', $ProjectCase)->get();
+        $SubCases = SubCase::where('project_case_id', $id)->get();
         return view('projectcase.show')->with(['ProjectCase' => $ProjectCase, 'SubCases' => $SubCases]);
     }
 

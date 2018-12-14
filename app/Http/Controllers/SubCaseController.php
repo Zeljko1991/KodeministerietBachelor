@@ -7,6 +7,7 @@ use App\Models\ProjectCase;
 use App\Models\SubCase;
 use App\Models\Deliverable;
 use App\Models\CaseStatus;
+use SebastianBergmann\Environment\Console;
 
 class SubCaseController extends Controller
 {
@@ -116,6 +117,7 @@ class SubCaseController extends Controller
             'status' => 'required'
         ]);
 
+        $i = 1;
         $SubCase = SubCase::find($id);
         $SubCase->title = $request->input('title');
         $SubCase->description = $request->input('description');
@@ -123,6 +125,27 @@ class SubCaseController extends Controller
         $SubCase->project_case_id = $request->input('project_case_id');
         $SubCase->case_status_id = $request->input('status');
         $SubCase->save();
+        $titles = $request->deliverable;
+        $ids = $request->delivID;
+        foreach($titles as $key => $value) {
+            if($value == null) {
+                Deliverable::find($ids[$key])->delete();
+            } else if (!array_key_exists($key, $ids)) {
+                Deliverable::create([
+                    'title' => $value,
+                    'order' => $i,
+                    'sub_case_id' => $SubCase->id
+                ]);
+                $i++;
+            } else {
+                $Deliverable = Deliverable::find($ids[$key]);
+                $Deliverable->title = $value;
+                $Deliverable->order = $i;
+                $Deliverable->sub_case_id = $SubCase->id;
+                $Deliverable->save();
+                $i++;
+            }
+        }
 
         return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase: '.$SubCase->title.' updated');
     }
@@ -136,6 +159,7 @@ class SubCaseController extends Controller
     public function destroy($id)
     {
         $SubCase = SubCase::find($id);
+        $SubCase->Deliverables()->delete();
         $SubCase->delete();
         return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase removed');
     }

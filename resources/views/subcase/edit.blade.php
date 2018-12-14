@@ -14,17 +14,21 @@
                 <div class="input-field col s12 l6">
                     {{Form::textarea('description', $SubCase->description, ['id' => 'article-ckeditor','class' => 'validate materialize-textarea'])}}
                 </div>
-                <table id="dynamic_field">
+                <table id="dynamic_field_edit">
+                <tr>
+                    <td><button class="btn" name="addDeliv" id="addDeliv"><i class="material-icons left">add</i>More deliverables</button></td>
+                </tr>
                 @if (count($SubCase->deliverables) > 0)
                     {{Form::label('deliverable', 'Deliverable', ['for' => 'deliverable[]'])}}
                     @foreach ($SubCase->deliverables as $Deliverable)
-                    <tr id="delivrow{{$Deliverable->id}}">
-                        <td>{{Form::text('deliverable[]', $Deliverable->title, ['class' => 'validate', 'id' => 'deliverable deliv'.$Deliverable->id])}}</td>
-                        <td><button class="btn" name="add" id="add"><i class="material-icons left">add</i>More deliverables</button></td>
-                        <td><button type="button" name="remove" id="'deliv{{$Deliverable->id}}" class="btn red btn_remove">X</button></td>
+                    <tr id="delivrowDD{{$Deliverable->id}}">
+                        <td>{!!Form::text('deliverable[]', $Deliverable->title, ['class' => 'validate', 'id' => 'deliverable delivDD'.$Deliverable->id.''])!!}</td>
+                        <td><button type="button" name="remove" id="D{{$Deliverable->id}}" class="btn red btn_remove_deliv">X</button></td>
                     </tr> 
+                    {{Form::number('delivID[]', $Deliverable->id, ['hidden'])}}
                     @endforeach
                 @endif
+                   
                 </table>
                 {{Form::label('price', 'Price', ['for' => 'price'])}}
                 <div class="input-field col s12 l6">

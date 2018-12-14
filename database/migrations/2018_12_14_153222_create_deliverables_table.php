@@ -19,7 +19,7 @@ class CreateDeliverablesTable extends Migration
             $table->integer('order');
             $table->integer('stage')->default(1);
             $table->unsignedInteger('sub_case_id');
-            $table->foreign('sub_case_id')->references('id')->on('sub_cases');
+            $table->foreign('sub_case_id')->references('id')->on('sub_cases')->onDelete('cascade');
         });
     }
 
