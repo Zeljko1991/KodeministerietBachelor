@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     public function Customer() {
-        return $this->belongsTo('App\Models\Address');
+        return $this->hasMany('App\Models\Customer');
     }
 }

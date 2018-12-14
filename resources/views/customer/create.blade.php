@@ -31,11 +31,11 @@
                     <div class="row">
                         <div class="input-field col s12 m6">
                             {{Form::label('EAN', 'EAN', ['for' => 'EAN'])}}
-                            {{Form::number('EAN', '', ['class' => 'validate', 'id' => 'EAN'])}}
+                            {{Form::number('EAN', '', ['class' => 'validate', 'id' => 'EAN', 'data-length' => 14])}}
                         </div>
                         <div class="input-field col s12 m6">
                             {{Form::label('CVR', 'CVR', ['for' => 'CVR'])}}
-                            {{Form::number('CVR', '', ['class' => 'validate', 'id' => 'CVR'])}}
+                            {{Form::number('CVR', '', ['class' => 'validate', 'id' => 'CVR', 'data-length' => 8])}}
                         </div>
                     </div>
                     <div class="row">

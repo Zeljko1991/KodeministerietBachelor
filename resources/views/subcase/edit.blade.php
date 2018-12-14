@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card">
+        <div class="card">
             {!! Form::open(['action' => ['SubCaseController@update', $SubCase->id], 'method' => 'POST']) !!}
             <div class="card-content">
             <span class="card-title">Subcase: <strong>{{$SubCase->title}}</strong> from case: <strong>{{$ProjectCase->title}}</strong></span>

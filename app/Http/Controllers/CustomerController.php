@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Address;
+use DB;
 
 class CustomerController extends Controller
 {
@@ -15,7 +16,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('/customer.index');
+        // Getting Customer from the Customer Model and ordering entries by id and ascending
+        $Customers = Customer::orderBy('id', 'asc')->paginate(10);
+        return view('/customer.index')->with('Customers', $Customers);
     }
 
     /**
@@ -36,7 +39,27 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validating that input fields are filled
+        $this->validate($request, [
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'eMail' => 'required',
+            'phoneNumber' => 'required',
+            'EAN' => 'required',
+            'CVR' => 'required',
+            ]);
+
+        // Create Customer
+        $Customer = new Customer;
+        $Customer->firstName = $request->input('firstName');
+        $Customer->lastName = $request->input('lastName');
+        $Customer->eMail = $request->input('eMail');
+        $Customer->phoneNumber = $request->input('phoneNumber');
+        $Customer->EAN = $request->input('EAN');
+        $Customer->CVR = $request->input('CVR');
+        $Customer->save();
+
+        return redirect('/customer/'.$Customer->id)->with('success', 'Customer Created');
     }
 
     /**
@@ -47,7 +70,9 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        //
+        $Customer = Customer::find($id);
+        return view('customer.show')->with('Customer', $Customer);
+
     }
 
     /**
@@ -58,7 +83,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $Customer = Customer::find($id);
+        return view('customer.edit')->with('Customer', $Customer);
     }
 
     /**
@@ -70,7 +96,27 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+           // Validating that input fields are filled
+           $this->validate($request, [
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'eMail' => 'required',
+            'phoneNumber' => 'required',
+            'EAN' => 'required',
+            'CVR' => 'required',
+            ]);
+
+        // Create Customer
+        $Customer = Customer::find($id);
+        $Customer->firstName = $request->input('firstName');
+        $Customer->lastName = $request->input('lastName');
+        $Customer->eMail = $request->input('eMail');
+        $Customer->phoneNumber = $request->input('phoneNumber');
+        $Customer->EAN = $request->input('EAN');
+        $Customer->CVR = $request->input('CVR');
+        $Customer->save();
+
+        return redirect('/customer/'.$Customer->id)->with('success', 'Customer Updated');
     }
 
     /**
@@ -81,6 +127,8 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $Customer = Customer::find($id);
+        $Customer->delete();
+        return redirect('/customer')->with('success', 'Customer Deleted');
     }
 }

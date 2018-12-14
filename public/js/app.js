@@ -1014,6 +1014,8 @@ $(document).ready(function () {
     //Jquery Inits
     $('.collapsible').collapsible();
     $('.modal').modal();
+    $('input#input_text, input#EAN').characterCounter();
+    $('input#input_text, input#CVR').characterCounter();
     $(".dropdown-trigger").dropdown({
         coverTrigger: false
     });
