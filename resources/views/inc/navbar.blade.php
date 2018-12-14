@@ -22,6 +22,9 @@
         @csrf
     </form>
 </ul>
+<ul id="dropdown3" class="dropdown-content">
+    <li><a href="/customer">Customers</a></li>
+</ul>
 <nav>
     <div class="nav-wrapper valign-wrapper">
         <div class="container">
@@ -42,7 +45,7 @@
                     <li><a href="/dashboard">Dashboard</a></li>
                     <!-- Dropdown Trigger -->
                     <li><a class="dropdown-trigger" href="projectcase" data-target="dropdown1">Project Cases<i class="material-icons right">arrow_drop_down</i></a></li>
-                    <li><a href="/billing">Billing</a></li>
+                    <li><a class="dropdown-trigger" data-target="dropdown3">Billing<i class="material-icons right">arrow_drop_down</i></a></li>
                     <li><a href="/marketing">Marketing</a></li>
                     <!-- User dropdown trigger -->
                     <li><a class="dropdown-trigger btn-floating btn-large user_badge" data-target="dropdown2" style="background-image: url('{{Auth::user()->user_img}}');"><i class="material-icons">arrow_drop_down</i></a>{{Auth::user()->name}}</li>

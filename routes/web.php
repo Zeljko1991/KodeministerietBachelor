@@ -23,7 +23,7 @@ Auth::routes();
 
 Route::resource('/subcase', 'SubCaseController');
 Route::resource('/projectcase', 'ProjectCaseController');
-
+Route::resource('/customer', 'CustomerController');
 
 
 
