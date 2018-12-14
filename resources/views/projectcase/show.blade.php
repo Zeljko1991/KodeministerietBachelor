@@ -33,7 +33,11 @@
                 <hr>
                 <div class="row">
                     <strong>Deliverables:</strong>
-                    <p>{!!$SubCase->deliverables!!}</p>
+                    @if (count($SubCase->deliverables) > 0)
+                        @foreach ($SubCase->deliverables as $deliverable)
+                            <h5><i class="material-icons">assessment</i> {!!$deliverable->title!!}</h5>
+                        @endforeach   
+                    @endif
                     <hr>
                     <p>
                         <strong>Price:</strong>

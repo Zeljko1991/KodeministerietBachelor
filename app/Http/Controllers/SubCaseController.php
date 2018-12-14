@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ProjectCase;
 use App\Models\SubCase;
+use App\Models\Deliverable;
 use App\Models\CaseStatus;
 
 class SubCaseController extends Controller
@@ -48,21 +49,29 @@ class SubCaseController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [];
         $this->validate($request, [
             'title' => 'required',
             'description' => 'required',
-            'deliverables' => 'required',
             'status' => 'required'
         ]);
-
+        $i = 1;
         $SubCase = new SubCase;
         $SubCase->title = $request->input('title');
         $SubCase->description = $request->input('description');
-        $SubCase->deliverables = $request->input('deliverables');
         $SubCase->price = $request->input('price');
         $SubCase->project_case_id = $request->input('project_case_id');
         $SubCase->case_status_id = $request->input('status');
         $SubCase->save();
+        foreach ($request->deliverable as $key => $value) {
+            Deliverable::create([
+                'title' => $value,
+                'order' => $i,
+                'sub_case_id' => $SubCase->id]);
+                $i++;
+        }
+        
+
 
         return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase: '.$SubCase->title.' created');
     }
@@ -104,14 +113,12 @@ class SubCaseController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'description' => 'required',
-            'deliverables' => 'required',
             'status' => 'required'
         ]);
 
         $SubCase = SubCase::find($id);
         $SubCase->title = $request->input('title');
         $SubCase->description = $request->input('description');
-        $SubCase->deliverables = $request->input('deliverables');
         $SubCase->price = $request->input('price');
         $SubCase->project_case_id = $request->input('project_case_id');
         $SubCase->case_status_id = $request->input('status');

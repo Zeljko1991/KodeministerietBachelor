@@ -14,10 +14,13 @@
                 <div class="input-field col s12 l6">
                     {{Form::textarea('description', '', ['id' => 'article-ckeditor','class' => 'validate materialize-textarea'])}}
                 </div>
-                {{Form::label('deliverables', 'Deliverables', ['for' => 'deliverables'])}}
-                <div class="input-field col s12 l6">
-                    {{Form::textarea('deliverables', '', ['id' => 'deliverables','class' => 'validate materialize-textarea'])}}
-                </div>
+                <table id="dynamic_field">
+                        {{Form::label('deliverable', 'Deliverable', ['for' => 'deliverable[]'])}}
+                    <tr>
+                       <td>{{Form::text('deliverable[]', '', ['class' => 'validate', 'id' => 'deliverable'])}}</td>
+                       <td><button class="btn" name="add" id="add"><i class="material-icons left">add</i>More deliverables</button></td>
+                    </tr> 
+                </table>
                 {{Form::label('price', 'Price', ['for' => 'price'])}}
                 <div class="input-field col s12 l6">
                     {{Form::number('price', '', ['id' => 'price','class' => 'validate materialize-textarea'])}}

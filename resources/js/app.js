@@ -57,4 +57,24 @@ $(document).ready(function(){
                     }
                 });
     });
+
+
+
+
+    //Adding fields      
+        var postURL = "<?php echo url('addmore'); ?>";
+        var i=1;  
+  
+  
+        $('#add').click(function(){
+            event.preventDefault();  
+             i++;  
+             $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="deliverable[]" placeholder="Enter your Name" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn red btn_remove">X</button></td></tr>');  
+        });  
+  
+  
+        $(document).on('click', '.btn_remove', function(){  
+             var button_id = $(this).attr("id");   
+             $('#row'+button_id+'').remove();  
+        });  
 });

@@ -13,4 +13,8 @@ class SubCase extends Model
     public function CaseStatus() {
         return $this->belongsTo('App\Models\CaseStatus');
     }
+
+    public function Deliverables() {
+        return $this->hasMany('App\Models\Deliverable');
+    }
 }
