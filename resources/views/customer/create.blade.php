@@ -39,6 +39,31 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="input-field col s12 m3">
+                            {{Form::label('zipCode', 'Zip Code', ['for' => 'zipCode'])}}
+                            {{Form::number('zipCode', '', ['class' => 'validate', 'id' => 'zipCode'])}}
+                        </div>
+                        <div class="input-field col s12 m3">
+                            {{Form::label('city', 'City', ['for' => 'city'])}}
+                            {{Form::text('city', '', ['class' => 'validate', 'id' => 'city'])}}
+                        </div>
+                        <div class="input-field col s12 m3">
+                            {{Form::label('street', 'Street', ['for' => 'street'])}}
+                            {{Form::text('street', '', ['class' => 'validate', 'id' => 'street'])}}
+                        </div>
+                        <div class="input-field col s12 m3">
+                                {{Form::label('streetNumber', 'Street Number', ['for' => 'streetNumber'])}}
+                                {{Form::text('streetNumber', '', ['class' => 'validate', 'id' => 'streetNumber'])}}
+                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 m12">
+                            {{Form::label('country', 'Country', ['for' => 'country'])}}
+                            {{Form::text('country', '', ['class' => 'validate', 'id' => 'country'])}}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row">
                         <div class="col s12 m6">
                             {{Form::submit('Create customer', ['class' => 'btn btn-large'])}}
                         </div>

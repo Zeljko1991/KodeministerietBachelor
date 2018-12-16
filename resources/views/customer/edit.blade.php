@@ -57,14 +57,33 @@
                             </div>
                     </div>
                     <div class="row">
-                        <div class="col s12 m6">
-                            {{Form::hidden('_method', 'PUT')}}
-                            {{Form::submit('Save edit to customer', ['class' => 'btn btn-large'])}}
+                        <div class="input-field col s12 m12">
+                            {{Form::label('country', 'Country', ['for' => 'country'])}}
+                            {{Form::text('country', $Customer->Address->country, ['class' => 'validate', 'id' => 'country'])}}
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <!-- Edit form closing below -->
+                            {{Form::hidden('_method', 'PUT')}}
+                            {{Form::submit('Save edit to customer', ['class' => 'btn btn-large'])}}
+                            {!!Form::close()!!}
+                        </div>
+                            <!-- Delete form below  -->
+                            <div class="col s12 m6">
+                            {!!Form::open(['action' => ['CustomerController@destroy', $Customer->id], 'method' => 'POST', 'class', 'id' => $Customer->id])!!}
+                            {{Form::hidden('_method', 'DELETE')}}
+                            {{Form::submit('Delete', ['class' => 'btn btn-large red'])}}
+                            {!!Form::close()!!}
+                        </div>
+
+                    </div>
                 </div>
-                {!!Form::close()!!}
+
+
+
             </div>
+
         </div>
     </div>
 @endsection

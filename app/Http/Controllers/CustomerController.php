@@ -9,6 +9,15 @@ use DB;
 
 class CustomerController extends Controller
 {
+        /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -45,12 +54,25 @@ class CustomerController extends Controller
             'lastName' => 'required',
             'eMail' => 'required',
             'phoneNumber' => 'required',
-            'EAN' => 'required',
-            'CVR' => 'required',
+            'EAN' => 'required_without:CVR',
+            'CVR' => 'required_without:EAN',
+            'zipCode' => 'required',
+            'city' => 'required',
+            'street' => 'required',
+            'streetNumber' => 'required',
+            'country' => 'required',
             ]);
 
         // Create Customer
+        $Address = new Address;
+        $Address->streetNumber = $request->input('streetNumber');
+        $Address->city = $request->input('city');
+        $Address->street = $request->input('street');
+        $Address->zipCode = $request->input('zipCode');
+        $Address->country = $request->input('country');
+        $Address->save();
         $Customer = new Customer;
+        $Customer->address_id = $Address->id;
         $Customer->firstName = $request->input('firstName');
         $Customer->lastName = $request->input('lastName');
         $Customer->eMail = $request->input('eMail');
@@ -59,7 +81,7 @@ class CustomerController extends Controller
         $Customer->CVR = $request->input('CVR');
         $Customer->save();
 
-        return redirect('/customer/'.$Customer->id)->with('success', 'Customer Created');
+        return redirect('/customer')->with('success', 'Customer Created');
     }
 
     /**
@@ -102,8 +124,13 @@ class CustomerController extends Controller
             'lastName' => 'required',
             'eMail' => 'required',
             'phoneNumber' => 'required',
-            'EAN' => 'required',
-            'CVR' => 'required',
+            'EAN' => 'required_without:CVR',
+            'CVR' => 'required_without:EAN',
+            'zipCode' => 'required',
+            'city' => 'required',
+            'street' => 'required',
+            'streetNumber' => 'required',
+            'country' => 'required',
             ]);
 
         // Create Customer
@@ -115,8 +142,18 @@ class CustomerController extends Controller
         $Customer->EAN = $request->input('EAN');
         $Customer->CVR = $request->input('CVR');
         $Customer->save();
+        $Address = Address::find($Customer->address_id);
+        $Address->streetNumber = $request->input('streetNumber');
+        $Address->city = $request->input('city');
+        $Address->street = $request->input('street');
+        $Address->zipCode = $request->input('zipCode');
+        $Address->country = $request->input('country');
+        $Address->save();
 
-        return redirect('/customer/'.$Customer->id)->with('success', 'Customer Updated');
+        // Returns view to customer.show (old view)
+        // return redirect('/customer/'.$Customer->id)->with('success', 'Customer Updated');
+
+        return redirect('/customer')->with('success', 'Customer Updated');
     }
 
     /**

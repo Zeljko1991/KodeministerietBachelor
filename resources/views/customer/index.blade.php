@@ -8,17 +8,11 @@
             </div>
         </div>
     </div>
-
-    <div class="row center">
-        <div class="col s4"><h5>Name</h5></div>
-        <div class="col s4"><h5>Phone</h5></div>
-        <div class="col s4"><h5>Email</h5></div>
-    </div>
-    <ul class="collapsible">
+    <ul class="collapsible popout">
             @if (count($Customers) > 0)
                 @foreach ($Customers as $Customer)
                 <li>
-                    <div class="collapsible-header hoverable">
+                    <div class="collapsible-header customHover">
                         <div class="row">
                             <div class="col s12"><strong>{{$Customer->firstName}} {{$Customer->lastName}}</strong></div>
                         </div>
@@ -31,21 +25,20 @@
                     </div>
                     <div class="collapsible-body">
                         <ul class="collection">
-                            <li class="collection-item">Customer ID {{$Customer->id}}</li>
-                            <li class="collection-item">CVR {{$Customer->CVR}}</li>
-                            <li class="collection-item">EAN {{$Customer->EAN}}</li>
-                            <li class="collection-item">Address ID {{$Customer->address_id}}</li>
-                            <li class="collection-item">Street & Number {{$Customer->Address->street}} {{$Customer->Address->streetNumber}}</li>
-                            <li class="collection-item">Zip Code {{$Customer->Address->zipCode}}</li>
-                            <li class="collection-item">City & Country {{$Customer->Address->city}} {{$Customer->Address->country}}</li>
-                            <li class="collection-item center"><a href="/customer/{{$Customer->id}}/edit" class="btn">Edit {{$Customer->firstName}} {{$Customer->lastName}}</a></li>
+                            <li class="collection-item">Customer ID <h5>{{$Customer->id}}</h5></li>
+                            <li class="collection-item">CVR <h5>{{$Customer->CVR}}</h5></li>
+                            <li class="collection-item">EAN <h5>{{$Customer->EAN}}</h5></li>
+                            <li class="collection-item">Street & Number <h5>{{$Customer->Address->street}} {{$Customer->Address->streetNumber}}</h5></li>
+                            <li class="collection-item">Zip Code <h5>{{$Customer->Address->zipCode}}</h5></li>
+                            <li class="collection-item">City & Country <h5>{{$Customer->Address->city}}, {{$Customer->Address->country}}</h5></li>
+                            <li class="collection-item center"><a href="/customer/{{$Customer->id}}/edit" class="btn btn-large">Edit {{$Customer->firstName}} {{$Customer->lastName}}</a></li>
                         </ul>
                     </div>
                 </li>
                 @endforeach
             @else
                 <li>
-                    <div class="collapsible-header"><strong>There are no subcases for this case</strong></div>
+                    <div class="collapsible-header"><strong>Sorry but you seem to have no customers!</strong></div>
                 </li>
             @endif
 

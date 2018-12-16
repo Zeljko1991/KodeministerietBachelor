@@ -1034,7 +1034,7 @@ $(document).ready(function () {
         });
     });
 
-    //Adding fields      
+    //Adding fields
     var postURL = "<?php echo url('addmore'); ?>";
     var i = 1;
 
@@ -1058,8 +1058,6 @@ $(document).ready(function () {
     $(document).on('click', '.btn_remove_deliv', function () {
         var button_id = $(this).attr("id");
         $(this).closest('#delivrowD' + button_id + '').find('input').val('');
-        // var v = $(this).closest('#delivrowD'+button_id+'').find('input').val();
-        // alert(v);
         $('#delivrowD' + button_id + '').attr('hidden', true);
     });
 

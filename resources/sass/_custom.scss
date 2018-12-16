@@ -40,3 +40,69 @@ nav {
 
 }
 
+.customHover {
+    transition: background-color .25s;
+
+    &:hover {
+      // box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      background-color: #1E88E5;
+    }
+  }
+
+  // Badges
+span.badge {
+    min-width: 3rem;
+    padding: 0 6px;
+    margin-left: 14px;
+    text-align: center;
+    font-size: 1rem;
+    line-height: $badge-height;
+    height: $badge-height;
+    color: color('grey', 'darken-1');
+    float: right;
+    box-sizing: border-box;
+
+    &.new {
+      font-weight: 300;
+      font-size: 0.8rem;
+      color: #fff;
+      background-color: $badge-bg-color;
+      border-radius: 2px;
+    }
+    &.new1 {
+        font-weight: 300;
+        font-size: 0.8rem;
+        color: #fff;
+        background-color: #64b5f6;
+        border-radius: 2px;
+      }
+      &.new2 {
+        font-weight: 300;
+        font-size: 0.8rem;
+        color: #fff;
+        background-color: #e57373;
+        border-radius: 2px;
+      }
+      &.new3 {
+        font-weight: 300;
+        font-size: 0.8rem;
+        color: #fff;
+        background-color: #ffb74d;
+        border-radius: 2px;
+      }
+      &.new4 {
+        font-weight: 300;
+        font-size: 0.8rem;
+        color: #fff;
+        background-color: #81c784;
+        border-radius: 2px;
+      }
+    &.new:after {
+      content: "";
+    }
+
+    &[data-badge-caption]::after {
+      content: " " attr(data-badge-caption);
+    }
+  }
+

@@ -61,23 +61,23 @@ $(document).ready(function(){
 
 
 
-    //Adding fields      
+    //Adding fields
         var postURL = "<?php echo url('addmore'); ?>";
-        var i=1;  
-  
-  
+        var i=1;
+
+
         $('#add').click(function(){
-            event.preventDefault();  
-             i++;  
-             $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="deliverable[]" placeholder="Enter your Name" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn red btn_remove">X</button></td></tr>');  
-        });  
+            event.preventDefault();
+             i++;
+             $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="deliverable[]" placeholder="Enter your Name" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn red btn_remove">X</button></td></tr>');
+        });
 
         $('#addDeliv').click(function(){
-            event.preventDefault(); 
-            i++;  
-             $('#dynamic_field_edit').append('<tr id="delivrow'+i+'" class="dynamic-added"><td><input type="text" name="deliverable[]" placeholder="Enter your Name" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn red btn_remove_added">X</button></td></tr>');  
-        });  
-  
+            event.preventDefault();
+            i++;
+             $('#dynamic_field_edit').append('<tr id="delivrow'+i+'" class="dynamic-added"><td><input type="text" name="deliverable[]" placeholder="Enter your Name" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn red btn_remove_added">X</button></td></tr>');
+        });
+
         $(document).on('click', '.btn_remove_added', function(){
             var button_id = $(this).attr("id");
             $('#delivrow'+button_id+'').remove();
@@ -88,9 +88,9 @@ $(document).ready(function(){
             $(this).closest('#delivrowD'+button_id+'').find('input').val('');
             $('#delivrowD'+button_id+'').attr('hidden', true);
         });
-  
-        $(document).on('click', '.btn_remove', function(){  
-             var button_id = $(this).attr("id");   
-             $('#row'+button_id+'').remove();  
-        });  
+
+        $(document).on('click', '.btn_remove', function(){
+             var button_id = $(this).attr("id");
+             $('#row'+button_id+'').remove();
+        });
 });
