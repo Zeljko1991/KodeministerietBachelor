@@ -27,7 +27,7 @@ Route::resource('/customer', 'CustomerController');
 
 //Mapping the plans
 Route::resource('/planning', 'PlanningController');
-Route::put('/update', 'PlanningController@update');
+Route::put('/update/{id}', 'PlanningController@update');
 Route::patch('/visibility/{Deliverables}', 'PlanningController@visibility');
 
 

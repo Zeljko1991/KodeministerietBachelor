@@ -58810,18 +58810,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     components: {
         draggable: __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default.a
     },
-    props: ['deliverablesTodo', 'deliverablesDoing', 'deliverablesDone'],
+    props: ['deliverablesTodo', 'deliverablesDoing', 'deliverablesDone', 'subcase'],
 
     data: function data() {
         return {
             deliverablesTodoNew: this.deliverablesTodo,
             deliverablesDoingNew: this.deliverablesDoing,
-            deliverablesDoneNew: this.deliverablesDone,
-            deliverableNew: {
-                title: '',
-                order: '',
-                stage: ''
-            }
+            deliverablesDoneNew: this.deliverablesDone
+
         };
     },
 
@@ -58835,7 +58831,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.deliverablesTodo.map(function (deliverables, index) {
                 deliverables.order = index + 1;
             });
-            axios.put('/update', {
+
+            axios.put('/update/' + this.subcase, {
                 deliverables: this.deliverablesTodo
             }).then(function (response) {
                 //success
@@ -58845,7 +58842,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.deliverablesDoing.map(function (deliverables, index) {
                 deliverables.order = index + 1;
             });
-            axios.put('/update', {
+            axios.put('/update/' + this.subcase, {
                 deliverables: this.deliverablesDoingNew
             }).then(function (response) {
                 //success
@@ -58855,7 +58852,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.deliverablesDone.map(function (deliverables, index) {
                 deliverables.order = index + 1;
             });
-            axios.put('/update', {
+            axios.put('/update/' + this.subcase, {
                 deliverables: this.deliverablesDone
             }).then(function (response) {
                 //success

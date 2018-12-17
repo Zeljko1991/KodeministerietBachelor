@@ -48,18 +48,14 @@
         components: {
             draggable
         },
-        props: ['deliverablesTodo', 'deliverablesDoing', 'deliverablesDone'],
+        props: ['deliverablesTodo', 'deliverablesDoing', 'deliverablesDone', 'subcase'],
 
         data() {
             return {
                 deliverablesTodoNew: this.deliverablesTodo,
                 deliverablesDoingNew: this.deliverablesDoing,
                 deliverablesDoneNew: this.deliverablesDone,
-                deliverableNew: {
-                    title: '',
-                    order: '',
-                    stage: ''
-                }
+
             }
         },
 
@@ -74,7 +70,8 @@
                 this.deliverablesTodo.map((deliverables, index) => {
                     deliverables.order = index + 1;
                 })
-                axios.put('/update', {
+
+                axios.put('/update/' + this.subcase, {
                     deliverables: this.deliverablesTodo
                 }).then((response) => {
                     //success
@@ -84,7 +81,7 @@
                 this.deliverablesDoing.map((deliverables, index) => {
                     deliverables.order = index + 1;
                 })
-                axios.put('/update', {
+                axios.put('/update/' + this.subcase, {
                     deliverables: this.deliverablesDoingNew
                 }).then((response) => {
                     //success
@@ -94,7 +91,7 @@
                 this.deliverablesDone.map((deliverables, index) => {
                     deliverables.order = index + 1;
                 })
-                axios.put('/update', {
+                axios.put('/update/' + this.subcase, {
                     deliverables: this.deliverablesDone
                 }).then((response) => {
                     //success

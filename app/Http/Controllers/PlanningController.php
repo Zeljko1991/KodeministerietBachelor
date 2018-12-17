@@ -88,10 +88,9 @@ class PlanningController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $delivID = $request->deliverables[0]['sub_case_id'];
-        $DeliverablesBE = Deliverable::where('sub_case_id', $delivID)->get();
+        $DeliverablesBE = Deliverable::where('sub_case_id', $id)->get();
         foreach($DeliverablesBE as $itemBE) {
             $id = $itemBE->id;
             foreach($request->deliverables as $itemFE) {
