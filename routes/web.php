@@ -25,6 +25,10 @@ Route::resource('/subcase', 'SubCaseController');
 Route::resource('/projectcase', 'ProjectCaseController');
 Route::resource('/customer', 'CustomerController');
 
+//Mapping the plans
+Route::resource('/planning', 'PlanningController');
+Route::put('/update', 'PlanningController@update');
+Route::patch('/visibility/{Deliverables}', 'PlanningController@visibility');
 
 
 

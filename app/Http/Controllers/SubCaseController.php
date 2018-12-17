@@ -71,7 +71,7 @@ class SubCaseController extends Controller
                 'sub_case_id' => $SubCase->id]);
                 $i++;
         }
-        
+
 
 
         return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase: '.$SubCase->title.' created');

@@ -9,8 +9,8 @@
         <title>{{config('app.name', 'Kodeministeriet')}}</title>
     </head>
     <body class="@guest background-image @endif">
-        <div id="app">
-            @include('inc.navbar')
+        @include('inc.navbar')
+            <div id="app">
             <div class="container">
                 @yield('content')
             </div>

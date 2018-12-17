@@ -9606,3 +9606,18 @@ span.badge[data-badge-caption]::after {
   content: " " attr(data-badge-caption);
 }
 
+.plan-min-height {
+  min-height: 200px;
+}
+
+.collection .kanban-item {
+  padding-bottom: 20px;
+  cursor: move;
+}
+
+.collection .kanban-item:last-child {
+  border-bottom-color: #e0e0e0;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+

@@ -106,3 +106,19 @@ span.badge {
     }
   }
 
+  .plan-min-height {
+    min-height: 200px;
+
+  }
+
+  .collection .kanban-item {
+    padding-bottom: 20px;
+    cursor: move;
+  }
+
+  .collection .kanban-item:last-child {
+    border-bottom-color: rgb(224, 224, 224);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+

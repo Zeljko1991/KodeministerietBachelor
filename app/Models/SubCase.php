@@ -15,6 +15,6 @@ class SubCase extends Model
     }
 
     public function Deliverables() {
-        return $this->hasMany('App\Models\Deliverable')->orderBy('order', 'asc');
+        return $this->hasMany('App\Models\Deliverable')->orderBy('stage', 'asc')->orderBy('order', 'asc');
     }
 }

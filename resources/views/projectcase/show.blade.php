@@ -36,7 +36,7 @@
                     @if (count($SubCase->deliverables) > 0)
                         @foreach ($SubCase->deliverables as $deliverable)
                             <h5><i class="material-icons">assessment</i> {!!$deliverable->title!!}</h5>
-                        @endforeach   
+                        @endforeach
                     @endif
                     <hr>
                     <p>
@@ -46,6 +46,7 @@
                 </div>
                 {!!Form::open(['action' => ['SubCaseController@destroy', $SubCase->id], 'method' => 'POST', 'class', 'id' => $SubCase->id])!!}
                     <a href="/subcase/{{$SubCase->id}}/edit" class="btn">Edit</a>
+                    <a href="/planning/{{$SubCase->id}}" class="btn">Plan</a>
                     {{Form::hidden('_method', 'DELETE')}}
                     {{Form::submit('Delete', ['class' => 'btn red fak', 'id' => 'del'.$SubCase->id])}}
                 {!!Form::close()!!}
