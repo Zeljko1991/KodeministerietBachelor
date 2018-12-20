@@ -9,4 +9,8 @@ class Customer extends Model
     public function Address() {
         return $this->belongsTo('App\Models\Address');
     }
+
+    public function ProjectCase() {
+        return $this->belongsToMany('App\Models\ProjectCase');
+    }
 }

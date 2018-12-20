@@ -13,4 +13,8 @@ class ProjectCase extends Model
     public function CaseStatus() {
         return $this->belongsTo('App\Models\CaseStatus');
     }
+
+    public function Customer() {
+        return $this->belongsTo('App\Models\Customer');
+    }
 }

@@ -8,6 +8,7 @@ use App\Models\SubCase;
 use App\Models\Deliverable;
 use App\Models\CaseStatus;
 use DB;
+use App\Models\Customer;
 
 class ProjectCaseController extends Controller
 {
@@ -39,7 +40,8 @@ class ProjectCaseController extends Controller
     public function create()
     {
         $CaseStatus = CaseStatus::pluck('stage', 'id');
-        return view('/projectcase.create')->with('CaseStatus', $CaseStatus);
+        $Customers = Customer::pluck('firstName', 'id');
+        return view('/projectcase.create')->with(['CaseStatus' => $CaseStatus, 'Customers' => $Customers]);
     }
 
     /**

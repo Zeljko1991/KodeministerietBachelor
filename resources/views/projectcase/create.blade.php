@@ -4,6 +4,9 @@
 <div class="card">
     {!! Form::open(['action' => 'ProjectCaseController@store', 'method' => 'POST']) !!}
     <div class="card-content">
+        <div class="input-field col s12">
+            {{Form::select('customer', ['Name' => $Customers])}}
+        </div>
         <div class="input-field col s12 l6">
             {{Form::label('title', 'Title', ['for' => 'textinput1'])}}
             {{Form::text('title', '', ['class' => 'validate', 'id' => 'textinput1'])}}

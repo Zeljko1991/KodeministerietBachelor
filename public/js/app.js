@@ -1143,6 +1143,9 @@ $(document).ready(function () {
             }
         });
     });
+    $(document).ready(function () {
+        $('select').formSelect();
+    });
 
     //Adding fields
     var postURL = "<?php echo url('addmore'); ?>";
