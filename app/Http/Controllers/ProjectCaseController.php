@@ -130,4 +130,5 @@ class ProjectCaseController extends Controller
         $ProjectCase->delete();
         return redirect('/projectcase')->with('success', 'Case Removed');
     }
+
 }

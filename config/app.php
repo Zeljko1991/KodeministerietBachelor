@@ -177,6 +177,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //DOMPDF
+        Barryvdh\DomPDF\ServiceProvider::class,
+
     ],
 
     /*
@@ -230,6 +233,9 @@ return [
         //Laravel Collective Form Aliases
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+
+        //DOMPDF
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

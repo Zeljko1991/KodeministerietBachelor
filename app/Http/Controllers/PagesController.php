@@ -20,10 +20,10 @@ class PagesController extends Controller
             return view('/dashboard');
     }
 
-    public function billing() {
-        $title = 'Billing';
-        return view('billing.billing')->with('title', $title);
-    }
+    // public function billing() {
+    //     $title = 'Billing';
+    //     return view('billing.billing')->with('title', $title);
+    // }
 
     public function marketing() {
         $title = 'Marketing';

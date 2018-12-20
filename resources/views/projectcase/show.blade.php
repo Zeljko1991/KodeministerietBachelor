@@ -10,6 +10,7 @@
                 {!!Form::open(['action' => ['ProjectCaseController@destroy', $ProjectCase->id], 'method' => 'POST', 'class', 'id' => 'delcase'])!!}
                     <a href="/subcase/create/{{$ProjectCase->id}}" class="btn"><i class="left material-icons">add</i>Create Subcase</a>
                     <a href="/projectcase/{{$ProjectCase->id}}/edit" class="btn">Edit</a>
+                    <a href="/PDF/{{$ProjectCase->id}}" class="btn">Create Bill</a>
                     {{Form::hidden('_method', 'DELETE')}}
                     {{Form::submit('Delete', ['class' => 'btn red', 'onclick' => 'confirmDeleteCase(event)'])}}
                 {!!Form::close()!!}

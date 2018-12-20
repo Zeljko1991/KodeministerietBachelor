@@ -99,7 +99,9 @@ class SubCaseController extends Controller
         $CaseStatus = CaseStatus::pluck('stage', 'id');
         $SubCase = SubCase::find($id);
         $ProjectCase = $SubCase->ProjectCase;
-        return view('subcase.edit')->with(['SubCase' => $SubCase, 'ProjectCase' => $ProjectCase, 'CaseStatus' => $CaseStatus]);
+        return view('subcase.edit')->with([ 'SubCase'       => $SubCase,
+                                            'ProjectCase'   => $ProjectCase,
+                                            'CaseStatus'    => $CaseStatus]);
     }
 
     /**

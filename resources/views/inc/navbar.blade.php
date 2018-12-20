@@ -24,6 +24,7 @@
 </ul>
 <ul id="dropdown3" class="dropdown-content">
     <li><a href="/customer">Customers</a></li>
+    <li><a href="/billing">Billing</a></li>
 </ul>
 <nav>
     <div class="nav-wrapper valign-wrapper">

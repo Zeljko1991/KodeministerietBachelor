@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PDFController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,7 +16,6 @@
 
 Route::get('/', 'PagesController@index');
 
-Route::get('/billing', 'PagesController@billing');
 Route::get('/marketing', 'PagesController@marketing');
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('subcase/create/{id}', 'SubCaseController@create');
@@ -24,6 +25,9 @@ Auth::routes();
 Route::resource('/subcase', 'SubCaseController');
 Route::resource('/projectcase', 'ProjectCaseController');
 Route::resource('/customer', 'CustomerController');
+Route::resource('/billing', 'BillingController');
+
+Route::resource('/PDF', 'PDFController');
 
 //Mapping the plans
 Route::resource('/planning', 'PlanningController');
