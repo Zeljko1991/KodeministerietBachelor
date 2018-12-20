@@ -7,7 +7,13 @@
             <div class="row">
                 {!!Form::open(['action' => 'CustomerController@store', 'method' => 'POST', 'class' => 'col s12'])!!}
                 <div class="card-content">
-                    <span class="card-title">New</span>
+                    <span class="card-title">New Customer</span>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{Form::label('companyName', 'Company Name', ['for' => 'companyName'])}}
+                            {{Form::text('companyName', '', ['class' => 'validate', 'id' => 'companyName'])}}
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="input-field col s12 m6">
                             {{Form::label('firstName', 'First Name', ['for' => 'firstName'])}}
@@ -31,11 +37,13 @@
                     <div class="row">
                         <div class="input-field col s12 m6">
                             {{Form::label('EAN', 'EAN', ['for' => 'EAN'])}}
-                            {{Form::number('EAN', '', ['class' => 'validate', 'id' => 'EAN', 'data-length' => 14])}}
+                            {{Form::number('EAN', '', ['class' => 'validate', 'id' => 'EAN', 'data-length' => 13])}}
+                            <span class="helper-text" data-error="wrong" data-success="right">Input EAN or CVR</span>
                         </div>
                         <div class="input-field col s12 m6">
                             {{Form::label('CVR', 'CVR', ['for' => 'CVR'])}}
                             {{Form::number('CVR', '', ['class' => 'validate', 'id' => 'CVR', 'data-length' => 8])}}
+                            <span class="helper-text" data-error="wrong" data-success="right">Input EAN or CVR</span>
                         </div>
                     </div>
                     <div class="row">

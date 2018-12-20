@@ -27,4 +27,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function WorksOnSubCase() {
+        return $this->belongsToMany('App\Models\Subcase', 'subcase_user', 'user_id', 'subcase_id', 'hrs');
+    }
 }

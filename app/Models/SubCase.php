@@ -17,4 +17,8 @@ class SubCase extends Model
     public function Deliverables() {
         return $this->hasMany('App\Models\Deliverable')->orderBy('stage', 'asc')->orderBy('order', 'asc');
     }
+
+    public function UserWorksOn() {
+        return $this->belongsToMany('App\Models\User', 'subcase_user', 'subcase_id', 'user_id', 'hrs');
+    }
 }

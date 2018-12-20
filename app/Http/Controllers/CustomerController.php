@@ -50,6 +50,7 @@ class CustomerController extends Controller
     {
         // Validating that input fields are filled
         $this->validate($request, [
+            'companyName' => 'required',
             'firstName' => 'required',
             'lastName' => 'required',
             'eMail' => 'required',
@@ -71,7 +72,9 @@ class CustomerController extends Controller
         $Address->zipCode = $request->input('zipCode');
         $Address->country = $request->input('country');
         $Address->save();
+
         $Customer = new Customer;
+        $Customer->companyName = $request->input('companyName');
         $Customer->address_id = $Address->id;
         $Customer->firstName = $request->input('firstName');
         $Customer->lastName = $request->input('lastName');

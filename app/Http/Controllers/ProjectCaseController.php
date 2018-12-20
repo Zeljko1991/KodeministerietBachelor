@@ -40,7 +40,7 @@ class ProjectCaseController extends Controller
     public function create()
     {
         $CaseStatus = CaseStatus::pluck('stage', 'id');
-        $Customers = Customer::pluck('firstName', 'id');
+        $Customers = Customer::get()->pluck('full_name', 'id');
         return view('/projectcase.create')->with(['CaseStatus' => $CaseStatus, 'Customers' => $Customers]);
     }
 
@@ -55,7 +55,8 @@ class ProjectCaseController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'description' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'customer' => 'required'
         ]);
 
         // Create Case
@@ -63,6 +64,7 @@ class ProjectCaseController extends Controller
         $ProjectCase->title = $request->input('title');
         $ProjectCase->description = $request->input('description');
         $ProjectCase->case_status_id = $request->input('status');
+        $ProjectCase->customer_id = $request->input('customer');
         $ProjectCase->save();
 
         return redirect('/projectcase/'.$ProjectCase->id)->with('success', 'Case Created');

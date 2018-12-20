@@ -17,4 +17,8 @@ class ProjectCase extends Model
     public function Customer() {
         return $this->belongsTo('App\Models\Customer');
     }
+
+    public function CategorizedBy() {
+        return $this->belongsToMany('App\Models\Category', 'category_projectcase', 'projectcase_id', 'category_id');
+    }
 }

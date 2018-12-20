@@ -13,4 +13,8 @@ class Customer extends Model
     public function ProjectCase() {
         return $this->belongsToMany('App\Models\ProjectCase');
     }
+
+    public function getFullNameAttribute() {
+        return $this->firstName.' '.$this->lastName;
+    }
 }
