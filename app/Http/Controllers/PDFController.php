@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use PDF;
 use App\Models\SubCase;
 use App\Models\ProjectCase;
+use App\Models\Customer;
 
 
 class PDFController extends Controller
@@ -50,11 +51,13 @@ class PDFController extends Controller
     public function show($id)
     {
         $ProjectCase = ProjectCase::find($id);
-        $SubCases = SubCase::where('project_case_id', '=', $id)->where('case_status_id', '=', 4)->get();
-        $data = [   'ProjectCase' => $ProjectCase,
-                    'SubCases' => $SubCases
-                ];
-        $pdf = PDF::loadView('billing.pdf', $data);
+        // $SubCases = SubCase::where('project_case_id', '=', $id)->where('case_status_id', '=', 4)->get();
+        // $Customer = $ProjectCase->Customer->first();
+        // $data = [   'ProjectCase' => $ProjectCase,
+        //             'SubCases' => $SubCases,
+        //             'Customer' => $Customer
+        //          ];
+        $pdf = PDF::loadView('billing.pdf', ['ProjectCase' => $ProjectCase]);
         return $pdf->stream('billing.pdf');
     }
 
@@ -81,14 +84,5 @@ class PDFController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+
 }

@@ -22,6 +22,7 @@ Route::get('subcase/create/{id}', 'SubCaseController@create');
 
 Auth::routes();
 
+Route::post('/subcase/hrs/{id}', 'SubCaseController@hrs');
 Route::resource('/subcase', 'SubCaseController');
 Route::resource('/projectcase', 'ProjectCaseController');
 Route::resource('/customer', 'CustomerController');

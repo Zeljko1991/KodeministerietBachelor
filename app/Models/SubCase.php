@@ -19,6 +19,6 @@ class SubCase extends Model
     }
 
     public function UserWorksOn() {
-        return $this->belongsToMany('App\Models\User', 'subcase_user', 'subcase_id', 'user_id', 'hrs');
+        return $this->belongsToMany('App\Models\User', 'works_on', 'subcase_id', 'user_id')->withTimestamps()->withPivot('hrs');
     }
 }

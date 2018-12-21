@@ -51,6 +51,13 @@
                     {{Form::hidden('_method', 'DELETE')}}
                     {{Form::submit('Delete', ['class' => 'btn red fak', 'id' => 'del'.$SubCase->id])}}
                 {!!Form::close()!!}
+                {{Form::open(['action' => ['SubCaseController@hrs', $SubCase->id], 'method' => 'POST', 'class', 'id' => $SubCase->id])}}
+                    {{Form::label('hrs', 'Hrs Worked', ['for' => 'hrs'])}}
+                        <div class="input-field col s12 l6">
+                            {{Form::number('hrs', '', ['id' => 'hrs','class' => 'validate materialize-textarea'])}}
+                        </div>
+                        {{Form::submit('Submit', ['class' => 'btn btn-large'])}}
+                {{Form::close()}}
             </div>
         </li>
         @endforeach

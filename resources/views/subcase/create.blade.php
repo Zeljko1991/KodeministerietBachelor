@@ -19,7 +19,7 @@
                     <tr>
                        <td>{{Form::text('deliverable[]', '', ['class' => 'validate', 'id' => 'deliverable'])}}</td>
                        <td><button class="btn" name="add" id="add"><i class="material-icons left">add</i>More deliverables</button></td>
-                    </tr> 
+                    </tr>
                 </table>
                 {{Form::label('price', 'Price', ['for' => 'price'])}}
                 <div class="input-field col s12 l6">

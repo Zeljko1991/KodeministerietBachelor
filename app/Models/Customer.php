@@ -17,4 +17,5 @@ class Customer extends Model
     public function getFullNameAttribute() {
         return $this->firstName.' '.$this->lastName;
     }
+
 }

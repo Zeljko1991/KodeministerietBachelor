@@ -180,6 +180,7 @@ return [
         //DOMPDF
         Barryvdh\DomPDF\ServiceProvider::class,
 
+
     ],
 
     /*
@@ -236,6 +237,7 @@ return [
 
         //DOMPDF
         'PDF' => Barryvdh\DomPDF\Facade::class,
+
     ],
 
 ];

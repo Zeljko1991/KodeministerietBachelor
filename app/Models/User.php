@@ -29,6 +29,6 @@ class User extends Authenticatable
     ];
 
     public function WorksOnSubCase() {
-        return $this->belongsToMany('App\Models\Subcase', 'subcase_user', 'user_id', 'subcase_id', 'hrs');
+        return $this->belongsToMany('App\Models\Subcase', 'works_on', 'user_id', 'subcase_id')->withTimestamps()->withPivot('hrs');
     }
 }

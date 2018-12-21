@@ -8,6 +8,7 @@ use App\Models\SubCase;
 use App\Models\Deliverable;
 use App\Models\CaseStatus;
 use SebastianBergmann\Environment\Console;
+use Illuminate\Support\Facades\Auth;
 
 class SubCaseController extends Controller
 {
@@ -165,4 +166,18 @@ class SubCaseController extends Controller
         $SubCase->delete();
         return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase removed');
     }
+
+    /**
+     * Store employee hrs on subcase.
+     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+     public function hrs($id, Request $request)
+     {
+        $SubCase = SubCase::find($id);
+        $User = Auth::user();
+        $User->WorksOnSubCase()->attach($SubCase->id, ['user_id' => $User->id, 'hrs' => $request->hrs]);
+        return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Hours added');
+     }
 }
