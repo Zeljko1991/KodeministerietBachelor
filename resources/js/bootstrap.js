@@ -12,6 +12,7 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('materialize-css');
+    require('vuetify/dist/vuetify.min.css');
 } catch (e) {}
 
 /**

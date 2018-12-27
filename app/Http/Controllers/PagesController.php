@@ -17,7 +17,7 @@ class PagesController extends Controller
     }
 
     public function index() {
-            return view('/dashboard');
+            return redirect('/dashboard');
     }
 
     // public function billing() {

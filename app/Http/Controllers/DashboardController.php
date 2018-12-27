@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ProjectCase;
 
 class DashboardController extends Controller
 {
@@ -23,6 +24,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $ProjectCase = ProjectCase::all(); 
+        return view('dashboard')->with(['ProjectCase' => $ProjectCase]);
     }
 }

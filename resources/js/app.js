@@ -8,8 +8,10 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.Vuetify = require('vuetify');
 window.swal = require('sweetalert2');
 
+Vue.use(Vuetify);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -20,6 +22,8 @@ window.swal = require('sweetalert2');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('kanban-board', require('./components/KanbanBoard.vue'));
+Vue.component('dashboard-wrap', require('./components/DashboardWrap.vue'));
+Vue.component('case-statistics', require('./components/CaseStatistics.vue'));
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
