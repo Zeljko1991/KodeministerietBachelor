@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <dashboard-wrap :projectcase="{{$ProjectCase}}"></dashboard-wrap>
+    <dashboard-wrap :project-case="{{$ProjectCase}}"></dashboard-wrap>
 @endsection

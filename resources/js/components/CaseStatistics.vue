@@ -1,5 +1,7 @@
 <template>
-    <h1>Hej</h1>
+    <v-card>
+        <h1 v-for="(item, index) in ProjectCase" :key="item.id">{{item.title}}</h1>
+    </v-card>
 </template>
 
 <script>

@@ -84563,8 +84563,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
         return {
-            ProjectCaseNew: this.ProjectCase,
-            valueDeterminate: 50
+            ProjectCaseNew: this.ProjectCase
         };
     }
 });
@@ -84575,6 +84574,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -84598,7 +84599,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", [_vm._v("Hej")])
+  return _c(
+    "v-card",
+    _vm._l(_vm.ProjectCase, function(item, index) {
+      return _c("h1", { key: item.id }, [_vm._v(_vm._s(item.title))])
+    })
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
