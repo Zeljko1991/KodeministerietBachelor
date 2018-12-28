@@ -1,5 +1,4 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/node_modules/materialize-css/sass/components/_variables.scss": "/node_modules/materialize-css/sass/components/_variables.scss"
+    "/css/app.css": "/css/app.css"
 }

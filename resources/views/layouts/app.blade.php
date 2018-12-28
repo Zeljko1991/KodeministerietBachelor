@@ -9,13 +9,31 @@
         <title>{{config('app.name', 'Kodeministeriet')}}</title>
     </head>
     <body class="@guest background-image @endif">
-        @include('inc.navbar')
             <div id="app">
-            <div class="container">
-                @yield('content')
+                <v-app id="inspire">
+                    <v-navigation-drawer clipped fixed v-model="drawer" app>
+                        <site-nav></site-nav>
+                    </v-navigation-drawer>
+                        <!--KEEP THIS-->
+                        <v-content>
+                            <v-container fluid fill-height>
+                                <v-layout>
+                                    <v-flex text-xs-center>
+                                    @yield('content')
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-content>
+                    
+                    <v-toolbar color="indigo" dark fixed app clipped-left>
+                            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+                            <v-toolbar-title>Kodeministeriet</v-toolbar-title>
+                    </v-toolbar>
+                    <v-footer color="indigo" app inset>
+                        <span class="white--text">Kodeministeriet&copy; 2017</span>
+                    </v-footer>
+                </v-app>
             </div>
-        </div>
-
         <script type="text/javascript" src="{!! asset('js/app.js') !!}"></script>
 
         <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>

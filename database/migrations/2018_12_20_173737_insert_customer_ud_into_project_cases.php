@@ -15,7 +15,7 @@ class InsertCustomerUdIntoProjectCases extends Migration
     {
         Schema::table('project_cases', function (Blueprint $table) {
             $table->unsignedInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 

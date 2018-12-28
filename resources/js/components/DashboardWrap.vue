@@ -5,6 +5,7 @@
 <script>
 import draggable from 'vuedraggable'
 import CaseStatistics from './CaseStatistics'
+
 export default {
     components: {
         draggable,

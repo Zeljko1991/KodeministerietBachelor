@@ -18,6 +18,7 @@ class CustomerController extends Controller
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +27,7 @@ class CustomerController extends Controller
     public function index()
     {
         // Getting Customer from the Customer Model and ordering entries by id and ascending
-        $Customers = Customer::orderBy('id', 'asc')->paginate(10);
+        $Customers = Customer::orderBy('id', 'asc')->with('Address')->get();
         return view('/customer.index')->with('Customers', $Customers);
     }
 
@@ -49,42 +50,63 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         // Validating that input fields are filled
-        $this->validate($request, [
-            'companyName' => 'required',
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'eMail' => 'required',
-            'phoneNumber' => 'required',
-            'EAN' => 'required_without:CVR',
-            'CVR' => 'required_without:EAN',
-            'zipCode' => 'required',
-            'city' => 'required',
-            'street' => 'required',
-            'streetNumber' => 'required',
-            'country' => 'required',
-            ]);
+        // $this->validate($request, [
+        //     'companyName' => 'required',
+        //     'firstName' => 'required',
+        //     'lastName' => 'required',
+        //     'eMail' => 'required',
+        //     'phoneNumber' => 'required',
+        //     'EAN' => 'required_without:CVR',
+        //     'CVR' => 'required_without:EAN',
+        //     'zipCode' => 'required',
+        //     'city' => 'required',
+        //     'street' => 'required',
+        //     'streetNumber' => 'required',
+        //     'country' => 'required',
+        //     ]);
 
         // Create Customer
+        // $Address = new Address;
+        // $Address->streetNumber = $request->input('streetNumber');
+        // $Address->city = $request->input('city');
+        // $Address->street = $request->input('street');
+        // $Address->zipCode = $request->input('zipCode');
+        // $Address->country = $request->input('country');
+        // $Address->save();
+
+        // $Customer = new Customer;
+        // $Customer->companyName = $request->input('companyName');
+        // $Customer->address_id = $Address->id;
+        // $Customer->firstName = $request->input('firstName');
+        // $Customer->lastName = $request->input('lastName');
+        // $Customer->eMail = $request->input('eMail');
+        // $Customer->phoneNumber = $request->input('phoneNumber');
+        // $Customer->EAN = $request->input('EAN');
+        // $Customer->CVR = $request->input('CVR');
+        // $Customer->save();
+
+        // return redirect('/customer')->with('success', 'Customer Created');
+        $decode = $request->json()->all();
         $Address = new Address;
-        $Address->streetNumber = $request->input('streetNumber');
-        $Address->city = $request->input('city');
-        $Address->street = $request->input('street');
-        $Address->zipCode = $request->input('zipCode');
-        $Address->country = $request->input('country');
+        $Address->streetNumber = $decode['editedCustomer']['address']['streetNumber'];
+        $Address->city = $decode['editedCustomer']['address']['city'];
+        $Address->street = $decode['editedCustomer']['address']['street'];
+        $Address->zipCode = $decode['editedCustomer']['address']['zipCode'];
+        $Address->country = $decode['editedCustomer']['address']['country'];
         $Address->save();
-
         $Customer = new Customer;
-        $Customer->companyName = $request->input('companyName');
+        $Customer->companyName = $decode['editedCustomer']['companyName'];
+        $Customer->firstName = $decode['editedCustomer']['firstName'];
+        $Customer->lastName = $decode['editedCustomer']['lastName'];
+        $Customer->eMail = $decode['editedCustomer']['eMail'];
+        $Customer->phoneNumber = $decode['editedCustomer']['phoneNumber'];
+        $Customer->EAN = $decode['editedCustomer']['EAN'];
+        $Customer->CVR = $decode['editedCustomer']['CVR'];
         $Customer->address_id = $Address->id;
-        $Customer->firstName = $request->input('firstName');
-        $Customer->lastName = $request->input('lastName');
-        $Customer->eMail = $request->input('eMail');
-        $Customer->phoneNumber = $request->input('phoneNumber');
-        $Customer->EAN = $request->input('EAN');
-        $Customer->CVR = $request->input('CVR');
         $Customer->save();
+        
 
-        return redirect('/customer')->with('success', 'Customer Created');
+        return response('Success!', 200);
     }
 
     /**
@@ -121,42 +143,26 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-           // Validating that input fields are filled
-           $this->validate($request, [
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'eMail' => 'required',
-            'phoneNumber' => 'required',
-            'EAN' => 'required_without:CVR',
-            'CVR' => 'required_without:EAN',
-            'zipCode' => 'required',
-            'city' => 'required',
-            'street' => 'required',
-            'streetNumber' => 'required',
-            'country' => 'required',
-            ]);
-
-        // Create Customer
-        $Customer = Customer::find($id);
-        $Customer->firstName = $request->input('firstName');
-        $Customer->lastName = $request->input('lastName');
-        $Customer->eMail = $request->input('eMail');
-        $Customer->phoneNumber = $request->input('phoneNumber');
-        $Customer->EAN = $request->input('EAN');
-        $Customer->CVR = $request->input('CVR');
+        $decode = $request->json()->all();
+        $Customer = Customer::findOrFail($id);
+        $Customer->companyName = $decode['editedCustomer']['companyName'];
+        $Customer->firstName = $decode['editedCustomer']['firstName'];
+        $Customer->lastName = $decode['editedCustomer']['lastName'];
+        $Customer->eMail = $decode['editedCustomer']['eMail'];
+        $Customer->phoneNumber = $decode['editedCustomer']['phoneNumber'];
+        $Customer->EAN = $decode['editedCustomer']['EAN'];
+        $Customer->CVR = $decode['editedCustomer']['CVR'];
         $Customer->save();
         $Address = Address::find($Customer->address_id);
-        $Address->streetNumber = $request->input('streetNumber');
-        $Address->city = $request->input('city');
-        $Address->street = $request->input('street');
-        $Address->zipCode = $request->input('zipCode');
-        $Address->country = $request->input('country');
+        $Address->streetNumber = $decode['editedCustomer']['address']['streetNumber'];
+        $Address->city = $decode['editedCustomer']['address']['city'];
+        $Address->street = $decode['editedCustomer']['address']['street'];
+        $Address->zipCode = $decode['editedCustomer']['address']['zipCode'];
+        $Address->country = $decode['editedCustomer']['address']['country'];
         $Address->save();
 
-        // Returns view to customer.show (old view)
-        // return redirect('/customer/'.$Customer->id)->with('success', 'Customer Updated');
 
-        return redirect('/customer')->with('success', 'Customer Updated');
+        return response('Update Successful.', 200);
     }
 
     /**
@@ -169,6 +175,18 @@ class CustomerController extends Controller
     {
         $Customer = Customer::find($id);
         $Customer->delete();
-        return redirect('/customer')->with('success', 'Customer Deleted');
+        return response('Deleted customer.', 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function read()
+    {
+        // Getting Customer from the Customer Model and ordering entries by id and ascending
+        $Customers = Customer::orderBy('id', 'asc')->with('Address')->get();
+        return array($Customers);
     }
 }

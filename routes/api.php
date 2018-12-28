@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\Resource;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::resource('/customer', 'CustomerController', [
+    'except' => ['edit', 'show']
+]);

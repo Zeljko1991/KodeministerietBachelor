@@ -13,5 +13,5 @@ export default {
             ProjectCaseNew: this.ProjectCase
         }
     }
-}
+} 
 </script>

@@ -19,6 +19,8 @@ Route::get('/', 'PagesController@index');
 Route::get('/marketing', 'PagesController@marketing');
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('subcase/create/{id}', 'SubCaseController@create');
+Route::get('/customer/read', 'CustomerController@read');
+//Route::delete('/customer/{id}', 'CustomerController@destroy');
 
 Auth::routes();
 
@@ -26,7 +28,7 @@ Route::post('/subcase/hrs/{id}', 'SubCaseController@hrs');
 Route::resource('/subcase', 'SubCaseController');
 Route::resource('/projectcase', 'ProjectCaseController');
 Route::resource('/customer', 'CustomerController');
-Route::resource('/billing', 'BillingController');
+
 
 Route::resource('/PDF', 'PDFController');
 

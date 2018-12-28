@@ -11,7 +11,7 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
 
-    require('materialize-css');
+    //require('materialize-css');
     require('vuetify/dist/vuetify.min.css');
 } catch (e) {}
 
