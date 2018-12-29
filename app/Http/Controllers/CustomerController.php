@@ -27,7 +27,7 @@ class CustomerController extends Controller
     public function index()
     {
         // Getting Customer from the Customer Model and ordering entries by id and ascending
-        $Customers = Customer::orderBy('id', 'asc')->with('Address')->get();
+        $Customers = Customer::orderBy('id', 'asc')->with('Address')->with('ProjectCase')->get();
         return view('/customer.index')->with('Customers', $Customers);
     }
 

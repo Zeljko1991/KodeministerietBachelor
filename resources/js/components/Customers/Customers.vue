@@ -5,7 +5,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="600px">
           <v-btn slot="activator" color="primary" dark class="mb-2">New Customer</v-btn>
-         <v-form>
+         <v-form ref="form" v-model="valid" lazy-validation>
             <v-card>
                 <v-card-title>
                     <span class="headline">{{ formTitle }}</span>
@@ -15,25 +15,28 @@
                     <v-container grid-list-md>  
                         <v-layout wrap>
                             <v-flex xs12>
-                                <v-text-field v-model="editedCustomer.companyName" label="Company" required :rules="editCustomer.companyNameRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.companyName" label="Company" required :rules="rules.companyNameRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.firstName" label="First Name" required></v-text-field>
+                                <v-text-field v-model="editedCustomer.firstName" label="First Name" required :rules="rules.firstNameRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.lastName" label="Surname" required></v-text-field>
+                                <v-text-field v-model="editedCustomer.lastName" label="Surname" required :rules="rules.lastNameRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.eMail" label="Email address" required></v-text-field>
+                                <v-text-field v-model="editedCustomer.eMail" label="Email address" required :rules="rules.emailRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.phoneNumber" label="Phone Number" required :counter="8"></v-text-field>
+                                <v-text-field v-model="editedCustomer.phoneNumber" label="Phone Number" required :counter="8" :rules="rules.phoneNumberRules"></v-text-field>
                             </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.CVR" label="CVR" required :counter="8"></v-text-field>
+                            <v-flex xs12 sm6 d-flex>
+                                <v-select :items="CVR" v-model="CVRVal" label="EAN or CVR?" ></v-select>
                             </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.EAN" label="EAN" required :counter="13"></v-text-field>
+                            <v-flex xs12 sm6 v-if="EANorCVR === 'CVR'">
+                                <v-text-field v-model="editedCustomer.CVR" label="CVR" required :counter="8" :rules="rules.CVRRules"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 v-if="EANorCVR === 'EAN'">
+                                <v-text-field v-model="editedCustomer.EAN" label="EAN" required :counter="13" :rules="rules.EANRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
                                 <v-text-field v-model="editedCustomer.address.street" label="Street" required></v-text-field>
@@ -66,22 +69,42 @@
             <v-card-title>
                 <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
             </v-card-title>
-            <v-data-table :headers="headers" :items="customersNew" item-key="index" :search="search">
+            <v-data-table :headers="headers" :items="customersNew" :search="search">
                 <template slot="items" slot-scope="props">
-                    <td class="text-xs-left">{{props.item.companyName}}</td>
-                    <td class="text-xs-left">{{props.item.firstName}}</td>
-                    <td class="text-xs-left">{{props.item.lastName}}</td>
-                    <td class="text-xs-left">{{props.item.eMail}}</td>
-                    <td class="text-xs-left">{{props.item.phoneNumber}}</td>
-                    <td class="text-xs-left">{{props.item.CVR}}</td>
-                    <td class="text-xs-left">{{props.item.EAN}}</td>
-                    <td class="text-xs-left">{{props.item.address.street}} {{props.item.address.streetNumber}}</td>
-                    <td class="text-xs-left">{{props.item.address.city}}</td>
-                    <td class="text-xs-left">{{props.item.address.zipCode}}</td>
-                    <td class="justify-center layout px-0">
-                        <v-icon small class="mr-2" @click="editCustomer(props.item)">edit</v-icon>
-                        <v-icon small @click="deleteCustomer(props.item)">delete</v-icon>
-                    </td>
+                    <tr @click="props.expanded = !props.expanded">
+                        <td class="text-xs-left">{{props.item.companyName}}</td>
+                        <td class="text-xs-left">{{props.item.firstName}}</td>
+                        <td class="text-xs-left">{{props.item.lastName}}</td>
+                        <td class="text-xs-left">{{props.item.eMail}}</td>
+                        <td class="text-xs-left">{{props.item.phoneNumber}}</td>
+                        <td class="text-xs-left">{{props.item.CVR}}</td>
+                        <td class="text-xs-left">{{props.item.EAN}}</td>
+                        <td class="text-xs-left">{{props.item.address.street}} {{props.item.address.streetNumber}}</td>
+                        <td class="text-xs-left">{{props.item.address.city}}</td>
+                        <td class="text-xs-left">{{props.item.address.zipCode}}</td>
+                        <td class="justify-center layout px-0">
+                            <v-icon small class="mr-2" @click="editCustomer(props.item)">edit</v-icon>
+                            <v-icon small @click="deleteCustomer(props.item)">delete</v-icon>
+                        </td>
+                    </tr>
+                </template>
+                <template slot="expand" slot-scope="props">
+                    <v-container fluid grid-list-lg>
+                        <v-layout row wrap>
+                            <v-flex xs12 sm6 md4 v-for="(ProjectCase, index) in props.item.project_case" :key="index">
+                                <v-card light class="ma-1" height="100%">
+                                    <v-card-title primary-title>
+                                        <div class="headline">{{ProjectCase.title}}</div>  
+                                        <v-spacer></v-spacer>  
+                                        <v-btn flat :href="'/projectcase/'+ProjectCase.id">Go to case</v-btn>
+                                    </v-card-title>
+                                    <v-card-text grow class="grow">
+                                        <p  height="100%">{{ProjectCase.description}}</p>
+                                    </v-card-text>
+                                </v-card>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
                 </template>
             </v-data-table>
         </v-card>
@@ -97,6 +120,7 @@ export default {
     data () {
         return {
             dialog: false,
+            valid: true,
             search:'',
             headers: [
                 {
@@ -146,13 +170,14 @@ export default {
                 sortable: false
             }],
             customersNew: this.customers,
+            CVRVal: 'CVR',
+            CVR: [
+                'CVR', 
+                'EAN'
+            ],
             editedIndex: -1,
             editedCustomer: {
                 companyName: '',
-                companyNameRules: [
-                    v => !!v || 'The Company name is required',
-                    v => (v && v.length <= 10) || 'Company name must work'
-                ],
                 firstName: '',
                 lastName: '',
                 eMail: '',
@@ -182,13 +207,53 @@ export default {
                     zipCode: '',
                     country: ''
                 }
+            },
+            rules: {
+                companyNameRules: [
+                    v => !!v || 'The Company name is required',
+                    v => (v && v.length > 1) || 'Company name must be longer than one symbol'
+                ],
+                firstNameRules: [
+                    v => !!v || 'First name is required',
+                    v => (v && v.length > 1) || 'First name must be longer than one symbol'
+                ],
+                lastNameRules: [
+                    v => !!v || 'Surname is required',
+                    v => (v && v.length > 1) || 'Surname must be longer than one symbol'
+                ],
+                emailRules: [
+                    v => !!v || 'Email is required',
+                    v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+                ],
+                phoneNumberRules: [
+                    v => !!v || 'Phone number is required',
+                    v => (v && v.length >= 8) || 'Phone number must be 8 digits',
+                    v => (v && v.length <= 8) || 'Phone number must be 8 digits',
+                    v => (v && !isNaN(v)) || 'Phone number must be a number',     
+                ],
+                CVRRules: [
+                    v => !!v || 'CVR or EAN is required',
+                    v => (v && v.length >= 8) || 'CVR must be 8 digits',
+                    v => (v && v.length <= 8) || 'CVR must be 8 digits',
+                    v => (v && !isNaN(v)) || 'CVR must be a number', 
+                ],
+                EANRules: [
+                    v => !!v || 'CVR or EAN is required',
+                    v => (v && v.length >= 13) || 'EAN must be 13 digits',
+                    v => (v && v.length <= 13) || 'EAN must be 13 digits',
+                    v => (v && !isNaN(v)) || 'EAN must be a number',
+                ]
             },  
-        }},
+        }
+    },
             
             computed: {
                 formTitle () {
                     return this.editedIndex === -1 ? 'New Customer' : 'Edit Customer'
                 },
+                EANorCVR() {
+                    return this.CVRVal === 'CVR' ? 'CVR' : 'EAN'
+                }
             },
 
             watch: {
@@ -199,8 +264,14 @@ export default {
 
             methods: {
                 editCustomer(item) {
+                    this.clear()
                     this.editedIndex = this.customersNew.indexOf(item)
                     this.editedCustomer = Object.assign(item)
+                    if(this.editedCustomer.CVR !== null) {
+                        this.CVRVal = 'CVR'
+                    } else {
+                        this.CVRVal = 'EAN'
+                    }
                     this.dialog = true
                 },
                 deleteCustomer(item) {
@@ -218,27 +289,33 @@ export default {
                     this.read()
                 },
                 save () {
-                    if (this.editedIndex > -1) {
-                        Object.assign(this.customersNew[this.editedIndex], this.editedCustomer)
-                        axios.put('/customer/' + this.customersNew[this.editedIndex].id, {
-                            editedCustomer: this.editedCustomer,
-                        }).then((response) => {
-                            //response
-                        })
-                    } else {
-                        //this.customers.push(this.editedCustomer)
-                        axios.post('/customer', {
-                            editedCustomer: this.editedCustomer
-                        }).then((response) => {
-                            //response
-                        })
+                    if (this.$refs.form.validate()){
+                        if (this.editedIndex > -1) {
+                            Object.assign(this.customersNew[this.editedIndex], this.editedCustomer)
+                            axios.put('/customer/' + this.customersNew[this.editedIndex].id, {
+                                editedCustomer: this.editedCustomer,
+                            }).then((response) => {
+                                
+                            })
+                        } else {
+                            //this.customers.push(this.editedCustomer)
+                            axios.post('/customer', {
+                                editedCustomer: this.editedCustomer
+                            }).then((response) => {
+                                
+                            })
+                        }
+                        this.close()
                     }
-                    this.close()
+                    
                 },
                 read() {
                     axios.get('/customer/read').then(({data}) => {
                         this.customersNew = data[0]
                     });
+                },
+                clear() {
+                    this.$refs.form.reset()
                 }
             }
         }

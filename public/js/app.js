@@ -73550,6 +73550,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -73559,6 +73582,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             dialog: false,
+            valid: true,
             search: '',
             headers: [{
                 text: 'Company',
@@ -73607,14 +73631,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 sortable: false
             }],
             customersNew: this.customers,
+            CVRVal: 'CVR',
+            CVR: ['CVR', 'EAN'],
             editedIndex: -1,
             editedCustomer: {
                 companyName: '',
-                companyNameRules: [function (v) {
-                    return !!v || 'The Company name is required';
-                }, function (v) {
-                    return v && v.length <= 10 || 'Company name must work';
-                }],
                 firstName: '',
                 lastName: '',
                 eMail: '',
@@ -73644,6 +73665,56 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     zipCode: '',
                     country: ''
                 }
+            },
+            rules: {
+                companyNameRules: [function (v) {
+                    return !!v || 'The Company name is required';
+                }, function (v) {
+                    return v && v.length > 1 || 'Company name must be longer than one symbol';
+                }],
+                firstNameRules: [function (v) {
+                    return !!v || 'First name is required';
+                }, function (v) {
+                    return v && v.length > 1 || 'First name must be longer than one symbol';
+                }],
+                lastNameRules: [function (v) {
+                    return !!v || 'Surname is required';
+                }, function (v) {
+                    return v && v.length > 1 || 'Surname must be longer than one symbol';
+                }],
+                emailRules: [function (v) {
+                    return !!v || 'Email is required';
+                }, function (v) {
+                    return (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+                    );
+                }],
+                phoneNumberRules: [function (v) {
+                    return !!v || 'Phone number is required';
+                }, function (v) {
+                    return v && v.length >= 8 || 'Phone number must be 8 digits';
+                }, function (v) {
+                    return v && v.length <= 8 || 'Phone number must be 8 digits';
+                }, function (v) {
+                    return v && !isNaN(v) || 'Phone number must be a number';
+                }],
+                CVRRules: [function (v) {
+                    return !!v || 'CVR or EAN is required';
+                }, function (v) {
+                    return v && v.length >= 8 || 'CVR must be 8 digits';
+                }, function (v) {
+                    return v && v.length <= 8 || 'CVR must be 8 digits';
+                }, function (v) {
+                    return v && !isNaN(v) || 'CVR must be a number';
+                }],
+                EANRules: [function (v) {
+                    return !!v || 'CVR or EAN is required';
+                }, function (v) {
+                    return v && v.length >= 13 || 'EAN must be 13 digits';
+                }, function (v) {
+                    return v && v.length <= 13 || 'EAN must be 13 digits';
+                }, function (v) {
+                    return v && !isNaN(v) || 'EAN must be a number';
+                }]
             }
         };
     },
@@ -73652,6 +73723,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         formTitle: function formTitle() {
             return this.editedIndex === -1 ? 'New Customer' : 'Edit Customer';
+        },
+        EANorCVR: function EANorCVR() {
+            return this.CVRVal === 'CVR' ? 'CVR' : 'EAN';
         }
     },
 
@@ -73663,8 +73737,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         editCustomer: function editCustomer(item) {
+            this.clear();
             this.editedIndex = this.customersNew.indexOf(item);
             this.editedCustomer = Object.assign(item);
+            if (this.editedCustomer.CVR !== null) {
+                this.CVRVal = 'CVR';
+            } else {
+                this.CVRVal = 'EAN';
+            }
             this.dialog = true;
         },
         deleteCustomer: function deleteCustomer(item) {
@@ -73686,22 +73766,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.read();
         },
         save: function save() {
-            if (this.editedIndex > -1) {
-                Object.assign(this.customersNew[this.editedIndex], this.editedCustomer);
-                axios.put('/customer/' + this.customersNew[this.editedIndex].id, {
-                    editedCustomer: this.editedCustomer
-                }).then(function (response) {
-                    //response
-                });
-            } else {
-                //this.customers.push(this.editedCustomer)
-                axios.post('/customer', {
-                    editedCustomer: this.editedCustomer
-                }).then(function (response) {
-                    //response
-                });
+            if (this.$refs.form.validate()) {
+                if (this.editedIndex > -1) {
+                    Object.assign(this.customersNew[this.editedIndex], this.editedCustomer);
+                    axios.put('/customer/' + this.customersNew[this.editedIndex].id, {
+                        editedCustomer: this.editedCustomer
+                    }).then(function (response) {});
+                } else {
+                    //this.customers.push(this.editedCustomer)
+                    axios.post('/customer', {
+                        editedCustomer: this.editedCustomer
+                    }).then(function (response) {});
+                }
+                this.close();
             }
-            this.close();
         },
         read: function read() {
             var _this3 = this;
@@ -73711,6 +73789,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 _this3.customersNew = data[0];
             });
+        },
+        clear: function clear() {
+            this.$refs.form.reset();
         }
     }
 });
@@ -74523,6 +74604,17 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-form",
+                {
+                  ref: "form",
+                  attrs: { "lazy-validation": "" },
+                  model: {
+                    value: _vm.valid,
+                    callback: function($$v) {
+                      _vm.valid = $$v
+                    },
+                    expression: "valid"
+                  }
+                },
                 [
                   _c(
                     "v-card",
@@ -74552,8 +74644,7 @@ var render = function() {
                                         attrs: {
                                           label: "Company",
                                           required: "",
-                                          rules:
-                                            _vm.editCustomer.companyNameRules
+                                          rules: _vm.rules.companyNameRules
                                         },
                                         model: {
                                           value: _vm.editedCustomer.companyName,
@@ -74579,7 +74670,8 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: {
                                           label: "First Name",
-                                          required: ""
+                                          required: "",
+                                          rules: _vm.rules.firstNameRules
                                         },
                                         model: {
                                           value: _vm.editedCustomer.firstName,
@@ -74604,7 +74696,8 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: {
                                           label: "Surname",
-                                          required: ""
+                                          required: "",
+                                          rules: _vm.rules.lastNameRules
                                         },
                                         model: {
                                           value: _vm.editedCustomer.lastName,
@@ -74629,7 +74722,8 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: {
                                           label: "Email address",
-                                          required: ""
+                                          required: "",
+                                          rules: _vm.rules.emailRules
                                         },
                                         model: {
                                           value: _vm.editedCustomer.eMail,
@@ -74655,7 +74749,8 @@ var render = function() {
                                         attrs: {
                                           label: "Phone Number",
                                           required: "",
-                                          counter: 8
+                                          counter: 8,
+                                          rules: _vm.rules.phoneNumberRules
                                         },
                                         model: {
                                           value: _vm.editedCustomer.phoneNumber,
@@ -74676,55 +74771,84 @@ var render = function() {
                                   _vm._v(" "),
                                   _c(
                                     "v-flex",
-                                    { attrs: { xs12: "", sm6: "" } },
+                                    {
+                                      attrs: { xs12: "", sm6: "", "d-flex": "" }
+                                    },
                                     [
-                                      _c("v-text-field", {
+                                      _c("v-select", {
                                         attrs: {
-                                          label: "CVR",
-                                          required: "",
-                                          counter: 8
+                                          items: _vm.CVR,
+                                          label: "EAN or CVR?"
                                         },
                                         model: {
-                                          value: _vm.editedCustomer.CVR,
+                                          value: _vm.CVRVal,
                                           callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedCustomer,
-                                              "CVR",
-                                              $$v
-                                            )
+                                            _vm.CVRVal = $$v
                                           },
-                                          expression: "editedCustomer.CVR"
+                                          expression: "CVRVal"
                                         }
                                       })
                                     ],
                                     1
                                   ),
                                   _vm._v(" "),
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "", sm6: "" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: {
-                                          label: "EAN",
-                                          required: "",
-                                          counter: 13
-                                        },
-                                        model: {
-                                          value: _vm.editedCustomer.EAN,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedCustomer,
-                                              "EAN",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "editedCustomer.EAN"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
+                                  _vm.EANorCVR === "CVR"
+                                    ? _c(
+                                        "v-flex",
+                                        { attrs: { xs12: "", sm6: "" } },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "CVR",
+                                              required: "",
+                                              counter: 8,
+                                              rules: _vm.rules.CVRRules
+                                            },
+                                            model: {
+                                              value: _vm.editedCustomer.CVR,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.editedCustomer,
+                                                  "CVR",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "editedCustomer.CVR"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.EANorCVR === "EAN"
+                                    ? _c(
+                                        "v-flex",
+                                        { attrs: { xs12: "", sm6: "" } },
+                                        [
+                                          _c("v-text-field", {
+                                            attrs: {
+                                              label: "EAN",
+                                              required: "",
+                                              counter: 13,
+                                              rules: _vm.rules.EANRules
+                                            },
+                                            model: {
+                                              value: _vm.editedCustomer.EAN,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.editedCustomer,
+                                                  "EAN",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "editedCustomer.EAN"
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e(),
                                   _vm._v(" "),
                                   _c(
                                     "v-flex",
@@ -74940,7 +75064,6 @@ var render = function() {
             attrs: {
               headers: _vm.headers,
               items: _vm.customersNew,
-              "item-key": "index",
               search: _vm.search
             },
             scopedSlots: _vm._u([
@@ -74948,79 +75071,173 @@ var render = function() {
                 key: "items",
                 fn: function(props) {
                   return [
-                    _c("td", { staticClass: "text-xs-left" }, [
-                      _vm._v(_vm._s(props.item.companyName))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-xs-left" }, [
-                      _vm._v(_vm._s(props.item.firstName))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-xs-left" }, [
-                      _vm._v(_vm._s(props.item.lastName))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-xs-left" }, [
-                      _vm._v(_vm._s(props.item.eMail))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-xs-left" }, [
-                      _vm._v(_vm._s(props.item.phoneNumber))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-xs-left" }, [
-                      _vm._v(_vm._s(props.item.CVR))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-xs-left" }, [
-                      _vm._v(_vm._s(props.item.EAN))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-xs-left" }, [
-                      _vm._v(
-                        _vm._s(props.item.address.street) +
-                          " " +
-                          _vm._s(props.item.address.streetNumber)
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-xs-left" }, [
-                      _vm._v(_vm._s(props.item.address.city))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-xs-left" }, [
-                      _vm._v(_vm._s(props.item.address.zipCode))
-                    ]),
-                    _vm._v(" "),
                     _c(
-                      "td",
-                      { staticClass: "justify-center layout px-0" },
+                      "tr",
+                      {
+                        on: {
+                          click: function($event) {
+                            props.expanded = !props.expanded
+                          }
+                        }
+                      },
                       [
-                        _c(
-                          "v-icon",
-                          {
-                            staticClass: "mr-2",
-                            attrs: { small: "" },
-                            on: {
-                              click: function($event) {
-                                _vm.editCustomer(props.item)
-                              }
-                            }
-                          },
-                          [_vm._v("edit")]
-                        ),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.companyName))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.firstName))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.lastName))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.eMail))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.phoneNumber))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.CVR))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.EAN))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(
+                            _vm._s(props.item.address.street) +
+                              " " +
+                              _vm._s(props.item.address.streetNumber)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.address.city))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.address.zipCode))
+                        ]),
                         _vm._v(" "),
                         _c(
-                          "v-icon",
-                          {
-                            attrs: { small: "" },
-                            on: {
-                              click: function($event) {
-                                _vm.deleteCustomer(props.item)
-                              }
-                            }
-                          },
-                          [_vm._v("delete")]
+                          "td",
+                          { staticClass: "justify-center layout px-0" },
+                          [
+                            _c(
+                              "v-icon",
+                              {
+                                staticClass: "mr-2",
+                                attrs: { small: "" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.editCustomer(props.item)
+                                  }
+                                }
+                              },
+                              [_vm._v("edit")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-icon",
+                              {
+                                attrs: { small: "" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.deleteCustomer(props.item)
+                                  }
+                                }
+                              },
+                              [_vm._v("delete")]
+                            )
+                          ],
+                          1
+                        )
+                      ]
+                    )
+                  ]
+                }
+              },
+              {
+                key: "expand",
+                fn: function(props) {
+                  return [
+                    _c(
+                      "v-container",
+                      { attrs: { fluid: "", "grid-list-lg": "" } },
+                      [
+                        _c(
+                          "v-layout",
+                          { attrs: { row: "", wrap: "" } },
+                          _vm._l(props.item.project_case, function(
+                            ProjectCase,
+                            index
+                          ) {
+                            return _c(
+                              "v-flex",
+                              {
+                                key: index,
+                                attrs: { xs12: "", sm6: "", md4: "" }
+                              },
+                              [
+                                _c(
+                                  "v-card",
+                                  {
+                                    staticClass: "ma-1",
+                                    attrs: { light: "", height: "100%" }
+                                  },
+                                  [
+                                    _c(
+                                      "v-card-title",
+                                      { attrs: { "primary-title": "" } },
+                                      [
+                                        _c("div", { staticClass: "headline" }, [
+                                          _vm._v(_vm._s(ProjectCase.title))
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("v-spacer"),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: {
+                                              flat: "",
+                                              href:
+                                                "/projectcase/" + ProjectCase.id
+                                            }
+                                          },
+                                          [_vm._v("Go to case")]
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-card-text",
+                                      {
+                                        staticClass: "grow",
+                                        attrs: { grow: "" }
+                                      },
+                                      [
+                                        _c("p", { attrs: { height: "100%" } }, [
+                                          _vm._v(
+                                            _vm._s(ProjectCase.description)
+                                          )
+                                        ])
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          })
                         )
                       ],
                       1
