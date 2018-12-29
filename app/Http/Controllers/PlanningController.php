@@ -127,4 +127,35 @@ class PlanningController extends Controller
     {
         //
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function read($id)
+    {
+        $SubCase = SubCase::find($id);
+        $Deliverables = Deliverable::where('sub_case_id', $id)->orderBy('order', 'asc')->get();
+
+        $DeliverablesTodo = $Deliverables->filter(function($Deliverables, $key) {
+            return $Deliverables->stage == 1;
+        })->values();
+
+        $DeliverablesDoing = $Deliverables->filter(function($Deliverables, $key) {
+            return $Deliverables->stage == 2;
+        })->values();
+
+        $DeliverablesDone = $Deliverables->filter(function($Deliverables, $key) {
+            return $Deliverables->stage == 3;
+        })->values();
+
+        return view('planning.show')->with([    'SubCase' => $SubCase,
+                                                'Deliverables' => $Deliverables,
+                                                'DeliverablesTodo' => $DeliverablesTodo,
+                                                'DeliverablesDoing' => $DeliverablesDoing,
+                                                'DeliverablesDone' => $DeliverablesDone
+                                    ]);
+    }
 }

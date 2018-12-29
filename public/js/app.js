@@ -12703,7 +12703,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(96);
+module.exports = __webpack_require__(102);
 
 
 /***/ }),
@@ -12741,6 +12741,8 @@ Vue.component('case-statistics', __webpack_require__(14));
 Vue.component('site-nav', __webpack_require__(64));
 Vue.component('customer-view', __webpack_require__(66));
 Vue.component('projectcase-view', __webpack_require__(93));
+Vue.component('projectcase-create', __webpack_require__(96));
+Vue.component('projectcase-show', __webpack_require__(99));
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
@@ -73573,6 +73575,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -75279,7 +75284,32 @@ var render = function() {
                               1
                             )
                           })
-                        )
+                        ),
+                        _vm._v(" "),
+                        props.item.project_case.length == 0
+                          ? _c(
+                              "v-alert",
+                              {
+                                attrs: {
+                                  value: true,
+                                  color: "error",
+                                  icon: "warning"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            This customer has no cases: "
+                                ),
+                                _c("projectcase-create", {
+                                  attrs: {
+                                    customerid: props.item.id,
+                                    reread: _vm.read
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          : _vm._e()
                       ],
                       1
                     )
@@ -75358,6 +75388,9 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
 //
 //
 //
@@ -75610,6 +75643,24 @@ var render = function() {
                                     [
                                       _c("v-text-field", {
                                         attrs: {
+                                          label: "Project Title",
+                                          required: ""
+                                        },
+                                        model: {
+                                          value: _vm.editedProjectCase.title,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.editedProjectCase,
+                                              "title",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "editedProjectCase.title"
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("v-text-field", {
+                                        attrs: {
                                           label: "Project Description",
                                           required: ""
                                         },
@@ -75625,24 +75676,6 @@ var render = function() {
                                           },
                                           expression:
                                             "editedProjectCase.description"
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("v-text-field", {
-                                        attrs: {
-                                          label: "Project Title",
-                                          required: ""
-                                        },
-                                        model: {
-                                          value: _vm.editedProjectCase.title,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedProjectCase,
-                                              "title",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "editedProjectCase.title"
                                         }
                                       }),
                                       _vm._v(" "),
@@ -75896,7 +75929,27 @@ var render = function() {
                               1
                             )
                           })
-                        )
+                        ),
+                        _vm._v(" "),
+                        props.item.sub_cases.length == 0
+                          ? _c(
+                              "v-alert",
+                              {
+                                attrs: {
+                                  value: true,
+                                  color: "error",
+                                  icon: "warning"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            This project has no sub cases: "
+                                ),
+                                _c("v-btn", [_vm._v("Create one!")])
+                              ],
+                              1
+                            )
+                          : _vm._e()
                       ],
                       1
                     )
@@ -75924,6 +75977,625 @@ if (false) {
 
 /***/ }),
 /* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(97)
+/* template */
+var __vue_template__ = __webpack_require__(98)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/ProjectCases/CreateCase.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-23d6ae54", Component.options)
+  } else {
+    hotAPI.reload("data-v-23d6ae54", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 97 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    props: ['customerid', 'reread'],
+
+    data: function data() {
+        return {
+            dialog: false,
+            editedIndex: -1,
+            customerNew: this.customerid,
+            editedProjectCase: {
+                description: '',
+                title: '',
+                customer_id: this.customerid
+            }
+        };
+    },
+
+    computed: {
+        formTitle: function formTitle() {
+            return this.editedIndex === -1 ? 'New Project' : 'Edit Project';
+        }
+    },
+    watch: {
+        dialog: function dialog(val) {
+            val || this.close();
+        }
+    },
+    methods: {
+        editProjectCase: function editProjectCase(item) {
+            this.editedIndex = this.projectCasesNew.indexOf(item);
+            this.editedProjectCase = Object.assign(item);
+            this.dialog = true;
+        },
+        deleteProjectCase: function deleteProjectCase(item) {
+            var _this = this;
+
+            var index = this.projectCasesNew.indexOf(item);
+            confirm('Are you sure you want to delete this item?') && axios.delete('/projectcase/' + item.id).then(function (response) {
+                _this.read();
+            });
+        },
+        close: function close() {
+            var _this2 = this;
+
+            this.dialog = false;
+            setTimeout(function () {
+                _this2.editedProjectCase = Object.assign({}, _this2.defaultProjectCase);
+                _this2.editedIndex = -1;
+            }, 300);
+            this.read();
+        },
+        save: function save() {
+            if (this.editedIndex > -1) {
+                Object.assign(this.projectCasesNew[this.editedIndex], this.editedProjectCase);
+                axios.put('projectcase/' + this.projectCasesNew[this.editedIndex].id, {
+                    editedProjectCase: this.editedProjectCase
+                }).then(function (response) {
+                    //response
+                });
+            } else {
+                axios.post('/projectcase', {
+                    editedProjectCase: this.editedProjectCase
+                }).then(function (response) {
+                    //response
+                });
+            }
+            this.close();
+        },
+        read: function read() {
+            this.reread();
+        }
+    }
+});
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-dialog",
+    {
+      attrs: { "max-width": "600px" },
+      model: {
+        value: _vm.dialog,
+        callback: function($$v) {
+          _vm.dialog = $$v
+        },
+        expression: "dialog"
+      }
+    },
+    [
+      _c(
+        "v-btn",
+        {
+          staticClass: "mb-2",
+          attrs: { slot: "activator" },
+          slot: "activator"
+        },
+        [_vm._v("New Project")]
+      ),
+      _vm._v(" "),
+      _c(
+        "v-form",
+        [
+          _c(
+            "v-card",
+            [
+              _c("v-card-title", [
+                _c("span", { staticClass: "headline" }, [
+                  _vm._v(_vm._s(_vm.formTitle))
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-card-text",
+                [
+                  _c(
+                    "v-container",
+                    { attrs: { "grid-list-md": "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { wrap: "" } },
+                        [
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c("v-text-field", {
+                                attrs: { label: "Project Title", required: "" },
+                                model: {
+                                  value: _vm.editedProjectCase.title,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.editedProjectCase,
+                                      "title",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "editedProjectCase.title"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                attrs: {
+                                  label: "Project Description",
+                                  required: ""
+                                },
+                                model: {
+                                  value: _vm.editedProjectCase.description,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.editedProjectCase,
+                                      "description",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "editedProjectCase.description"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("v-text-field", {
+                                attrs: {
+                                  disabled: "",
+                                  value: this.customerid,
+                                  label: "Customer"
+                                },
+                                model: {
+                                  value: _vm.editedProjectCase.customer_id,
+                                  callback: function($$v) {
+                                    _vm.$set(
+                                      _vm.editedProjectCase,
+                                      "customer_id",
+                                      $$v
+                                    )
+                                  },
+                                  expression: "editedProjectCase.customer_id"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-card-actions",
+                [
+                  _c("v-spacer"),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", flat: "" },
+                      on: { click: _vm.close }
+                    },
+                    [_vm._v("Cancel")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
+                      attrs: { color: "blue darken-1", flat: "" },
+                      on: {
+                        click: function($event) {
+                          _vm.save()
+                        }
+                      }
+                    },
+                    [_vm._v("Save")]
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-23d6ae54", module.exports)
+  }
+}
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(100)
+/* template */
+var __vue_template__ = __webpack_require__(101)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/ProjectCases/CaseView.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4919e07f", Component.options)
+  } else {
+    hotAPI.reload("data-v-4919e07f", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 100 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['projectcase', 'subcases'],
+
+    data: function data() {
+        return {
+            projectCaseNew: this.projectcase,
+            subcasesNew: this.subcases,
+            search: '',
+            headers: [{
+                text: 'Sub case title',
+                align: 'left',
+                value: 'title'
+            }, {
+                text: 'Description',
+                align: 'left',
+                value: 'description'
+            }, {
+                text: 'Price',
+                align: 'left',
+                value: 'price'
+            }]
+        };
+    }
+});
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-card",
+    [
+      _c(
+        "v-container",
+        { attrs: { fluid: "", "grid-list-lg": "" } },
+        [
+          _c(
+            "v-layout",
+            { attrs: { row: "", wrap: "" } },
+            [
+              _c(
+                "v-flex",
+                { attrs: { xs12: "" } },
+                [
+                  _c(
+                    "v-card",
+                    {
+                      staticClass: "white--text",
+                      attrs: { color: "blue-grey darken-2" }
+                    },
+                    [
+                      _c("v-card-title", { attrs: { "primary-title": "" } }, [
+                        _c("div", [
+                          _c("div", { staticClass: "headline" }, [
+                            _vm._v(_vm._s(_vm.projectCaseNew.title))
+                          ]),
+                          _vm._v(" "),
+                          _c("span", [
+                            _vm._v(_vm._s(_vm.projectCaseNew.description))
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-btn", { attrs: { flat: "", dark: "" } }, [
+                            _vm._v("Edit/delete here")
+                          ])
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c(
+            "v-card-title",
+            [
+              _c("v-text-field", {
+                attrs: {
+                  "append-icon": "search",
+                  label: "Search",
+                  "single-line": "",
+                  "hide-details": ""
+                },
+                model: {
+                  value: _vm.search,
+                  callback: function($$v) {
+                    _vm.search = $$v
+                  },
+                  expression: "search"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("v-data-table", {
+            attrs: {
+              headers: _vm.headers,
+              items: _vm.subcasesNew,
+              search: _vm.search
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "items",
+                fn: function(props) {
+                  return [
+                    _c(
+                      "tr",
+                      {
+                        on: {
+                          click: function($event) {
+                            props.expanded = !props.expanded
+                          }
+                        }
+                      },
+                      [
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.title))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.description))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.price))
+                        ])
+                      ]
+                    )
+                  ]
+                }
+              },
+              {
+                key: "expand",
+                fn: function(props) {
+                  return [
+                    _c(
+                      "v-container",
+                      { attrs: { fluid: "", "grid-list-lg": "" } },
+                      [
+                        _c(
+                          "v-layout",
+                          { attrs: { row: "", wrap: "" } },
+                          [_c("v-card")],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4919e07f", module.exports)
+  }
+}
+
+/***/ }),
+/* 102 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

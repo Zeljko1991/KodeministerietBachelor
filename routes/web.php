@@ -21,6 +21,7 @@ Route::get('/dashboard', 'DashboardController@index');
 Route::get('subcase/create/{id}', 'SubCaseController@create');
 Route::get('/customer/read', 'CustomerController@read');
 Route::get('/projectcase/read', 'ProjectCaseController@read');
+Route::get('/planning/read/{id}', 'PlanningController@read');
 //Route::delete('/customer/{id}', 'CustomerController@destroy');
 
 Auth::routes();

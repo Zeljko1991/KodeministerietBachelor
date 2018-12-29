@@ -30,6 +30,8 @@ Vue.component('case-statistics', require('./components/CaseStatistics.vue'));
 Vue.component('site-nav', require('./components/Layout/SiteNavigation.vue'));
 Vue.component('customer-view', require('./components/Customers/Customers.vue'));
 Vue.component('projectcase-view', require('./components/ProjectCases/ProjectCases.vue'));
+Vue.component('projectcase-create', require('./components/ProjectCases/CreateCase.vue'));
+Vue.component('projectcase-show', require('./components/ProjectCases/CaseView.vue'));
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))

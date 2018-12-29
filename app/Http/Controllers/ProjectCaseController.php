@@ -73,7 +73,8 @@ class ProjectCaseController extends Controller
     public function show($id)
     {
         $ProjectCase = ProjectCase::find($id);
-        $SubCases = SubCase::where('project_case_id', $id)->get();
+        $SubCases = SubCase::where('project_case_id', $id)->with('Deliverables')->get();
+        
         return view('projectcase.show')->with(['ProjectCase' => $ProjectCase, 'SubCases' => $SubCases]);
     }
 
@@ -138,7 +139,7 @@ class ProjectCaseController extends Controller
     public function read()
     {
         // Getting Customer from the Customer Model and ordering entries by id and ascending
-        $ProjectCases = ProjectCase::orderBy('created_at', 'desc')->with('CaseStatus')->get();
+        $ProjectCases = ProjectCase::orderBy('created_at', 'desc')->with('CaseStatus')->with('SubCases')->get();
         $Customers = Customer::all();
         return array($ProjectCases);
     }

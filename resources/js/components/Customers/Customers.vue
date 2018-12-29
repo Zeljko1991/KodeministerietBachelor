@@ -104,6 +104,9 @@
                                 </v-card>
                             </v-flex>
                         </v-layout>
+                        <v-alert v-if="props.item.project_case.length == 0" :value="true" color="error" icon="warning">
+                                This customer has no cases: <projectcase-create :customerid="props.item.id" :reread="read"></projectcase-create>
+                        </v-alert>
                     </v-container>
                 </template>
             </v-data-table>
@@ -323,7 +326,7 @@ export default {
                             axios.post('/customer', {
                                 editedCustomer: this.editedCustomer
                             }).then((response) => {
-                                
+
                             }).catch((error) => {
                                 alert(error.message)
                             })

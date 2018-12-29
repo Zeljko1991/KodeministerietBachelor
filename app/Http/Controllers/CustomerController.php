@@ -164,7 +164,7 @@ class CustomerController extends Controller
     public function read()
     {
         // Getting Customer from the Customer Model and ordering entries by id and ascending
-        $Customers = Customer::orderBy('id', 'asc')->with('Address')->get();
+        $Customers = Customer::orderBy('id', 'asc')->with('Address')->with('ProjectCase')->get();
         return array($Customers);
     }
 }

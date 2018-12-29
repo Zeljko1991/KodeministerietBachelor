@@ -15,8 +15,8 @@
                             <v-container grid-list-md>
                                 <v-layout wrap>
                                     <v-flex xs12>
-                                        <v-text-field v-model="editedProjectCase.description" label="Project Description" required></v-text-field>
                                         <v-text-field v-model="editedProjectCase.title" label="Project Title" required></v-text-field>
+                                        <v-text-field v-model="editedProjectCase.description" label="Project Description" required></v-text-field>
                                         <v-autocomplete v-model="editedProjectCase.customer_id" :items="customers" item-text="firstName" item-value="id" label="chose ur boi"></v-autocomplete>
                                     </v-flex>
                                 </v-layout>
@@ -64,6 +64,9 @@
                                 </v-card>
                             </v-flex>
                         </v-layout>
+                        <v-alert v-if="props.item.sub_cases.length == 0" :value="true" color="error" icon="warning">
+                                This project has no sub cases: <v-btn>Create one!</v-btn>
+                        </v-alert>
                     </v-container>
                 </template>
             </v-data-table>

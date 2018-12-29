@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container">
     <div class="row s12 m6">
         <div class="card opacity">
             <div class="card-content">
@@ -37,12 +38,12 @@
                         </div>
 
                         <div class="row">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn indigo">
                                 {{ __('Login') }}
                             </button>
 
                             @if (Route::has('password.request'))
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                <a class="btn btn-link indigo" href="{{ route('password.request') }}">
                                     {{ __('Forgot Your Password?') }}
                                 </a>
                             @endif
@@ -51,4 +52,5 @@
                 </div>
             </div>
         </div>
+    </div>
 @endsection

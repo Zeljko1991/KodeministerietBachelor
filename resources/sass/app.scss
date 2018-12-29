@@ -5,3 +5,15 @@
 // Materialize-css
 //@import '~materialize-css/sass/materialize';
 //@import 'custom';
+
+.background-image{
+    background-image: url("/img/site/login_photo.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.opacity {
+    background: #fff;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    opacity: .8;
+}

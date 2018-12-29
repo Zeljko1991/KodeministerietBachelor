@@ -7,8 +7,12 @@
 	    <!-- CSRF Token -->
     	<meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{config('app.name', 'Kodeministeriet')}}</title>
+        @guest
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        @else
+        @endif
     </head>
-    <body class="@guest background-image @endif">
+    <body >
             <div id="app">
                 <v-app id="inspire">
                     @guest
@@ -18,7 +22,7 @@
                     </v-navigation-drawer>
                     @endif
                     <!--KEEP THIS-->
-                        <v-content>
+                        <v-content class="@guest background-image @endif">
                             <v-container fluid fill-height>
                                 <v-layout>
                                     <v-flex text-xs-center>
@@ -57,7 +61,7 @@
                             </form>
                         @endif
                     </v-toolbar>
-                    <v-footer color="indigo" app inset>
+                    <v-footer color="indigo" app fixed clipped-left>
                         <span class="white--text">Kodeministeriet&copy; 2017</span>
                     </v-footer>
                 </v-app>
