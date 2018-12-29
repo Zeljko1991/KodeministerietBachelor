@@ -28,8 +28,9 @@ class ProjectCaseController extends Controller
      */
     public function index()
     {
-        $ProjectCases = ProjectCase::orderBy('created_at', 'desc')->paginate(5);
-        return view('/projectcase.index')->with('ProjectCases', $ProjectCases);
+        $ProjectCases = ProjectCase::orderBy('created_at', 'desc')->with('CaseStatus')->with('SubCases')->get();
+        $Customers = Customer::all();
+        return view('/projectcase.index')->with(['ProjectCases' => $ProjectCases, 'Customers' => $Customers]);
     }
 
     /**
@@ -52,23 +53,16 @@ class ProjectCaseController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'description' => 'required',
-            'status' => 'required',
-            'customer' => 'required'
-        ]);
-
-        // Create Case
+        $decode = $request->json()->all();
         $ProjectCase = new ProjectCase;
-        $ProjectCase->title = $request->input('title');
-        $ProjectCase->description = $request->input('description');
-        $ProjectCase->case_status_id = $request->input('status');
-        $ProjectCase->customer_id = $request->input('customer');
+        $ProjectCase->description = $decode['editedProjectCase']['description'];
+        $ProjectCase->title = $decode['editedProjectCase']['title'];
+        $ProjectCase->customer_id = $decode['editedProjectCase']['customer_id'];
         $ProjectCase->save();
 
-        return redirect('/projectcase/'.$ProjectCase->id)->with('success', 'Case Created');
-    }
+        return response('Success!', 200);
+
+     }
 
     /**
      * Display the specified resource.
@@ -105,20 +99,21 @@ class ProjectCaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'description' => 'required',
-            'status' => 'required'
-        ]);
-
+        // $this->validate($request, [
+        //     'title' => 'required',
+        //     'description' => 'required',
+        //     'status' => 'required'
+        // ]);
+        
+        $decode = $request->json()->all();
         // Create Case
-        $ProjectCase = ProjectCase::find($id);
-        $ProjectCase->title = $request->input('title');
-        $ProjectCase->description = $request->input('description');
-        $ProjectCase->case_status_id = $request->input('status');
+        $ProjectCase = ProjectCase::findOrFail($id);
+        $ProjectCase->title = $decode['editedProjectCase']['title'];
+        $ProjectCase->description = $decode['editedProjectCase']['description'];
+        $ProjectCase->case_status_id = $decode['editedProjectCase']['case_status_id'];
         $ProjectCase->save();
 
-        return redirect('/projectcase/'.$ProjectCase->id)->with('success', 'Case: '.$ProjectCase->title.' Updated');
+        return response('Update Successful.', 200);
     }
 
     /**
@@ -132,7 +127,20 @@ class ProjectCaseController extends Controller
         $ProjectCase = ProjectCase::find($id);
         $ProjectCase->SubCases()->delete();
         $ProjectCase->delete();
-        return redirect('/projectcase')->with('success', 'Case Removed');
+        return response('Deleted Project.', 200);
+    }
+
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function read()
+    {
+        // Getting Customer from the Customer Model and ordering entries by id and ascending
+        $ProjectCases = ProjectCase::orderBy('created_at', 'desc')->with('CaseStatus')->get();
+        $Customers = Customer::all();
+        return array($ProjectCases);
     }
 
 }

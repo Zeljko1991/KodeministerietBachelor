@@ -73693,16 +73693,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }, function (v) {
                     return v && v.length >= 8 || 'Phone number must be 8 digits';
                 }, function (v) {
-                    return v && v.length <= 8 || 'Phone number must be 8 digits';
-                }, function (v) {
                     return v && !isNaN(v) || 'Phone number must be a number';
                 }],
                 CVRRules: [function (v) {
                     return !!v || 'CVR or EAN is required';
                 }, function (v) {
                     return v && v.length >= 8 || 'CVR must be 8 digits';
-                }, function (v) {
-                    return v && v.length <= 8 || 'CVR must be 8 digits';
                 }, function (v) {
                     return v && !isNaN(v) || 'CVR must be a number';
                 }],
@@ -73711,9 +73707,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }, function (v) {
                     return v && v.length >= 13 || 'EAN must be 13 digits';
                 }, function (v) {
-                    return v && v.length <= 13 || 'EAN must be 13 digits';
-                }, function (v) {
                     return v && !isNaN(v) || 'EAN must be a number';
+                }],
+                streetRules: [function (v) {
+                    return !!v || 'Street is required';
+                }, function (v) {
+                    return v && v.length > 1 || 'Street must be longer than one symbol';
+                }],
+                streetNumberRules: [function (v) {
+                    return !!v || 'Street number is required';
+                }],
+                zipCodeRules: [function (v) {
+                    return !!v || 'Zip code is required';
+                }, function (v) {
+                    return v && v.length >= 4 || 'Zip code must be 4 digits';
+                }, function (v) {
+                    return v && !isNaN(v) || 'Zip code must be a number';
+                }],
+                cityRules: [function (v) {
+                    return !!v || 'City is required';
+                }, function (v) {
+                    return v && v.length > 1 || 'City must be more than one symbol';
+                }],
+                countryRules: [function (v) {
+                    return !!v || 'Country is required';
+                }, function (v) {
+                    return v && v.length > 1 || 'Country must be longer than one symbol';
                 }]
             }
         };
@@ -73764,6 +73783,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.editedIndex = -1;
             }, 300);
             this.read();
+            this.clear();
         },
         save: function save() {
             if (this.$refs.form.validate()) {
@@ -73771,12 +73791,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     Object.assign(this.customersNew[this.editedIndex], this.editedCustomer);
                     axios.put('/customer/' + this.customersNew[this.editedIndex].id, {
                         editedCustomer: this.editedCustomer
-                    }).then(function (response) {});
+                    }).then(function (response) {}).catch(function (error) {
+                        alert(error.message);
+                    });
                 } else {
                     //this.customers.push(this.editedCustomer)
                     axios.post('/customer', {
                         editedCustomer: this.editedCustomer
-                    }).then(function (response) {});
+                    }).then(function (response) {}).catch(function (error) {
+                        alert(error.message);
+                    });
                 }
                 this.close();
             }
@@ -73791,7 +73815,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         clear: function clear() {
-            this.$refs.form.reset();
+            this.$refs.form.resetValidation();
         }
     }
 });
@@ -74750,6 +74774,7 @@ var render = function() {
                                           label: "Phone Number",
                                           required: "",
                                           counter: 8,
+                                          maxlength: "8",
                                           rules: _vm.rules.phoneNumberRules
                                         },
                                         model: {
@@ -74802,6 +74827,7 @@ var render = function() {
                                               label: "CVR",
                                               required: "",
                                               counter: 8,
+                                              maxlength: "8",
                                               rules: _vm.rules.CVRRules
                                             },
                                             model: {
@@ -74831,6 +74857,7 @@ var render = function() {
                                               label: "EAN",
                                               required: "",
                                               counter: 13,
+                                              maxlength: "13",
                                               rules: _vm.rules.EANRules
                                             },
                                             model: {
@@ -74857,7 +74884,8 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: {
                                           label: "Street",
-                                          required: ""
+                                          required: "",
+                                          rules: _vm.rules.streetRules
                                         },
                                         model: {
                                           value:
@@ -74884,7 +74912,8 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: {
                                           label: "Street Number",
-                                          required: ""
+                                          required: "",
+                                          rules: _vm.rules.streetNumberRules
                                         },
                                         model: {
                                           value:
@@ -74913,7 +74942,9 @@ var render = function() {
                                         attrs: {
                                           label: "Zip",
                                           required: "",
-                                          counter: 4
+                                          counter: 4,
+                                          maxlength: "4",
+                                          rules: _vm.rules.zipCodeRules
                                         },
                                         model: {
                                           value:
@@ -74938,7 +74969,11 @@ var render = function() {
                                     { attrs: { xs12: "", sm6: "" } },
                                     [
                                       _c("v-text-field", {
-                                        attrs: { label: "City", required: "" },
+                                        attrs: {
+                                          label: "City",
+                                          required: "",
+                                          rules: _vm.rules.cityRules
+                                        },
                                         model: {
                                           value:
                                             _vm.editedCustomer.address.city,
@@ -74964,7 +74999,8 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: {
                                           label: "Country",
-                                          required: ""
+                                          required: "",
+                                          rules: _vm.rules.countryRules
                                         },
                                         model: {
                                           value:
@@ -75334,99 +75370,168 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      headers: [{
-        text: 'Project Case ID',
-        align: 'left',
-        sortable: false,
-        value: 'name'
-      }, { text: 'Title', value: 'calories' }, { text: 'Fat (g)', value: 'fat' }, { text: 'Carbs (g)', value: 'carbs' }, { text: 'Protein (g)', value: 'protein' }, { text: 'Iron (%)', value: 'iron' }],
-      desserts: [{
-        value: false,
-        name: 'Frozen Yogurt',
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: '1%'
-      }, {
-        value: false,
-        name: 'Ice cream sandwich',
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: '1%'
-      }, {
-        value: false,
-        name: 'Eclair',
-        calories: 262,
-        fat: 16.0,
-        carbs: 23,
-        protein: 6.0,
-        iron: '7%'
-      }, {
-        value: false,
-        name: 'Cupcake',
-        calories: 305,
-        fat: 3.7,
-        carbs: 67,
-        protein: 4.3,
-        iron: '8%'
-      }, {
-        value: false,
-        name: 'Gingerbread',
-        calories: 356,
-        fat: 16.0,
-        carbs: 49,
-        protein: 3.9,
-        iron: '16%'
-      }, {
-        value: false,
-        name: 'Jelly bean',
-        calories: 375,
-        fat: 0.0,
-        carbs: 94,
-        protein: 0.0,
-        iron: '0%'
-      }, {
-        value: false,
-        name: 'Lollipop',
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: '2%'
-      }, {
-        value: false,
-        name: 'Honeycomb',
-        calories: 408,
-        fat: 3.2,
-        carbs: 87,
-        protein: 6.5,
-        iron: '45%'
-      }, {
-        value: false,
-        name: 'Donut',
-        calories: 452,
-        fat: 25.0,
-        carbs: 51,
-        protein: 4.9,
-        iron: '22%'
-      }, {
-        value: false,
-        name: 'KitKat',
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: '6%'
-      }]
-    };
-  }
+
+    props: ['projectcases', 'customers'],
+
+    data: function data() {
+        return {
+            dialog: false,
+            search: '',
+            headers: [{
+                text: 'Project Case ID',
+                align: 'left',
+                value: 'id'
+            }, {
+                text: 'Project Title',
+                align: 'left',
+                value: 'projectTitle'
+            }, {
+                text: 'Project Status',
+                align: 'left',
+                value: 'projectStatus'
+            }, {
+                text: 'Actions',
+                align: 'center',
+                value: 'id',
+                sortable: false
+            }],
+            projectCasesNew: this.projectcases,
+            editedIndex: -1,
+            editedProjectCase: {
+                description: '',
+                title: '',
+                customer_id: ''
+            },
+            defaultProjectCase: {
+                description: '',
+                title: '',
+                customer_id: ''
+            }
+        };
+    },
+
+    computed: {
+        formTitle: function formTitle() {
+            return this.editedIndex === -1 ? 'New Project' : 'Edit Project';
+        }
+    },
+
+    watch: {
+        dialog: function dialog(val) {
+            val || this.close();
+        }
+    },
+
+    methods: {
+        editProjectCase: function editProjectCase(item) {
+            this.editedIndex = this.projectCasesNew.indexOf(item);
+            this.editedProjectCase = Object.assign(item);
+            this.dialog = true;
+        },
+        deleteProjectCase: function deleteProjectCase(item) {
+            var _this = this;
+
+            var index = this.projectCasesNew.indexOf(item);
+            confirm('Are you sure you want to delete this item?') && axios.delete('/projectcase/' + item.id).then(function (response) {
+                _this.read();
+            });
+        },
+        close: function close() {
+            var _this2 = this;
+
+            this.dialog = false;
+            setTimeout(function () {
+                _this2.editedProjectCase = Object.assign({}, _this2.defaultProjectCase);
+                _this2.editedIndex = -1;
+            }, 300);
+            this.read();
+        },
+        save: function save() {
+            if (this.editedIndex > -1) {
+                Object.assign(this.projectCasesNew[this.editedIndex], this.editedProjectCase);
+                axios.put('projectcase/' + this.projectCasesNew[this.editedIndex].id, {
+                    editedProjectCase: this.editedProjectCase
+                }).then(function (response) {
+                    //response
+                });
+            } else {
+                axios.post('/projectcase', {
+                    editedProjectCase: this.editedProjectCase
+                }).then(function (response) {
+                    //response
+                });
+            }
+            this.close();
+        },
+        read: function read() {
+            var _this3 = this;
+
+            axios.get('projectcase/read').then(function (_ref) {
+                var data = _ref.data;
+
+                _this3.projectCasesNew = data[0];
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -75437,40 +75542,370 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("v-data-table", {
-    staticClass: "elevation-1",
-    attrs: { headers: _vm.headers, items: _vm.desserts },
-    scopedSlots: _vm._u([
-      {
-        key: "items",
-        fn: function(props) {
-          return [
-            _c("td", [_vm._v(_vm._s(props.item.name))]),
-            _vm._v(" "),
-            _c("td", { staticClass: "text-xs-right" }, [
-              _vm._v(_vm._s(props.item.calories))
-            ]),
-            _vm._v(" "),
-            _c("td", { staticClass: "text-xs-right" }, [
-              _vm._v(_vm._s(props.item.fat))
-            ]),
-            _vm._v(" "),
-            _c("td", { staticClass: "text-xs-right" }, [
-              _vm._v(_vm._s(props.item.carbs))
-            ]),
-            _vm._v(" "),
-            _c("td", { staticClass: "text-xs-right" }, [
-              _vm._v(_vm._s(props.item.protein))
-            ]),
-            _vm._v(" "),
-            _c("td", { staticClass: "text-xs-right" }, [
-              _vm._v(_vm._s(props.item.iron))
+  return _c(
+    "div",
+    [
+      _c(
+        "v-toolbar",
+        { attrs: { flat: "", color: "white" } },
+        [
+          _c("v-toolbar-title", [_vm._v("Projects")]),
+          _vm._v(" "),
+          _c("v-spacer"),
+          _vm._v(" "),
+          _c(
+            "v-dialog",
+            {
+              attrs: { "max-width": "600px" },
+              model: {
+                value: _vm.dialog,
+                callback: function($$v) {
+                  _vm.dialog = $$v
+                },
+                expression: "dialog"
+              }
+            },
+            [
+              _c(
+                "v-btn",
+                {
+                  staticClass: "mb-2",
+                  attrs: { slot: "activator", color: "primary", dark: "" },
+                  slot: "activator"
+                },
+                [_vm._v("New Project")]
+              ),
+              _vm._v(" "),
+              _c(
+                "v-form",
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c("v-card-title", [
+                        _c("span", { staticClass: "headline" }, [
+                          _vm._v(_vm._s(_vm.formTitle))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-text",
+                        [
+                          _c(
+                            "v-container",
+                            { attrs: { "grid-list-md": "" } },
+                            [
+                              _c(
+                                "v-layout",
+                                { attrs: { wrap: "" } },
+                                [
+                                  _c(
+                                    "v-flex",
+                                    { attrs: { xs12: "" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          label: "Project Description",
+                                          required: ""
+                                        },
+                                        model: {
+                                          value:
+                                            _vm.editedProjectCase.description,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.editedProjectCase,
+                                              "description",
+                                              $$v
+                                            )
+                                          },
+                                          expression:
+                                            "editedProjectCase.description"
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("v-text-field", {
+                                        attrs: {
+                                          label: "Project Title",
+                                          required: ""
+                                        },
+                                        model: {
+                                          value: _vm.editedProjectCase.title,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.editedProjectCase,
+                                              "title",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "editedProjectCase.title"
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("v-autocomplete", {
+                                        attrs: {
+                                          items: _vm.customers,
+                                          "item-text": "firstName",
+                                          "item-value": "id",
+                                          label: "chose ur boi"
+                                        },
+                                        model: {
+                                          value:
+                                            _vm.editedProjectCase.customer_id,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.editedProjectCase,
+                                              "customer_id",
+                                              $$v
+                                            )
+                                          },
+                                          expression:
+                                            "editedProjectCase.customer_id"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-spacer"),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { color: "blue darken-1", flat: "" },
+                              on: { click: _vm.close }
+                            },
+                            [_vm._v("Cancel")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { color: "blue darken-1", flat: "" },
+                              on: {
+                                click: function($event) {
+                                  _vm.save()
+                                }
+                              }
+                            },
+                            [_vm._v("Save")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        [
+          _c(
+            "v-card-title",
+            [
+              _c("v-text-field", {
+                attrs: {
+                  "append-icon": "search",
+                  label: "Search",
+                  "single-line": "",
+                  "hide-details": ""
+                },
+                model: {
+                  value: _vm.search,
+                  callback: function($$v) {
+                    _vm.search = $$v
+                  },
+                  expression: "search"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("v-data-table", {
+            attrs: {
+              headers: _vm.headers,
+              items: _vm.projectCasesNew,
+              search: _vm.search
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "items",
+                fn: function(props) {
+                  return [
+                    _c(
+                      "tr",
+                      {
+                        on: {
+                          click: function($event) {
+                            props.expanded = !props.expanded
+                          }
+                        }
+                      },
+                      [
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.id))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.title))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-xs-left" }, [
+                          _vm._v(_vm._s(props.item.case_status.stage))
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          { staticClass: "justify-center layout px-0" },
+                          [
+                            _c(
+                              "v-icon",
+                              {
+                                staticClass: "mr-2",
+                                attrs: { small: "" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.editProjectCase(props.item)
+                                  }
+                                }
+                              },
+                              [_vm._v("edit")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-icon",
+                              {
+                                attrs: { small: "" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.deleteProjectCase(props.item)
+                                  }
+                                }
+                              },
+                              [_vm._v("delete")]
+                            )
+                          ],
+                          1
+                        )
+                      ]
+                    )
+                  ]
+                }
+              },
+              {
+                key: "expand",
+                fn: function(props) {
+                  return [
+                    _c(
+                      "v-container",
+                      { attrs: { fluid: "", "grid-list-lg": "" } },
+                      [
+                        _c(
+                          "v-layout",
+                          { attrs: { row: "", wrap: "" } },
+                          _vm._l(props.item.sub_cases, function(
+                            SubCase,
+                            index
+                          ) {
+                            return _c(
+                              "v-flex",
+                              {
+                                key: index,
+                                attrs: { xs12: "", sm6: "", md4: "" }
+                              },
+                              [
+                                _c(
+                                  "v-card",
+                                  {
+                                    staticClass: "ma-1",
+                                    attrs: { light: "", height: "100%" }
+                                  },
+                                  [
+                                    _c(
+                                      "v-card-title",
+                                      { attrs: { "primary-title": "" } },
+                                      [
+                                        _c("div", { staticClass: "headline" }, [
+                                          _vm._v(_vm._s(SubCase.title))
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("v-spacer"),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: {
+                                              flat: "",
+                                              href: "/subcase/" + SubCase.id
+                                            }
+                                          },
+                                          [
+                                            _c("v-icon", [
+                                              _vm._v("assignment")
+                                            ]),
+                                            _vm._v(" Go to subcase")
+                                          ],
+                                          1
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-card-text",
+                                      {
+                                        staticClass: "grow",
+                                        attrs: { grow: "" }
+                                      },
+                                      [
+                                        _c("p", { attrs: { height: "100%" } }, [
+                                          _vm._v(_vm._s(SubCase.description))
+                                        ])
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          })
+                        )
+                      ],
+                      1
+                    )
+                  ]
+                }
+              }
             ])
-          ]
-        }
-      }
-    ])
-  })
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

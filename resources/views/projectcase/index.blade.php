@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<projectcase-view></projectcase-view>
+<projectcase-view :projectcases="{{$ProjectCases}}" :customers="{{$Customers}}"></projectcase-view>
 @endsection

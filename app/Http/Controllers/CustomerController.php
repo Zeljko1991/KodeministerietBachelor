@@ -64,28 +64,6 @@ class CustomerController extends Controller
         //     'streetNumber' => 'required',
         //     'country' => 'required',
         //     ]);
-
-        // Create Customer
-        // $Address = new Address;
-        // $Address->streetNumber = $request->input('streetNumber');
-        // $Address->city = $request->input('city');
-        // $Address->street = $request->input('street');
-        // $Address->zipCode = $request->input('zipCode');
-        // $Address->country = $request->input('country');
-        // $Address->save();
-
-        // $Customer = new Customer;
-        // $Customer->companyName = $request->input('companyName');
-        // $Customer->address_id = $Address->id;
-        // $Customer->firstName = $request->input('firstName');
-        // $Customer->lastName = $request->input('lastName');
-        // $Customer->eMail = $request->input('eMail');
-        // $Customer->phoneNumber = $request->input('phoneNumber');
-        // $Customer->EAN = $request->input('EAN');
-        // $Customer->CVR = $request->input('CVR');
-        // $Customer->save();
-
-        // return redirect('/customer')->with('success', 'Customer Created');
         $decode = $request->json()->all();
         $Address = new Address;
         $Address->streetNumber = $decode['editedCustomer']['address']['streetNumber'];
@@ -99,7 +77,7 @@ class CustomerController extends Controller
         $Customer->firstName = $decode['editedCustomer']['firstName'];
         $Customer->lastName = $decode['editedCustomer']['lastName'];
         $Customer->eMail = $decode['editedCustomer']['eMail'];
-        $Customer->phoneNumber = $decode['editedCustomer']['phoneNumber'];
+        $Customer->phoneNumber = 12332112;
         $Customer->EAN = $decode['editedCustomer']['EAN'];
         $Customer->CVR = $decode['editedCustomer']['CVR'];
         $Customer->address_id = $Address->id;

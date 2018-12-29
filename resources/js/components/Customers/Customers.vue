@@ -27,31 +27,31 @@
                                 <v-text-field v-model="editedCustomer.eMail" label="Email address" required :rules="rules.emailRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.phoneNumber" label="Phone Number" required :counter="8" :rules="rules.phoneNumberRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.phoneNumber" label="Phone Number" required :counter="8" maxlength="8" :rules="rules.phoneNumberRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 d-flex>
                                 <v-select :items="CVR" v-model="CVRVal" label="EAN or CVR?" ></v-select>
                             </v-flex>
                             <v-flex xs12 sm6 v-if="EANorCVR === 'CVR'">
-                                <v-text-field v-model="editedCustomer.CVR" label="CVR" required :counter="8" :rules="rules.CVRRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.CVR" label="CVR" required :counter="8" maxlength="8" :rules="rules.CVRRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 v-if="EANorCVR === 'EAN'">
-                                <v-text-field v-model="editedCustomer.EAN" label="EAN" required :counter="13" :rules="rules.EANRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.EAN" label="EAN" required :counter="13" maxlength="13" :rules="rules.EANRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.address.street" label="Street" required></v-text-field>
+                                <v-text-field v-model="editedCustomer.address.street" label="Street" required :rules="rules.streetRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.address.streetNumber" label="Street Number" required></v-text-field>
+                                <v-text-field v-model="editedCustomer.address.streetNumber" label="Street Number" required :rules="rules.streetNumberRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.address.zipCode" label="Zip" required :counter="4"></v-text-field>
+                                <v-text-field v-model="editedCustomer.address.zipCode" label="Zip" required :counter="4" maxlength="4" :rules="rules.zipCodeRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.address.city" label="City" required></v-text-field>
+                                <v-text-field v-model="editedCustomer.address.city" label="City" required :rules="rules.cityRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12>
-                                <v-text-field v-model="editedCustomer.address.country" label="Country" required></v-text-field>
+                                <v-text-field v-model="editedCustomer.address.country" label="Country" required :rules="rules.countryRules"></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -228,20 +228,37 @@ export default {
                 phoneNumberRules: [
                     v => !!v || 'Phone number is required',
                     v => (v && v.length >= 8) || 'Phone number must be 8 digits',
-                    v => (v && v.length <= 8) || 'Phone number must be 8 digits',
                     v => (v && !isNaN(v)) || 'Phone number must be a number',     
                 ],
                 CVRRules: [
                     v => !!v || 'CVR or EAN is required',
                     v => (v && v.length >= 8) || 'CVR must be 8 digits',
-                    v => (v && v.length <= 8) || 'CVR must be 8 digits',
                     v => (v && !isNaN(v)) || 'CVR must be a number', 
                 ],
                 EANRules: [
                     v => !!v || 'CVR or EAN is required',
                     v => (v && v.length >= 13) || 'EAN must be 13 digits',
-                    v => (v && v.length <= 13) || 'EAN must be 13 digits',
                     v => (v && !isNaN(v)) || 'EAN must be a number',
+                ],
+                streetRules: [
+                    v => !!v || 'Street is required',
+                    v => (v && v.length > 1 ) || 'Street must be longer than one symbol'
+                ],
+                streetNumberRules: [
+                    v => !!v || 'Street number is required'
+                ],
+                zipCodeRules: [
+                    v => !!v || 'Zip code is required',
+                    v => (v && v.length >= 4) || 'Zip code must be 4 digits',
+                    v => (v && !isNaN(v)) || 'Zip code must be a number'
+                ],
+                cityRules: [
+                    v => !!v || 'City is required',
+                    v => (v && v.length > 1) || 'City must be more than one symbol'
+                ], 
+                countryRules: [
+                    v => !!v || 'Country is required',
+                    v => (v && v.length > 1) || 'Country must be longer than one symbol' 
                 ]
             },  
         }
@@ -281,12 +298,14 @@ export default {
                     })
                 },
                 close () {
+                    
                     this.dialog = false
                     setTimeout(() => {
                         this.editedCustomer = Object.assign({}, this.defaultCustomer)
                         this.editedIndex = -1
                     }, 300)
                     this.read()
+                    this.clear()
                 },
                 save () {
                     if (this.$refs.form.validate()){
@@ -296,6 +315,8 @@ export default {
                                 editedCustomer: this.editedCustomer,
                             }).then((response) => {
                                 
+                            }).catch((error) => {
+                                alert(error.message)
                             })
                         } else {
                             //this.customers.push(this.editedCustomer)
@@ -303,6 +324,8 @@ export default {
                                 editedCustomer: this.editedCustomer
                             }).then((response) => {
                                 
+                            }).catch((error) => {
+                                alert(error.message)
                             })
                         }
                         this.close()
@@ -315,7 +338,7 @@ export default {
                     });
                 },
                 clear() {
-                    this.$refs.form.reset()
+                    this.$refs.form.resetValidation()
                 }
             }
         }
