@@ -77,7 +77,7 @@ class CustomerController extends Controller
         $Customer->firstName = $decode['editedCustomer']['firstName'];
         $Customer->lastName = $decode['editedCustomer']['lastName'];
         $Customer->eMail = $decode['editedCustomer']['eMail'];
-        $Customer->phoneNumber = 12332112;
+        $Customer->phoneNumber = $decode['editedCustomer']['phoneNumber'];
         $Customer->EAN = $decode['editedCustomer']['EAN'];
         $Customer->CVR = $decode['editedCustomer']['CVR'];
         $Customer->address_id = $Address->id;

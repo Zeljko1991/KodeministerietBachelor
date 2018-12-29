@@ -11,10 +11,13 @@
     <body class="@guest background-image @endif">
             <div id="app">
                 <v-app id="inspire">
+                    @guest
+                    @else
                     <v-navigation-drawer clipped fixed v-model="drawer" app>
                         <site-nav></site-nav>
                     </v-navigation-drawer>
-                        <!--KEEP THIS-->
+                    @endif
+                    <!--KEEP THIS-->
                         <v-content>
                             <v-container fluid fill-height>
                                 <v-layout>
@@ -26,14 +29,40 @@
                         </v-content>
                     
                     <v-toolbar color="indigo" dark fixed app clipped-left>
+                        @guest
+                        @else
                             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+                        @endif
                             <v-toolbar-title>Kodeministeriet</v-toolbar-title>
+                           
+                            <v-spacer></v-spacer>
+                        @guest
+                        @else
+                        <span class="group pa-2">
+                            <v-menu bottom left>
+                                <v-btn icon slot="activator">
+                                    <v-avatar color="indigo">
+                                        <v-icon large dark>account_circle</v-icon>
+                                    </v-avatar>
+                                </v-btn>
+                                <v-list>
+                                    <v-list-tile>
+                                            <v-btn flat href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</v-btn>
+                                    </v-list-tile>
+                                </v-list>
+                            </v-menu>
+                        </span>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        @endif
                     </v-toolbar>
                     <v-footer color="indigo" app inset>
                         <span class="white--text">Kodeministeriet&copy; 2017</span>
                     </v-footer>
                 </v-app>
             </div>
+            
         <script type="text/javascript" src="{!! asset('js/app.js') !!}"></script>
 
         <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>

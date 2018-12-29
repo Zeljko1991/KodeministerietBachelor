@@ -5,7 +5,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="600px">
           <v-btn slot="activator" color="primary" dark class="mb-2">New Customer</v-btn>
-         <v-form ref="form" v-model="valid" lazy-validation>
+         <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="save">
             <v-card>
                 <v-card-title>
                     <span class="headline">{{ formTitle }}</span>
@@ -59,7 +59,7 @@
                 <v-card-actions>
                 <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                    <v-btn color="blue darken-1" flat @click="save()">Save</v-btn>
+                    <v-btn type="submit" color="blue darken-1" flat >Save</v-btn>
                 </v-card-actions>
             </v-card>
           </v-form>

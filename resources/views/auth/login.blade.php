@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="row s12 m6">
         <div class="card opacity">
             <div class="card-content">
@@ -52,5 +51,4 @@
                 </div>
             </div>
         </div>
-
 @endsection

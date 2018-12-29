@@ -74631,6 +74631,12 @@ var render = function() {
                 {
                   ref: "form",
                   attrs: { "lazy-validation": "" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.save($event)
+                    }
+                  },
                   model: {
                     value: _vm.valid,
                     callback: function($$v) {
@@ -75046,11 +75052,10 @@ var render = function() {
                           _c(
                             "v-btn",
                             {
-                              attrs: { color: "blue darken-1", flat: "" },
-                              on: {
-                                click: function($event) {
-                                  _vm.save()
-                                }
+                              attrs: {
+                                type: "submit",
+                                color: "blue darken-1",
+                                flat: ""
                               }
                             },
                             [_vm._v("Save")]
