@@ -17,9 +17,9 @@ class CreateWorksOnTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('subcase_id')->unsigned();
-            $table->foreign('subcase_id')->references('id')->on('sub_cases');
+            $table->foreign('subcase_id')->references('id')->on('sub_cases')->onDelete('cascade');
             $table->integer('hrs');
         });
     }

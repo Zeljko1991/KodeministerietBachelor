@@ -10,3 +10,11 @@
   opacity: .8;
 }
 
+.plan-min-height {
+  min-height: 200px;
+}
+
+.collection .kanban-item {
+  cursor: move;
+}
+

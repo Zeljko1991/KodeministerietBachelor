@@ -74,27 +74,29 @@
                                     @endforeach
                                     @foreach ($SubCase->UserWorksOn as $Worked)
 
-                                        @if($loop->last)
+                                        @if($loop->parent->last)
                                         <tr>
                                             <td>Timer:</td>
                                             <td class="text-center">300,-</td>
                                             <td class="text-center">{{$Worked->pivot->sum('hrs')}}</td>
                                             <td class="text-right">{{300 * $Worked->pivot->sum('hrs')}},-</td>
-                                        </tr>
+										</tr>
+										@endif
 
-								<tr>
-									<td class="thick-line"></td>
-									<td class="thick-line"></td>
-									<td class="thick-line text-center"><strong>Subtotal eksklusiv moms</strong></td>
-                                    <td class="thick-line text-right">{{(300 * $Worked->pivot->sum('hrs')) + $Deliverable->sum('price')}},-</td>
-								</tr>
-								<tr>
-									<td class="no-line"></td>
-									<td class="no-line"></td>
-									<td class="no-line text-center"><strong>Total</strong></td>
-									<td class="no-line text-right">{{((300 * $Worked->pivot->sum('hrs')) + $Deliverable->sum('price'))*1.25}},-</td>
-                                </tr>
-                                @endif
+									@if($loop->parent->last)
+									<tr>
+										<td class="thick-line"></td>
+										<td class="thick-line"></td>
+										<td class="thick-line text-center"><strong>Subtotal eksklusiv moms</strong></td>
+										<td class="thick-line text-right">{{(300 * $Worked->pivot->sum('hrs')) + $Deliverable->sum('price')}},-</td>
+									</tr>
+									<tr>
+										<td class="no-line"></td>
+										<td class="no-line"></td>
+										<td class="no-line text-center"><strong>Total</strong></td>
+										<td class="no-line text-right">{{((300 * $Worked->pivot->sum('hrs')) + $Deliverable->sum('price'))*1.25}},-</td>
+									</tr>
+									@endif
                                 @endforeach
                             @endforeach
 							</tbody>

@@ -62,7 +62,7 @@
                         @endif
                     </v-toolbar>
                     <v-footer color="indigo" app fixed clipped-left>
-                        <span class="white--text">Kodeministeriet&copy; 2017</span>
+                        <span class="white--text">Kodeministeriet&copy; 2018</span>
                     </v-footer>
                 </v-app>
             </div>

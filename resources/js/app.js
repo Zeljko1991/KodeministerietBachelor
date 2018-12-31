@@ -11,9 +11,11 @@ window.Vue = require('vue');
 window.Vuetify = require('vuetify');
 window.swal = require('sweetalert2');
 window.Vuelidate = require('vuelidate');
+window.VCharts = require('v-charts');
 
 Vue.use(Vuetify);
 Vue.use(Vuelidate);
+Vue.use(VCharts);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -25,13 +27,15 @@ Vue.use(Vuelidate);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('kanban-board', require('./components/KanbanBoard.vue'));
-Vue.component('dashboard-wrap', require('./components/DashboardWrap.vue'));
-Vue.component('case-statistics', require('./components/CaseStatistics.vue'));
+Vue.component('dashboard-wrap', require('./components/Dashboard/DashboardWrap.vue'));
+Vue.component('case-statistics', require('./components/Dashboard/CaseStatistics.vue'));
 Vue.component('site-nav', require('./components/Layout/SiteNavigation.vue'));
 Vue.component('customer-view', require('./components/Customers/Customers.vue'));
 Vue.component('projectcase-view', require('./components/ProjectCases/ProjectCases.vue'));
 Vue.component('projectcase-create', require('./components/ProjectCases/CreateCase.vue'));
 Vue.component('projectcase-show', require('./components/ProjectCases/CaseView.vue'));
+Vue.component('project-statistics', require('./components/Dashboard/ProjectStatistics.vue'));
+Vue.component('subcase-create', require('./components/SubCases/CreateSubCase.vue'));
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))

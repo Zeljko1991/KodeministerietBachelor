@@ -29,8 +29,9 @@ class ProjectCaseController extends Controller
     public function index()
     {
         $ProjectCases = ProjectCase::orderBy('created_at', 'desc')->with('CaseStatus')->with('SubCases')->get();
+        $Case_Statuses = CaseStatus::all();
         $Customers = Customer::all();
-        return view('/projectcase.index')->with(['ProjectCases' => $ProjectCases, 'Customers' => $Customers]);
+        return view('/projectcase.index')->with(['ProjectCases' => $ProjectCases, 'Customers' => $Customers, 'CaseStatus' => $Case_Statuses]);
     }
 
     /**
@@ -73,8 +74,8 @@ class ProjectCaseController extends Controller
     public function show($id)
     {
         $ProjectCase = ProjectCase::find($id);
-        $SubCases = SubCase::where('project_case_id', $id)->with('Deliverables')->get();
-        
+        $SubCases = SubCase::where('project_case_id', $id)->with('Deliverables')->with('UserWorksOn')->get();
+
         return view('projectcase.show')->with(['ProjectCase' => $ProjectCase, 'SubCases' => $SubCases]);
     }
 
@@ -105,7 +106,7 @@ class ProjectCaseController extends Controller
         //     'description' => 'required',
         //     'status' => 'required'
         // ]);
-        
+
         $decode = $request->json()->all();
         // Create Case
         $ProjectCase = ProjectCase::findOrFail($id);
@@ -139,9 +140,22 @@ class ProjectCaseController extends Controller
     public function read()
     {
         // Getting Customer from the Customer Model and ordering entries by id and ascending
-        $ProjectCases = ProjectCase::orderBy('created_at', 'desc')->with('CaseStatus')->with('SubCases')->get();
+        $ProjectCases = ProjectCase::orderBy('created_at', 'desc')->with('CaseStatus')->with('SubCases')->with('SubCases.UserWorksOn')->get();
         $Customers = Customer::all();
         return array($ProjectCases);
     }
 
+        /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showread($id)
+    {
+        $ProjectCase = ProjectCase::find($id);
+        $SubCases = SubCase::where('project_case_id', $id)->with('Deliverables')->with('UserWorksOn')->get();
+
+        return array('ProjectCase' => $ProjectCase, 'SubCases' => $SubCases);
+    }
 }

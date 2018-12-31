@@ -1,45 +1,44 @@
 <template>
-    <div class="visibility-drag row">
-        <div class="col m4">
-            <div class="card">
-                <div class="card-content">
-                <span class="card-title">To do</span>
-                    <draggable class="collection plan-min-height" :list="deliverablesTodo" :options="{animation:200, group: 'planning'}" :element="'ul'" @add="onAdd($event, 1)" @change="updateTodo">
-                        <li class="collection-item kanban-item" v-for="(item, index) in deliverablesTodoNew" :key="item.id" :data-id="item.id">
-                            <div><strong>{{item.title}}</strong></div>
-                            <div>{{item.quote}}</div>
-                        </li>
-                    </draggable>
-                </div>
-            </div>
-        </div>
-        <div class="col m4">
-            <div class="card">
-                <div class="card-content">
-                <span class="card-title">Doing</span>
-                    <draggable class="collection plan-min-height" :list="deliverablesDoing" :options="{animation:200, group: 'planning'}" :element="'ul'" @add="onAdd($event, 2)" @change="updateDoing">
-                        <li class="collection-item kanban-item" v-for="(item, index) in deliverablesDoingNew" :key="item.id" :data-id="item.id">
-                            <div><strong>{{item.title}}</strong></div>
-                            <div>{{item.quote}}</div>
-                        </li>
-                    </draggable>
-                </div>
-            </div>
-        </div>
-        <div class="col m4">
-            <div class="card">
-                <div class="card-content">
-                <span class="card-title">Done</span>
-                    <draggable class="collection plan-min-height" :list="deliverablesDone" :options="{animation:200, group: 'planning'}" :element="'ul'" @add="onAdd($event, 3)" @change="updateDone">
-                        <li class="collection-item kanban-item" v-for="(item, index) in deliverablesDoneNew" :key="item.id" :data-id="item.id">
-                            <div><strong>{{item.title}}</strong></div>
-                            <div>{{item.quote}}</div>
-                        </li>
-                    </draggable>
-                </div>
-            </div>
-        </div>
-    </div>
+    <v-container fluid grid-list-lg>
+        <v-layout row wrap>
+            <v-flex xs4>
+                <v-card light class="ma-1" height="100%" color="grey lighten-2">
+                    <v-card-title primary-title>
+                        <div class="headline">To Do</div>
+                    </v-card-title>
+                        <draggable class="collection plan-min-height" :list="deliverablesTodoNew" :options="{animation:200, group: 'planning'}" :element="'div'" @add="onAdd($event, 1)" @change="updateTodo" height="100%">
+                            <v-card class="collection-item kanban-item" v-for="(item, index) in deliverablesTodoNew" :key="item.id" :data-id="item.id">
+                                <v-card-title><strong>{{item.title}}</strong><v-spacer></v-spacer>{{item.price}},-</v-card-title>
+                            </v-card>
+                        </draggable>
+                </v-card>
+            </v-flex>
+            <v-flex xs4>
+                <v-card light class="ma-1" height="100%" color="grey lighten-2">
+                    <v-card-title primary-title>
+                        <div class="headline">Doing</div>
+                    </v-card-title>
+                        <draggable class="collection plan-min-height" :list="deliverablesDoingNew" :options="{animation:200, group: 'planning'}" :element="'div'" @add="onAdd($event, 2)" @change="updateDoing" height="100%">
+                            <v-card class="collection-item kanban-item" v-for="(item, index) in deliverablesDoingNew" :key="item.id" :data-id="item.id">
+                                <v-card-title><strong>{{item.title}}</strong><v-spacer></v-spacer>{{item.price}},-</v-card-title>
+                            </v-card>
+                        </draggable>
+                </v-card>
+            </v-flex>
+            <v-flex xs4>
+                <v-card light class="ma-1" height="100%" color="grey lighten-2">
+                    <v-card-title primary-title>
+                        <div class="headline">Done</div>
+                    </v-card-title>
+                        <draggable class="collection plan-min-height" :list="deliverablesDoneNew" :options="{animation:200, group: 'planning'}" :element="'div'" @add="onAdd($event, 3)" @change="updateDone" height="100%">
+                            <v-card class="collection-item kanban-item" v-for="(item, index) in deliverablesDoneNew" :key="item.id" :data-id="item.id">
+                                <v-card-title><strong>{{item.title}}</strong><v-spacer></v-spacer>{{item.price}},-</v-card-title>
+                            </v-card>
+                        </draggable>
+                </v-card>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -48,13 +47,19 @@
         components: {
             draggable
         },
-        props: ['deliverablesTodo', 'deliverablesDoing', 'deliverablesDone', 'subcase'],
+        props: ['deliverables', 'subcase', 'showspec'],
 
         data() {
             return {
-                deliverablesTodoNew: this.deliverablesTodo,
-                deliverablesDoingNew: this.deliverablesDoing,
-                deliverablesDoneNew: this.deliverablesDone,
+                deliverablesTodoNew: this.deliverables.filter(function(deliverable) {
+                    return deliverable.stage == 1;
+                }),
+                deliverablesDoingNew: this.deliverables.filter(function(deliverable) {
+                    return deliverable.stage == 2;
+                }),
+                deliverablesDoneNew: this.deliverables.filter(function(deliverable) {
+                    return deliverable.stage == 3;
+                }),
 
             }
         },
@@ -62,39 +67,55 @@
         methods: {
             onAdd(event, stage) {
                 let id = event.item.getAttribute('data-id');
-                axios.patch('/visibility/' + id,
-                {stage: stage}
-                );
+                    axios.patch('/visibility/' + id,
+                    {stage: stage}
+                ).then((response) => {
+                    this.showspec()
+                });
             },
             updateTodo() {
-                this.deliverablesTodo.map((deliverables, index) => {
+                this.deliverablesTodoNew.map((deliverables, index) => {
                     deliverables.order = index + 1;
                 })
 
                 axios.put('/update/' + this.subcase, {
-                    deliverables: this.deliverablesTodo
+                    deliverables: this.deliverablesTodoNew
                 }).then((response) => {
-                    //success
+                    this.showspec()
                 })
             },
             updateDoing() {
-                this.deliverablesDoing.map((deliverables, index) => {
+                this.deliverablesDoingNew.map((deliverables, index) => {
                     deliverables.order = index + 1;
                 })
                 axios.put('/update/' + this.subcase, {
                     deliverables: this.deliverablesDoingNew
                 }).then((response) => {
-                    //success
+                    this.showspec()
                 })
             },
             updateDone() {
-                this.deliverablesDone.map((deliverables, index) => {
+                this.deliverablesDoneNew.map((deliverables, index) => {
                     deliverables.order = index + 1;
                 })
                 axios.put('/update/' + this.subcase, {
-                    deliverables: this.deliverablesDone
+                    deliverables: this.deliverablesDoneNew
                 }).then((response) => {
-                    //success
+                    this.showspec()
+                })
+            }
+        },
+
+        computed: {
+            filterDeliverables: function() {
+                deliverablesTodoNew = this.deliverables.filter(function(deliverable) {
+                    return deliverable.stage == 1;
+                }),
+                deliverablesDoingNew = this.deliverables.filter(function(deliverable) {
+                    return deliverable.stage == 2;
+                }),
+                deliverablesDoneNew = this.deliverables.filter(function(deliverable) {
+                    return deliverable.stage ==3;
                 })
             }
         },

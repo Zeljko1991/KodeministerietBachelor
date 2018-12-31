@@ -54,9 +54,10 @@
                             <v-flex xs12 sm6 md4 v-for="(SubCase, index) in props.item.sub_cases" :key="index">
                                 <v-card light class="ma-1" height="100%">
                                     <v-card-title primary-title>
-                                        <div class="headline">{{SubCase.title}}</div>  
-                                        <v-spacer></v-spacer>  
-                                        <v-btn flat :href="'/subcase/'+SubCase.id"><v-icon>assignment</v-icon> Go to subcase</v-btn>
+                                        <div class="headline">{{SubCase.title}}</div>
+                                        <v-spacer></v-spacer>
+                                        <!-- <v-btn flat :href="'/subcase/'+SubCase.id"><v-icon>assignment</v-icon> Go to subcase</v-btn> -->
+                                        <v-btn flat :href="'/projectcase/'+props.item.id">Go to subcase</v-btn>
                                     </v-card-title>
                                     <v-card-text grow class="grow">
                                         <p  height="100%">{{SubCase.description}}</p>
@@ -65,7 +66,7 @@
                             </v-flex>
                         </v-layout>
                         <v-alert v-if="props.item.sub_cases.length == 0" :value="true" color="error" icon="warning">
-                                This project has no sub cases: <v-btn>Create one!</v-btn>
+                                This project has no sub cases: <subcase-create :projectcaseid="props.item.id" :reread="read" :stages="stages"></subcase-create>
                         </v-alert>
                     </v-container>
                 </template>
@@ -78,7 +79,7 @@
 
 export default {
 
-    props: ['projectcases', 'customers'],
+    props: ['projectcases', 'customers', 'stages'],
 
     data () {
       return {

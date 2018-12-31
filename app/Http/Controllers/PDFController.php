@@ -51,12 +51,8 @@ class PDFController extends Controller
     public function show($id)
     {
         $ProjectCase = ProjectCase::find($id);
-        // $SubCases = SubCase::where('project_case_id', '=', $id)->where('case_status_id', '=', 4)->get();
-        // $Customer = $ProjectCase->Customer->first();
-        // $data = [   'ProjectCase' => $ProjectCase,
-        //             'SubCases' => $SubCases,
-        //             'Customer' => $Customer
-        //          ];
+        $ProjectCase->case_status_id = 4;
+        $ProjectCase->save();
         $pdf = PDF::loadView('billing.pdf', ['ProjectCase' => $ProjectCase]);
         return $pdf->stream('billing.pdf');
     }

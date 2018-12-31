@@ -24,7 +24,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $ProjectCase = ProjectCase::all(); 
-        return view('dashboard')->with(['ProjectCase' => $ProjectCase]);
+        $ProjectCase = ProjectCase::whereHas('SubCases', function($query){$query->where('case_status_id', '=', 3)->orderBy('deadline', 'desc');})->with('SubCases.Deliverables')->has('SubCases.Deliverables')->get();
+        $AllCases = ProjectCase::all();
+        return view('dashboard')->with(['ProjectCase' => $ProjectCase, 'AllCases' => $AllCases]);
     }
 }
