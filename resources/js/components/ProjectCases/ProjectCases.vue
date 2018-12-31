@@ -1,10 +1,10 @@
 <template>
     <div>
-        <v-toolbar flat color="white">
+        <v-toolbar color="#ECEFF1">
         <v-toolbar-title>Projects</v-toolbar-title>
         <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="600px">
-            <v-btn slot="activator" color="primary" dark class="mb-2">New Project</v-btn>
+            <v-dialog v-model="dialog" max-width="600px" v-if="customers.length > 0">
+            <v-btn slot="activator" color="#3949AB" dark class="mb-2">New Project</v-btn>
                 <v-form>
                     <v-card>
                         <v-card-title>
@@ -16,20 +16,21 @@
                                 <v-layout wrap>
                                     <v-flex xs12>
                                         <v-text-field v-model="editedProjectCase.title" label="Project Title" required></v-text-field>
-                                        <v-text-field v-model="editedProjectCase.description" label="Project Description" required></v-text-field>
-                                        <v-autocomplete v-model="editedProjectCase.customer_id" :items="customers" item-text="firstName" item-value="id" label="chose ur boi"></v-autocomplete>
+                                        <v-textarea v-model="editedProjectCase.description" label="Project Description" required></v-textarea>
+                                        <v-autocomplete v-model="editedProjectCase.customer_id" :items="customers" item-text="firstName" item-value="id" label="Choose customer"></v-autocomplete>
                                     </v-flex>
                                 </v-layout>
                             </v-container>
                         </v-card-text>
                         <v-card-actions>
                         <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                            <v-btn color="blue darken-1" flat @click="save()">Save</v-btn>
+                            <v-btn color="#3949AB" flat @click="close">Cancel</v-btn>
+                            <v-btn color="#3949AB" flat @click="save()">Save</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-form>
             </v-dialog>
+            <v-btn v-else color="#3949AB" dark class="mb-2" v-bind:href="'/customer'">No customers: Go look!</v-btn>
       </v-toolbar>
         <v-card>
             <v-card-title>
@@ -52,7 +53,7 @@
                     <v-container fluid grid-list-lg>
                         <v-layout row wrap>
                             <v-flex xs12 sm6 md4 v-for="(SubCase, index) in props.item.sub_cases" :key="index">
-                                <v-card light class="ma-1" height="100%">
+                                <v-card color="#ECEFF1" class="ma-1" height="100%">
                                     <v-card-title primary-title>
                                         <div class="headline">{{SubCase.title}}</div>
                                         <v-spacer></v-spacer>

@@ -4,7 +4,7 @@
         <v-toolbar-title>Customers</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="600px">
-          <v-btn slot="activator" color="primary" dark class="mb-2">New Customer</v-btn>
+          <v-btn slot="activator" color="#3949AB" dark class="mb-2">New Customer</v-btn>
          <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="save">
             <v-card>
                 <v-card-title>
@@ -58,8 +58,8 @@
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                    <v-btn type="submit" color="blue darken-1" flat >Save</v-btn>
+                    <v-btn color="#3949AB" flat @click="close">Cancel</v-btn>
+                    <v-btn type="submit" color="#3949AB" flat >Save</v-btn>
                 </v-card-actions>
             </v-card>
           </v-form>
@@ -92,7 +92,7 @@
                     <v-container fluid grid-list-lg>
                         <v-layout row wrap>
                             <v-flex xs12 sm6 md4 v-for="(ProjectCase, index) in props.item.project_case" :key="index">
-                                <v-card light class="ma-1" height="100%">
+                                <v-card color="#ECEFF1" class="ma-1" height="100%">
                                     <v-card-title primary-title>
                                         <div class="headline">{{ProjectCase.title}}</div>  
                                         <v-spacer></v-spacer>  

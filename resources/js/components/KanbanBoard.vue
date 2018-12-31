@@ -2,11 +2,11 @@
     <v-container fluid grid-list-lg>
         <v-layout row wrap>
             <v-flex xs4>
-                <v-card light class="ma-1" height="100%" color="grey lighten-2">
+                <v-card light class="ma-1" height="100%" color="#ECEFF1">
                     <v-card-title primary-title>
                         <div class="headline">To Do</div>
                     </v-card-title>
-                        <draggable class="collection plan-min-height" :list="deliverablesTodoNew" :options="{animation:200, group: 'planning'}" :element="'div'" @add="onAdd($event, 1)" @change="updateTodo" height="100%">
+                        <draggable class="collection plan-min-height ma-2" :list="deliverablesTodoNew" :options="{animation:200, group: 'planning'}" :element="'div'" @add="onAdd($event, 1)" @change="updateTodo" height="100%">
                             <v-card class="collection-item kanban-item" v-for="(item, index) in deliverablesTodoNew" :key="item.id" :data-id="item.id">
                                 <v-card-title><strong>{{item.title}}</strong><v-spacer></v-spacer>{{item.price}},-</v-card-title>
                             </v-card>
@@ -14,11 +14,11 @@
                 </v-card>
             </v-flex>
             <v-flex xs4>
-                <v-card light class="ma-1" height="100%" color="grey lighten-2">
+                <v-card light class="ma-1" height="100%" color="#ECEFF1">
                     <v-card-title primary-title>
                         <div class="headline">Doing</div>
                     </v-card-title>
-                        <draggable class="collection plan-min-height" :list="deliverablesDoingNew" :options="{animation:200, group: 'planning'}" :element="'div'" @add="onAdd($event, 2)" @change="updateDoing" height="100%">
+                        <draggable class="collection plan-min-height ma-2" :list="deliverablesDoingNew" :options="{animation:200, group: 'planning'}" :element="'div'" @add="onAdd($event, 2)" @change="updateDoing" height="100%">
                             <v-card class="collection-item kanban-item" v-for="(item, index) in deliverablesDoingNew" :key="item.id" :data-id="item.id">
                                 <v-card-title><strong>{{item.title}}</strong><v-spacer></v-spacer>{{item.price}},-</v-card-title>
                             </v-card>
@@ -26,11 +26,11 @@
                 </v-card>
             </v-flex>
             <v-flex xs4>
-                <v-card light class="ma-1" height="100%" color="grey lighten-2">
+                <v-card light class="ma-1" height="100%" color="#ECEFF1">
                     <v-card-title primary-title>
                         <div class="headline">Done</div>
                     </v-card-title>
-                        <draggable class="collection plan-min-height" :list="deliverablesDoneNew" :options="{animation:200, group: 'planning'}" :element="'div'" @add="onAdd($event, 3)" @change="updateDone" height="100%">
+                        <draggable class="collection plan-min-height ma-2" :list="deliverablesDoneNew" :options="{animation:200, group: 'planning'}" :element="'div'" @add="onAdd($event, 3)" @change="updateDone" height="100%">
                             <v-card class="collection-item kanban-item" v-for="(item, index) in deliverablesDoneNew" :key="item.id" :data-id="item.id">
                                 <v-card-title><strong>{{item.title}}</strong><v-spacer></v-spacer>{{item.price}},-</v-card-title>
                             </v-card>

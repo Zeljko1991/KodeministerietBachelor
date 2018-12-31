@@ -32,20 +32,22 @@
                             </v-container>
                         </v-content>
                     
-                    <v-toolbar color="indigo" dark fixed app clipped-left>
+                    <v-toolbar color="#3949AB" dark fixed app clipped-left>
                         @guest
                         @else
                             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
                         @endif
-                            <v-toolbar-title>Kodeministeriet</v-toolbar-title>
-                           
+                            <v-toolbar-title>
+                                        <v-img width="150px" src="/img/site/KMlogowhite.png"></v-img>
+                            </v-toolbar-title>
+                            
                             <v-spacer></v-spacer>
                         @guest
                         @else
                         <span class="group pa-2">
                             <v-menu bottom left>
                                 <v-btn icon slot="activator">
-                                    <v-avatar color="indigo">
+                                    <v-avatar color="#3949AB">
                                         <v-icon large dark>account_circle</v-icon>
                                     </v-avatar>
                                 </v-btn>
@@ -61,8 +63,8 @@
                             </form>
                         @endif
                     </v-toolbar>
-                    <v-footer color="indigo" app fixed clipped-left>
-                        <span class="white--text">Kodeministeriet&copy; 2018</span>
+                    <v-footer color="#3949AB" app fixed clipped-left>
+                        <span class="white--text" style="padding-left: 30px">Kodeministeriet&copy; 2018</span>
                     </v-footer>
                 </v-app>
             </div>

@@ -38,6 +38,7 @@ Route::resource('/PDF', 'PDFController');
 //Mapping the plans
 Route::resource('/planning', 'PlanningController');
 Route::put('/update/{id}', 'PlanningController@update');
+Route::put('projectcase/updatestatus/{id}', 'ProjectCaseController@updatestatus');
 Route::patch('/visibility/{Deliverables}', 'PlanningController@visibility');
 
 

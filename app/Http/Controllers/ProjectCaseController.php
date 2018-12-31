@@ -75,8 +75,9 @@ class ProjectCaseController extends Controller
     {
         $ProjectCase = ProjectCase::find($id);
         $SubCases = SubCase::where('project_case_id', $id)->with('Deliverables')->with('UserWorksOn')->get();
+        $CaseStatuses = CaseStatus::all();
 
-        return view('projectcase.show')->with(['ProjectCase' => $ProjectCase, 'SubCases' => $SubCases]);
+        return view('projectcase.show')->with(['ProjectCase' => $ProjectCase, 'SubCases' => $SubCases, 'CaseStatus' => $CaseStatuses]);
     }
 
     /**
@@ -101,12 +102,6 @@ class ProjectCaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $this->validate($request, [
-        //     'title' => 'required',
-        //     'description' => 'required',
-        //     'status' => 'required'
-        // ]);
-
         $decode = $request->json()->all();
         // Create Case
         $ProjectCase = ProjectCase::findOrFail($id);
@@ -157,5 +152,23 @@ class ProjectCaseController extends Controller
         $SubCases = SubCase::where('project_case_id', $id)->with('Deliverables')->with('UserWorksOn')->get();
 
         return array('ProjectCase' => $ProjectCase, 'SubCases' => $SubCases);
+    }
+
+      /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatestatus(Request $request, $id)
+    {
+        $decode = $request->json()->all();
+        // Create Case
+        $ProjectCase = ProjectCase::findOrFail($id);
+        $ProjectCase->case_status_id = $decode['editedProjectCase'];
+        $ProjectCase->save();
+
+        return response('Update Successful.', 200);
     }
 }

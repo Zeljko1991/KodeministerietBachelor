@@ -3,18 +3,32 @@
         <v-container fluid grid-list-lg>
             <v-layout row wrap>
                 <v-flex xs12>
-                    <v-card color="blue-grey darken-2" class="white--text">
+                    <v-card color="#ECEFF1">
                         <v-card-title primary-title>
                             <div>
-                                <div class="headline">{{projectCaseNew.title}}</div>
-                                <span>{{projectCaseNew.description}}</span>
+                                <div class="headline left">{{projectCaseNew.title}}</div>
                             </div>
                         </v-card-title>
+                        <v-card-text class="text-md-left">
+                            <span>{{projectCaseNew.description}}</span>
+                        </v-card-text>
                         <v-card-actions>
-                            <v-btn slot="activator" color="primary" dark class="mb-2">Edit Case</v-btn>
-                            <v-btn slot="activator" color="primary" dark class="mb-2" @click="deleteProjectCase(projectCaseNew)">Delete Case</v-btn>
-                            <v-btn color="primary" dark class="mb-2" v-bind:href="'/PDF/'+projectCaseNew.id">Create Bill</v-btn>
+                            <v-btn slot="activator" color="#3949AB" dark class="mb-2" @click="deleteProjectCase(projectCaseNew)">Delete Case</v-btn>
+                            <v-btn color="#3949AB" dark class="mb-2" v-bind:href="'/PDF/'+projectCaseNew.id">Create Bill</v-btn>
+                            <v-spacer></v-spacer>
+                            <v-flex xs2 d-flex>
+                                <v-select @change="changeStatus()"
+                                    outline
+                                    background-color="#3949AB"
+                                    :items="casestatusesNew"
+                                    item-text="stage"
+                                    item-value="id"
+                                    label="Status"
+                                    v-model="newCaseStatus"
+                                ></v-select>
+                            </v-flex>
                         </v-card-actions>
+
                     </v-card>
 
                     <v-dialog v-model="hoursdialog" max-width="600px">
@@ -35,8 +49,8 @@
                                 </v-card-text>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat color="blue darken-1" @click="closeHours">Cancel</v-btn>
-                                    <v-btn flat color="blue darken-1" @click="commitHours">Add Hours</v-btn>
+                                    <v-btn flat color="#3949AB" @click="closeHours">Cancel</v-btn>
+                                    <v-btn flat color="#3949AB" @click="commitHours">Add Hours</v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-form>
@@ -47,7 +61,7 @@
                         <v-spacer></v-spacer>
 
                             <v-dialog v-model="dialog" max-width="600px">
-                            <v-btn slot="activator" color="primary" dark class="mb-2">New Subcase</v-btn>
+                            <v-btn slot="activator" color="#3949AB" dark class="mb-2">New Subcase</v-btn>
                                 <v-form>
                                     <v-card>
                                         <v-card-title>
@@ -81,8 +95,8 @@
                                         </v-card-text>
                                         <v-card-actions>
                                         <v-spacer></v-spacer>
-                                            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                                            <v-btn color="blue darken-1" flat @click="save()">Save</v-btn>
+                                            <v-btn color="#3949AB" flat @click="close">Cancel</v-btn>
+                                            <v-btn color="#3949AB" flat @click="save()">Save</v-btn>
                                         </v-card-actions>
                                     </v-card>
                                 </v-form>
@@ -114,7 +128,7 @@
                     <v-container fluid grid-list-lg>
                         <v-layout row wrap>
                                 <v-flex xs12>
-                                    <v-card color="grey ligthen-4">
+                                    <v-card color="#3949AB">
                                         <kanban-board :deliverables="props.item.deliverables" :subcase="props.item.id" :showspec="read"></kanban-board>
                                     </v-card>
                                 </v-flex>
@@ -129,12 +143,14 @@
 
 <script>
 export default {
-    props: ['projectcase', 'customers', 'subcases'],
+    props: ['projectcase', 'customers', 'subcases', 'casestatuses'],
 
     data () {
         return {
         projectCaseNew: this.projectcase,
         subcasesNew: this.subcases,
+        casestatusesNew: this.casestatuses,
+        newCaseStatus: this.projectcase.case_status_id,
         dialog: false,
         hoursdialog: false,
         search: '',
@@ -208,6 +224,13 @@ export default {
             },
 
             methods: {
+                changeStatus() {
+                    axios.put('/projectcase/updatestatus/' + this.projectcase.id, {
+                        editedProjectCase: this.newCaseStatus
+                    }).then((response) => {
+                        console.log(response.message)
+                    })
+                },
                 sumHours(item) {
                     var totalHours = item.user_works_on.reduce(function(prev,cur) {
                         return prev + cur.pivot.hrs

@@ -17,7 +17,7 @@
                                 <v-list-tile :key="item.title">
                                     <v-list-tile-content>
                                         <v-list-tile-title>{{item.title}}</v-list-tile-title>
-                                        <v-progress-linear :value="calculateProgress(item)"></v-progress-linear>
+                                        <v-progress-linear color="#3949AB" :value="calculateProgress(item)"></v-progress-linear>
                                     </v-list-tile-content>
                                     <v-list-tile-action>
                                         <v-list-tile-action-text>
