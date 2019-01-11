@@ -51,48 +51,22 @@ class SubCaseController extends Controller
      */
     public function store(Request $request)
     {
-        // $rules = [];
-        // $this->validate($request, [
-        //     'title' => 'required',
-        //     'description' => 'required',
-        //     'status' => 'required'
-        // ]);
-        // $i = 1;
-        // $SubCase = new SubCase;
-        // $SubCase->title = $request->input('title');
-        // $SubCase->description = $request->input('description');
-        // $SubCase->price = $request->input('price');
-        // $SubCase->project_case_id = $request->input('project_case_id');
-        // $SubCase->case_status_id = $request->input('status');
-        // $SubCase->save();
-        // foreach ($request->deliverable as $key => $value) {
-        //     Deliverable::create([
-        //         'title' => $value,
-        //         'order' => $i,
-        //         'sub_case_id' => $SubCase->id]);
-        //         $i++;
-        // }
-
-$decode = $request->json()->all();
-$SubCase = new Subcase;
-$SubCase->title = $decode['editedSubCase']['title'];
-$SubCase->description = $decode['editedSubCase']['description'];
-$SubCase->price = $decode['editedSubCase']['price'];
-$SubCase->project_case_id = $decode['editedSubCase']['project_case_id'];
-$SubCase->save();
-     $i=1;
-     foreach ($decode['editedSubCase']['deliverables'] as $key => $value) {
-         Deliverable::create([
-             'title' => $value['title'],
-             'order' => $i,
-             'sub_case_id' => $SubCase->id]);
-             $i++;
-     }
-return response('Succezz', 200);
-
-
-
-        // return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase: '.$SubCase->title.' created');
+        $decode = $request->json()->all();
+        $SubCase = new Subcase;
+        $SubCase->title = $decode['editedSubCase']['title'];
+        $SubCase->description = $decode['editedSubCase']['description'];
+        $SubCase->price = $decode['editedSubCase']['price'];
+        $SubCase->project_case_id = $decode['editedSubCase']['project_case_id'];
+        $SubCase->save();
+            $i=1;
+            foreach ($decode['editedSubCase']['deliverables'] as $key => $value) {
+                Deliverable::create([
+                    'title' => $value['title'],
+                    'order' => $i,
+                    'sub_case_id' => $SubCase->id]);
+                    $i++;
+            }
+        return response('Succezz', 200);
     }
 
     /**
@@ -134,43 +108,6 @@ return response('Succezz', 200);
      */
     public function update(Request $request, $id)
     {
-    //     $this->validate($request, [
-    //         'title' => 'required',
-    //         'description' => 'required',
-    //         'status' => 'required'
-    //     ]);
-
-    //     $i = 1;
-    //     $SubCase = SubCase::find($id);
-    //     $SubCase->title = $request->input('title');
-    //     $SubCase->description = $request->input('description');
-    //     $SubCase->price = $request->input('price');
-    //     $SubCase->project_case_id = $request->input('project_case_id');
-    //     $SubCase->case_status_id = $request->input('status');
-    //     $SubCase->save();
-    //     $titles = $request->deliverable;
-    //     $ids = $request->delivID;
-    //     foreach($titles as $key => $value) {
-    //         if($value == null) {
-    //             Deliverable::find($ids[$key])->delete();
-    //         } else if (!array_key_exists($key, $ids)) {
-    //             Deliverable::create([
-    //                 'title' => $value,
-    //                 'order' => $i,
-    //                 'sub_case_id' => $SubCase->id
-    //             ]);
-    //             $i++;
-    //         } else {
-    //             $Deliverable = Deliverable::find($ids[$key]);
-    //             $Deliverable->title = $value;
-    //             $Deliverable->order = $i;
-    //             $Deliverable->sub_case_id = $SubCase->id;
-    //             $Deliverable->save();
-    //             $i++;
-    //         }
-    //     }
-
-    //     return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase: '.$SubCase->title.' updated');
         $i = 1;
         $decode = $request->json()->all();
         $SubCase = SubCase::findOrFail($id);
@@ -192,31 +129,6 @@ return response('Succezz', 200);
             ]);
             $i++;
         }
-        // $ids = array();
-        // foreach($decode['editedSubCase']['deliverables'] as $key => $value) {
-        //     array_push($ids, 'id');
-        // }
-
-        // foreach($titles as $key => $value) {
-        //     if($value['title'] == null) {
-        //         Deliverable::find($ids[$value['id']])->delete();
-        //     } else if (!array_key_exists($value['id'], $ids)) {
-        //         Deliverable::create([
-        //             'title' => $value['title'],
-        //             'order' => $i,
-        //             'sub_case_id' => $SubCase->id
-        //         ]);
-        //         $i++;
-        //     } else {
-        //         $Deliverable = Deliverable::find($ids[$value['id']]);
-        //         $Deliverable->title = $value['title'];
-        //         $Deliverable->order = $i;
-        //         $Deliverable->sub_case_id = $SubCase->id;
-        //         $Deliverable->save();
-        //         $i++;
-        //     }
-        // }
-
         return response('Subcase updated', 200);
 }
 

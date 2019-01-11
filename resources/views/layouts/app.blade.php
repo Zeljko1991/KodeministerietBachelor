@@ -76,6 +76,6 @@
             CKEDITOR.replace( 'article-ckeditor' );
             CKEDITOR.replace( 'deliverables' );
         </script>
-         @include('inc.messages')
+         
     </body>
 </html>

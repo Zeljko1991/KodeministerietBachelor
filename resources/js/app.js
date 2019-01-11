@@ -9,13 +9,12 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 window.Vuetify = require('vuetify');
-window.swal = require('sweetalert2');
-window.Vuelidate = require('vuelidate');
 window.VCharts = require('v-charts');
+window.VeeValidate = require('vee-validate');
 
 Vue.use(Vuetify);
-Vue.use(Vuelidate);
 Vue.use(VCharts);
+Vue.use(VeeValidate);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -51,6 +50,9 @@ const app = new Vue({
     data: () => ({
         drawer: null
       }),
+    $_veeValidate: {
+    validator: 'new'
+    }
 });
 
 

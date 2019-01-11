@@ -27,7 +27,7 @@
                                 <v-text-field v-model="editedCustomer.eMail" label="Email address" required :rules="rules.emailRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.phoneNumber" label="Phone Number" required :counter="8" maxlength="8" :rules="rules.phoneNumberRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.phoneNumber" label="Phone Number" required minlength="8" :counter="8" maxlength="8" :rules="rules.phoneNumberRules"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 d-flex>
                                 <v-select :items="CVR" v-model="CVRVal" label="EAN or CVR?" ></v-select>

@@ -54,14 +54,24 @@ class ProjectCaseController extends Controller
      */
     public function store(Request $request)
     {
-        $decode = $request->json()->all();
+        //Validate request input
+        $this->validate($request, [
+            'editedProjectCase.description' => 'required',
+            'editedProjectCase.title' => 'required',
+            'editedProjectCase.customer_id' => 'required'
+        ]);
+
+        //Convert request to object
+        $request = json_decode(json_encode($request->all()));
+
+        //Create a new project case
         $ProjectCase = new ProjectCase;
-        $ProjectCase->description = $decode['editedProjectCase']['description'];
-        $ProjectCase->title = $decode['editedProjectCase']['title'];
-        $ProjectCase->customer_id = $decode['editedProjectCase']['customer_id'];
+        $ProjectCase->description = $request->editedProjectCase->description;
+        $ProjectCase->title = $request->editedProjectCase->title;
+        $ProjectCase->customer_id = $request->editedProjectCase->customer_id;
         $ProjectCase->save();
 
-        return response('Success!', 200);
+        return response('Project case created!', 200);
 
      }
 

@@ -97,13 +97,13 @@ data() {
                 },
                 save() {
                     if(this.editedIndex > -1) {
-                        axios.put('subcase/' + this.caseid, {
+                        axios.put('/subcase/' + this.caseid, {
                             editedSubCase: this.editedSubCase,
                         }).then((response) => {
                             //response
                         })
                     } else {
-                        axios.post('/subcase/', {
+                        axios.post('/subcase', {
                             editedSubCase: this.editedSubCase
                         }).then((response) => {
                             //response

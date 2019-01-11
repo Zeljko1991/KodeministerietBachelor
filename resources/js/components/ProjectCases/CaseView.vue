@@ -296,7 +296,7 @@ export default {
                             //response
                         })
                     } else {
-                        axios.post('/subcase/', {
+                        axios.post('/subcase', {
                             editedSubCase: this.editedSubCase
                         }).then((response) => {
                             //response
