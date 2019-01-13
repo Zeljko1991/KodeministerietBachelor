@@ -50,13 +50,13 @@ export default {
                     },
                     project_description: {
                          required: () => 'The project must have a description'
-                     }
                     }
                 }
             }
-        },
+        }
+    },
     mounted () {
-    this.$validator.localize('en', this.dictionary)
+        this.$validator.localize('en', this.dictionary)
     },
 
     computed: {

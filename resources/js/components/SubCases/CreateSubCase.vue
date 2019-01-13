@@ -11,24 +11,22 @@
                             <v-container grid-list-md>
                                 <v-layout wrap>
                                     <v-flex xs12>
-                                        <v-text-field v-model="editedSubCase.title" label="Project Title" required></v-text-field>
-                                        <v-text-field v-model="editedSubCase.description" label="Project Description" required></v-text-field>
-                                        <v-text-field v-model="editedSubCase.price" label="Project Price" required></v-text-field>
+                                        <v-text-field v-model="editedSubCase.title" label="Subcase Title" required v-validate="'required'" data-vv-name="subcase_title" data-vv-scope="subcase" :error-messages="errors.collect('subcase_title')"></v-text-field>
+                                        <v-text-field v-model="editedSubCase.description" label="Subcase Description" required v-validate="'required'" data-vv-name="subcase_description" data-vv-scope="subcase" :error-messages="errors.collect('subcase_description')"></v-text-field>
+                                        <v-text-field v-model="editedSubCase.price" label="Subcase Price" required v-validate="'required'" data-vv-name="'subcase_price'" data-vv-scope="subcase" :error-messages="errors.collect('subcase_price')"></v-text-field>
                                         <v-text-field disabled v-model="editedSubCase.project_case_id" :value="this.caseid" label="Project Case ID" required></v-text-field>
+                                        <v-card-text>
+                                            <v-btn color="info" @click="addNewDeliverable">Add deliverable</v-btn>
+                                        <v-flex xs12 v-for="(deliverable, index) in editedSubCase.deliverables" :key="index">
+                                        <v-card>
                                             <v-card-text>
-                                                <v-btn color="info" @click="addNewDeliverable">Add deliverable</v-btn>
-                                            <v-flex xs12 v-for="(deliverable, index) in editedSubCase.deliverables" :key="index">
-                                            <v-card>
-                                                <v-card-text>
-                                                    <span class="text-md-right" @click="deleteDeliverable(index)"><v-icon medium color="red">remove_circle</v-icon></span>
-                                                        <v-text-field v-model="deliverable.title" label="Deliverable"></v-text-field>
-                                                        <v-text-field v-model="deliverable.price" label="Deliverable Price" required></v-text-field>
-                                                </v-card-text>
-                                            </v-card>
-                                            </v-flex>
+                                                <span class="text-md-right" @click="deleteDeliverable(index)"><v-icon medium color="red">remove_circle</v-icon></span>
+                                                    <v-text-field v-model="deliverable.title" label="Deliverable" required v-validate="'required'" :data-vv-name="'deliverable_title'+index" data-vv-scope="subcase" :error-messages="errors.collect('deliverable_title'+index)"></v-text-field>
+                                                    <v-text-field v-model="deliverable.price" label="Deliverable Price" required v-validate="'numeric'" :data-vv-name="'deliverable_price'+index" data-vv-scope="subcase" :error-messages="errors.collect('deliverable_price'+index)"></v-text-field>
                                             </v-card-text>
-
-
+                                        </v-card>
+                                        </v-flex>
+                                        </v-card-text>
                                     </v-flex>
                                 </v-layout>
                             </v-container>
@@ -74,9 +72,33 @@ data() {
                 price: ''
             }],
         },
+        dictionary: {
+                custom: {
+                    subcase_title: {
+                        required: () => 'The subcase must have a title'
+                    },
+                    subcase_description: {
+                        required: () => 'Please describe the subcase'
+                    },
+                    subcase_price: {
+                        required: () => 'Please declare a price, may also be 0',
+                        numeric: () => 'The price must be a number'
+                    },
+                    deliverable_title: {
+                        required: () => 'The deliverable must have be named'
+                    },
+                    deliverable_price: {
+                        numeric: () => 'The price must be a numeric value'
+                    }
+                }
+            }
     }
 },
-        computed: {
+            mounted () {
+                    this.$validator.localize('en', this.dictionary)
+                },
+
+            computed: {
                 formTitle () {
                     return this.editedIndex === -1 ? 'New Sub Case' : 'Edit Sub Case'
                 },
@@ -96,20 +118,33 @@ data() {
                     this.read()
                 },
                 save() {
+                    this.$validator.validateAll('subcase').then((result) => {
+                        if(!result) {
+                            alert('The form must be valid')
+                            return
+                        }
+                    
                     if(this.editedIndex > -1) {
                         axios.put('/subcase/' + this.caseid, {
                             editedSubCase: this.editedSubCase,
                         }).then((response) => {
-                            //response
+                            alert(JSON.stringify(response.data))
+                        }).catch((error) => {
+                            alert(error.response.data.message)
                         })
                     } else {
                         axios.post('/subcase', {
                             editedSubCase: this.editedSubCase
                         }).then((response) => {
-                            //response
+                            alert(JSON.stringify(response.data))
+                        }).catch((error) => {
+                            alert(error.response.data.message)
                         })
                     }
                     this.close()
+                    }).catch(() => {
+                        alert('Not valid, please try again')
+                    })
                 },
                  read() {
                     this.reread()

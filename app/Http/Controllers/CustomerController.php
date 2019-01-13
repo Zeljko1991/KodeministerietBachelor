@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Address;
 use DB;
+use function GuzzleHttp\json_decode;
 
 class CustomerController extends Controller
 {
@@ -49,42 +50,52 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        // Validating that input fields are filled
-        // $this->validate($request, [
-        //     'companyName' => 'required',
-        //     'firstName' => 'required',
-        //     'lastName' => 'required',
-        //     'eMail' => 'required',
-        //     'phoneNumber' => 'required',
-        //     'EAN' => 'required_without:CVR',
-        //     'CVR' => 'required_without:EAN',
-        //     'zipCode' => 'required',
-        //     'city' => 'required',
-        //     'street' => 'required',
-        //     'streetNumber' => 'required',
-        //     'country' => 'required',
-        //     ]);
-        $decode = $request->json()->all();
+        //Validating the sent data
+        $this->validate($request, [
+            //Validating address first
+            'editedCustomer.address.streetNumber' => 'required',
+            'editedCustomer.address.city' => 'required',
+            'editedCustomer.address.street' => 'required',
+            'editedCustomer.address.zipCode' => 'required',
+            'editedCustomer.address.country' => 'required',
+
+            //Then validating customerinfo
+            'editedCustomer.companyName' => 'required',
+            'editedCustomer.firstName' => 'required',
+            'editedCustomer.lastName' => 'required',
+            'editedCustomer.eMail' => 'required|email',
+            'editedCustomer.phoneNumber' => 'required|numeric',
+            'editedCustomer.CVR' => 'required_without:editedCustomer.EAN',
+            'editedCustomer.EAN' => 'required_without:editedCustomer.CVR',
+            
+        ]);
+
+        //Converting JSON to object so as to maintain Laravel syntax
+        $request = json_decode(json_encode($request->all()));
+
+        //Creating the address
         $Address = new Address;
-        $Address->streetNumber = $decode['editedCustomer']['address']['streetNumber'];
-        $Address->city = $decode['editedCustomer']['address']['city'];
-        $Address->street = $decode['editedCustomer']['address']['street'];
-        $Address->zipCode = $decode['editedCustomer']['address']['zipCode'];
-        $Address->country = $decode['editedCustomer']['address']['country'];
+        $Address->streetNumber = $request->editedCustomer->address->streetNumber;
+        $Address->city = $request->editedCustomer->address->city;
+        $Address->street = $request->editedCustomer->address->street;
+        $Address->zipCode = $request->editedCustomer->address->zipCode;
+        $Address->country = $request->editedCustomer->address->country;
         $Address->save();
+
+        //Creating the customer after address is saved
         $Customer = new Customer;
-        $Customer->companyName = $decode['editedCustomer']['companyName'];
-        $Customer->firstName = $decode['editedCustomer']['firstName'];
-        $Customer->lastName = $decode['editedCustomer']['lastName'];
-        $Customer->eMail = $decode['editedCustomer']['eMail'];
-        $Customer->phoneNumber = $decode['editedCustomer']['phoneNumber'];
-        $Customer->EAN = $decode['editedCustomer']['EAN'];
-        $Customer->CVR = $decode['editedCustomer']['CVR'];
+        $Customer->companyName = $request->editedCustomer->companyName;
+        $Customer->firstName = $request->editedCustomer->firstName;
+        $Customer->lastName = $request->editedCustomer->lastName;
+        $Customer->eMail = $request->editedCustomer->eMail;
+        $Customer->phoneNumber = $request->editedCustomer->phoneNumber;
+        $Customer->EAN = $request->editedCustomer->EAN;
+        $Customer->CVR = $request->editedCustomer->CVR;
         $Customer->address_id = $Address->id;
         $Customer->save();
         
-
-        return response('Success!', 200);
+        //Returning response with success message
+        return response('Customer created!', 200);
     }
 
     /**
@@ -121,26 +132,51 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $decode = $request->json()->all();
+        //Validating the update data
+        $this->validate($request, [
+            //Validating address first
+            'editedCustomer.address.streetNumber' => 'required',
+            'editedCustomer.address.city' => 'required',
+            'editedCustomer.address.street' => 'required',
+            'editedCustomer.address.zipCode' => 'required',
+            'editedCustomer.address.country' => 'required',
+
+            //Then validating customerinfo
+            'editedCustomer.companyName' => 'required',
+            'editedCustomer.firstName' => 'required',
+            'editedCustomer.lastName' => 'required',
+            'editedCustomer.eMail' => 'required|email',
+            'editedCustomer.phoneNumber' => 'required|numeric',
+            'editedCustomer.CVR' => 'required_without:editedCustomer.EAN',
+            'editedCustomer.EAN' => 'required_without:editedCustomer.CVR',
+            
+        ]);
+
+        //Convert data to object
+        $request = json_decode(json_encode($request->all()));
+
+        //Find customer if exists, then update said customer
         $Customer = Customer::findOrFail($id);
-        $Customer->companyName = $decode['editedCustomer']['companyName'];
-        $Customer->firstName = $decode['editedCustomer']['firstName'];
-        $Customer->lastName = $decode['editedCustomer']['lastName'];
-        $Customer->eMail = $decode['editedCustomer']['eMail'];
-        $Customer->phoneNumber = $decode['editedCustomer']['phoneNumber'];
-        $Customer->EAN = $decode['editedCustomer']['EAN'];
-        $Customer->CVR = $decode['editedCustomer']['CVR'];
+        $Customer->companyName = $request->editedCustomer->companyName;
+        $Customer->firstName = $request->editedCustomer->firstName;
+        $Customer->lastName = $request->editedCustomer->lastName;
+        $Customer->eMail = $request->editedCustomer->eMail;
+        $Customer->phoneNumber = $request->editedCustomer->phoneNumber;
+        $Customer->EAN = $request->editedCustomer->EAN;
+        $Customer->CVR = $request->editedCustomer->CVR;
         $Customer->save();
+
+        //Find customers address, then update
         $Address = Address::find($Customer->address_id);
-        $Address->streetNumber = $decode['editedCustomer']['address']['streetNumber'];
-        $Address->city = $decode['editedCustomer']['address']['city'];
-        $Address->street = $decode['editedCustomer']['address']['street'];
-        $Address->zipCode = $decode['editedCustomer']['address']['zipCode'];
-        $Address->country = $decode['editedCustomer']['address']['country'];
+        $Address->streetNumber = $request->editedCustomer->address->streetNumber;
+        $Address->city = $request->editedCustomer->address->city;
+        $Address->street = $request->editedCustomer->address->street;
+        $Address->zipCode = $request->editedCustomer->address->zipCode;
+        $Address->country = $request->editedCustomer->address->country;
         $Address->save();
 
-
-        return response('Update Successful.', 200);
+        //Custom response message
+        return response('Customer updated!', 200);
     }
 
     /**

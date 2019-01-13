@@ -15,43 +15,43 @@
                     <v-container grid-list-md>  
                         <v-layout wrap>
                             <v-flex xs12>
-                                <v-text-field v-model="editedCustomer.companyName" label="Company" required :rules="rules.companyNameRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.companyName" label="Company" required v-validate="'required'" data-vv-name="company_name" :error-messages="errors.collect('company_name')"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.firstName" label="First Name" required :rules="rules.firstNameRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.firstName" label="First Name" required v-validate="'required'" data-vv-name="first_name" :error-messages="errors.collect('first_name')"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.lastName" label="Surname" required :rules="rules.lastNameRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.lastName" label="Surname" required v-validate="'required'" data-vv-name="last_name" :error-messages="errors.collect('last_name')"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.eMail" label="Email address" required :rules="rules.emailRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.eMail" label="Email address" required v-validate="'required|email'" data-vv-name="email" :error-messages="errors.collect('email')"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.phoneNumber" label="Phone Number" required minlength="8" :counter="8" maxlength="8" :rules="rules.phoneNumberRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.phoneNumber" label="Phone Number" required :counter="8" maxlength="8" v-validate="'required|digits:8'" data-vv-name="phone_number" :error-messages="errors.collect('phone_number')"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 d-flex>
                                 <v-select :items="CVR" v-model="CVRVal" label="EAN or CVR?" ></v-select>
                             </v-flex>
                             <v-flex xs12 sm6 v-if="EANorCVR === 'CVR'">
-                                <v-text-field v-model="editedCustomer.CVR" label="CVR" required :counter="8" maxlength="8" :rules="rules.CVRRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.CVR" label="CVR" required :counter="8" maxlength="8" v-validate="'required|digits:8'" data-vv-name="CVR" :error-messages="errors.collect('CVR')"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 v-if="EANorCVR === 'EAN'">
-                                <v-text-field v-model="editedCustomer.EAN" label="EAN" required :counter="13" maxlength="13" :rules="rules.EANRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.EAN" label="EAN" required :counter="13" maxlength="13" v-validate="'required|digits:13'" data-vv-name="EAN" :error-messages="errors.collect('EAN')"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.address.street" label="Street" required :rules="rules.streetRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.address.street" label="Street" required v-validate="'required'" data-vv-name="street" :error-messages="errors.collect('street')"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.address.streetNumber" label="Street Number" required :rules="rules.streetNumberRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.address.streetNumber" label="Street Number" required v-validate="'required'" data-vv-name="street_number" :error-messages="errors.collect('street_number')"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.address.zipCode" label="Zip" required :counter="4" maxlength="4" :rules="rules.zipCodeRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.address.zipCode" label="Zip" required :counter="4" maxlength="4" v-validate="'required|digits:4'" data-vv-name="zip_code" :error-messages="errors.collect('zip_code')"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
-                                <v-text-field v-model="editedCustomer.address.city" label="City" required :rules="rules.cityRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.address.city" label="City" required v-validate="'required'" data-vv-name="city" :error-messages="errors.collect('city')"></v-text-field>
                             </v-flex>
                             <v-flex xs12>
-                                <v-text-field v-model="editedCustomer.address.country" label="Country" required :rules="rules.countryRules"></v-text-field>
+                                <v-text-field v-model="editedCustomer.address.country" label="Country" required v-validate="'required'" data-vv-name="country" :error-messages="errors.collect('country')"></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -115,7 +115,6 @@
 </template>
 
 <script>
-import { required, minLength, between } from 'vuelidate/lib/validators'
 export default {
     
     props: ['customers'],
@@ -211,61 +210,57 @@ export default {
                     country: ''
                 }
             },
-            rules: {
-                companyNameRules: [
-                    v => !!v || 'The Company name is required',
-                    v => (v && v.length > 1) || 'Company name must be longer than one symbol'
-                ],
-                firstNameRules: [
-                    v => !!v || 'First name is required',
-                    v => (v && v.length > 1) || 'First name must be longer than one symbol'
-                ],
-                lastNameRules: [
-                    v => !!v || 'Surname is required',
-                    v => (v && v.length > 1) || 'Surname must be longer than one symbol'
-                ],
-                emailRules: [
-                    v => !!v || 'Email is required',
-                    v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
-                ],
-                phoneNumberRules: [
-                    v => !!v || 'Phone number is required',
-                    v => (v && v.length >= 8) || 'Phone number must be 8 digits',
-                    v => (v && !isNaN(v)) || 'Phone number must be a number',     
-                ],
-                CVRRules: [
-                    v => !!v || 'CVR or EAN is required',
-                    v => (v && v.length >= 8) || 'CVR must be 8 digits',
-                    v => (v && !isNaN(v)) || 'CVR must be a number', 
-                ],
-                EANRules: [
-                    v => !!v || 'CVR or EAN is required',
-                    v => (v && v.length >= 13) || 'EAN must be 13 digits',
-                    v => (v && !isNaN(v)) || 'EAN must be a number',
-                ],
-                streetRules: [
-                    v => !!v || 'Street is required',
-                    v => (v && v.length > 1 ) || 'Street must be longer than one symbol'
-                ],
-                streetNumberRules: [
-                    v => !!v || 'Street number is required'
-                ],
-                zipCodeRules: [
-                    v => !!v || 'Zip code is required',
-                    v => (v && v.length >= 4) || 'Zip code must be 4 digits',
-                    v => (v && !isNaN(v)) || 'Zip code must be a number'
-                ],
-                cityRules: [
-                    v => !!v || 'City is required',
-                    v => (v && v.length > 1) || 'City must be more than one symbol'
-                ], 
-                countryRules: [
-                    v => !!v || 'Country is required',
-                    v => (v && v.length > 1) || 'Country must be longer than one symbol' 
-                ]
-            },  
+            dictionary: {
+                custom: {
+                    company_name: {
+                        required: () => 'The company name is required'
+                    },
+                    first_name: {
+                        required: () => 'First name is required'
+                    },
+                    last_name: {
+                        required: () => 'Last name is required'
+                    },
+                    email: {
+                        required: () => 'Email is required',
+                        email: () => 'Must be a valid email'
+                    },
+                    phone_number: {
+                        required: () => 'Phone number is required',
+                        digits: () => 'Phone number must be 8 digits'
+                    },
+                    CVR: {
+                        required: () => 'CVR is required',
+                        digits: () => 'CVR must be 8 digits'
+                    },
+                    EAN: {
+                        required: () => 'EAN is required',
+                        digits: () => 'EAN must be 13 digits'
+                    },
+                    street: {
+                        required: () => 'Street is required'
+                    },
+                    street_number: {
+                        required: () => 'Street number is required',
+                    },
+                    zip_code: {
+                        required: () => 'Zip code is required',
+                        digits: () => 'Zip code must be 4 digits'
+                    },
+                    city: {
+                        required: () => 'City is required'
+                    },
+                    country: {
+                        required: () => 'Country is required'
+                    }
+
+                }
+            }  
         }
     },
+            mounted () {
+                this.$validator.localize('en', this.dictionary)
+            },
             
             computed: {
                 formTitle () {
@@ -301,39 +296,45 @@ export default {
                     })
                 },
                 close () {
-                    
                     this.dialog = false
-                    setTimeout(() => {
-                        this.editedCustomer = Object.assign({}, this.defaultCustomer)
-                        this.editedIndex = -1
-                    }, 300)
+                    this.editedCustomer = Object.assign({}, this.defaultCustomer)
+                    this.editedCustomer.address = Object.assign({}, this.defaultCustomer.address)
+                    this.editedIndex = -1
                     this.read()
                     this.clear()
                 },
                 save () {
-                    if (this.$refs.form.validate()){
+                    this.$validator.validateAll().then((result) => {
+                        if(!result) {
+                            alert('The form must be valid')
+                            return
+                        }
                         if (this.editedIndex > -1) {
                             Object.assign(this.customersNew[this.editedIndex], this.editedCustomer)
                             axios.put('/customer/' + this.customersNew[this.editedIndex].id, {
                                 editedCustomer: this.editedCustomer,
                             }).then((response) => {
-                                
+                                alert(JSON.stringify(response.data))
+                                this.close()
                             }).catch((error) => {
-                                alert(error.message)
+                                alert(error.response.data.message)
                             })
                         } else {
                             //this.customers.push(this.editedCustomer)
                             axios.post('/customer', {
                                 editedCustomer: this.editedCustomer
                             }).then((response) => {
-
+                                alert(JSON.stringify(response.data))
+                                this.close()
                             }).catch((error) => {
-                                alert(error.message)
+                                alert(error.response.data.message)
                             })
                         }
-                        this.close()
-                    }
-                    
+                        }).catch(() => {
+                            alert('Not valid')
+                            this.close()
+                            this.clear()
+                        })
                 },
                 read() {
                     axios.get('/customer/read').then(({data}) => {
@@ -341,7 +342,8 @@ export default {
                     });
                 },
                 clear() {
-                    this.$refs.form.resetValidation()
+                    this.$validator.reset()
+                    this.errors.clear()
                 }
             }
         }

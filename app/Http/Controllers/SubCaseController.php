@@ -51,22 +51,38 @@ class SubCaseController extends Controller
      */
     public function store(Request $request)
     {
-        $decode = $request->json()->all();
+        //Validate the subcase info
+        $this->validate($request, [
+            'editedSubCase.title' => 'required',
+            'editedSubCase.description' => 'required',
+            'editedSubCase.price' => 'required',
+            'editedSubCase.project_case_id' => 'required|numeric',
+            'editedSubCase.deliverables.*.title' => 'required',
+            'editedSubCase.deliverables.*.price' => 'nullable|numeric'
+        ]);
+
+        //Convert request to object
+        $request = json_decode(json_encode($request->all()));
+        
+        //Create the new object
         $SubCase = new Subcase;
-        $SubCase->title = $decode['editedSubCase']['title'];
-        $SubCase->description = $decode['editedSubCase']['description'];
-        $SubCase->price = $decode['editedSubCase']['price'];
-        $SubCase->project_case_id = $decode['editedSubCase']['project_case_id'];
+        $SubCase->title = $request->editedSubCase->title;
+        $SubCase->description = $request->editedSubCase->description;
+        $SubCase->price = $request->editedSubCase->price;
+        $SubCase->project_case_id = $request->editedSubCase->project_case_id;
         $SubCase->save();
+        //Loop through deliverables
             $i=1;
-            foreach ($decode['editedSubCase']['deliverables'] as $key => $value) {
+            foreach ($request->editedSubCase->deliverables as $key => $value) {
                 Deliverable::create([
-                    'title' => $value['title'],
+                    'title' => $value->title,
                     'order' => $i,
                     'sub_case_id' => $SubCase->id]);
                     $i++;
             }
-        return response('Succezz', 200);
+
+        //Successful response    
+        return response('Subcase created successfully!', 200);
     }
 
     /**
@@ -91,12 +107,6 @@ class SubCaseController extends Controller
 
         $SubCase = SubCase::find($id);
         return response('Updated subcase', 200);
-        // $CaseStatus = CaseStatus::pluck('stage', 'id');
-        // $SubCase = SubCase::find($id);
-        // $ProjectCase = $SubCase->ProjectCase;
-        // return view('subcase.edit')->with([ 'SubCase'       => $SubCase,
-        //                                     'ProjectCase'   => $ProjectCase,
-        //                                     'CaseStatus'    => $CaseStatus]);
     }
 
     /**
@@ -108,27 +118,58 @@ class SubCaseController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //Validate all update request inputs
+        $this->validate($request, [
+            'editedSubCase.title' => 'required',
+            'editedSubCase.description' => 'required',
+            'editedSubCase.price' => 'required',
+            'editedSubCase.project_case_id' => 'required|numeric',
+            'editedSubCase.deliverables.*.title' => 'required',
+            'editedSubCase.deliverables.*.price' => 'nullable|numeric'
+
+        ]);
+
+        //Counter for deliverable order
         $i = 1;
         $decode = $request->json()->all();
+        $request = json_decode(json_encode($request->all()));
         $SubCase = SubCase::findOrFail($id);
-        $SubCase->title = $decode['editedSubCase']['title'];
-        $SubCase->description = $decode['editedSubCase']['description'];
-        $SubCase->price = $decode['editedSubCase']['price'];
-        $SubCase->project_case_id = $decode['editedSubCase']['project_case_id'];
+        $SubCase->title = $request->editedSubCase->title;
+        $SubCase->description = $request->editedSubCase->description;
+        $SubCase->price = $request->editedSubCase->price;
+        $SubCase->project_case_id = $request->editedSubCase->project_case_id;
         $SubCase->save();
-        $titles = $decode['editedSubCase']['deliverables'];
-        foreach ($SubCase->Deliverables as $Deliverable) {
-            $Deliverable->delete();
+        
+        $delivs_exist = Deliverable::where('sub_case_id', '=', $SubCase->id)->pluck('id');
+        $newdelivs = array();
+
+        //Loop through request deliverables and update or create
+        foreach ($request->editedSubCase->deliverables as $deliverable) { 
+            if(!isset($deliverable->id)) {
+                Deliverable::create([
+                    'title' => $deliverable->title,
+                    'order' => $i,
+                    'sub_case_id' => $SubCase->id
+                ]); 
+                $i++;
+            } else if(isset($deliverable->id) || $delivs_exist->contains($deliverable->id)) {
+                array_push($newdelivs, $deliverable->id);
+                $Deliverable = Deliverable::find($deliverable->id);
+                $Deliverable->title = $deliverable->title;
+                $Deliverable->order = $deliverable->order;
+                $Deliverable->stage = $deliverable->stage;
+                $Deliverable->sub_case_id = $SubCase->id;
+                $Deliverable->save();
+                $i++;
+            } 
         }
-        foreach ($titles as $Deliverable) {
-            Deliverable::create([
-                'title' => $Deliverable['title'],
-                'order' => $i,
-                'price' => $Deliverable['price'],
-                'sub_case_id' => $SubCase->id
-            ]);
-            $i++;
+        //Check if deliverable exists in new request
+        foreach($delivs_exist as $deliv) {
+            if(!in_array($deliv, $newdelivs)){
+                Deliverable::find($deliv)->delete();
+            }
         }
+        
         return response('Subcase updated', 200);
 }
 
@@ -140,10 +181,10 @@ class SubCaseController extends Controller
      */
     public function destroy($id)
     {
+        //Find and delete subcase
         $SubCase = SubCase::find($id);
-        // $SubCase->Deliverables()->delete();
         $SubCase->delete();
-        // return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Subcase removed');
+        //Response for succesful delete
         return response('Subcase deleted', 200);
     }
 
@@ -155,11 +196,13 @@ class SubCaseController extends Controller
      */
      public function hrs($id, Request $request)
      {
-        $decode = $request->json()->all();
+        $request = json_decode(json_encode($request->all()));
+        
         $SubCase = SubCase::find($id);
         $User = Auth::user();
-        $User->WorksOnSubCase()->attach($SubCase->id, ['user_id' => $User->id, 'hrs' => $decode['newHours']['hours']]);
-        //return redirect('/projectcase/'.$SubCase->project_case_id)->with('success', 'Hours added');
+        $User->WorksOnSubCase()->attach($SubCase->id, ['user_id' => $User->id, 'hrs' => $request->newHours->hours]);
+
+        //response for successful add of hours
         return response('Hours added.', 200);
      }
 }
