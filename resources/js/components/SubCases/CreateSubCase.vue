@@ -11,9 +11,9 @@
                             <v-container grid-list-md>
                                 <v-layout wrap>
                                     <v-flex xs12>
-                                        <v-text-field v-model="editedSubCase.title" label="Subcase Title" required v-validate="'required'" data-vv-name="subcase_title" data-vv-scope="subcase" :error-messages="errors.collect('subcase_title')"></v-text-field>
-                                        <v-text-field v-model="editedSubCase.description" label="Subcase Description" required v-validate="'required'" data-vv-name="subcase_description" data-vv-scope="subcase" :error-messages="errors.collect('subcase_description')"></v-text-field>
-                                        <v-text-field v-model="editedSubCase.price" label="Subcase Price" required v-validate="'required'" data-vv-name="'subcase_price'" data-vv-scope="subcase" :error-messages="errors.collect('subcase_price')"></v-text-field>
+                                        <v-text-field v-model="editedSubCase.title" label="Subcase Title" required v-validate="'required'" data-vv-name="subcase_title" data-vv-scope="subcase" :error-messages="errors.collect('subcase_title', 'subcase')"></v-text-field>
+                                        <v-text-field v-model="editedSubCase.description" label="Subcase Description" required v-validate="'required'" data-vv-name="subcase_description" data-vv-scope="subcase" :error-messages="errors.collect('subcase_description', 'subcase')"></v-text-field>
+                                        <v-text-field v-model="editedSubCase.price" label="Subcase Price" required v-validate="'required|numeric'" data-vv-name="subcase_price" data-vv-scope="subcase" :error-messages="errors.collect('subcase_price', 'subcase')"></v-text-field>
                                         <v-text-field disabled v-model="editedSubCase.project_case_id" :value="this.caseid" label="Project Case ID" required></v-text-field>
                                         <v-card-text>
                                             <v-btn color="info" @click="addNewDeliverable">Add deliverable</v-btn>
@@ -21,8 +21,8 @@
                                         <v-card>
                                             <v-card-text>
                                                 <span class="text-md-right" @click="deleteDeliverable(index)"><v-icon medium color="red">remove_circle</v-icon></span>
-                                                    <v-text-field v-model="deliverable.title" label="Deliverable" required v-validate="'required'" :data-vv-name="'deliverable_title'+index" data-vv-scope="subcase" :error-messages="errors.collect('deliverable_title'+index)"></v-text-field>
-                                                    <v-text-field v-model="deliverable.price" label="Deliverable Price" required v-validate="'numeric'" :data-vv-name="'deliverable_price'+index" data-vv-scope="subcase" :error-messages="errors.collect('deliverable_price'+index)"></v-text-field>
+                                                    <v-text-field v-model="deliverable.title" label="Deliverable" required v-validate="'required'" :data-vv-name="'deliverable_title'+index" data-vv-scope="subcase" :error-messages="errors.collect('deliverable_title'+index, 'subcase')"></v-text-field>
+                                                    <v-text-field v-model="deliverable.price" label="Deliverable Price" required v-validate="'numeric'" :data-vv-name="'deliverable_price'+index" data-vv-scope="subcase" :error-messages="errors.collect('deliverable_price'+index, 'subcase')"></v-text-field>
                                             </v-card-text>
                                         </v-card>
                                         </v-flex>
@@ -72,8 +72,10 @@ data() {
                 price: ''
             }],
         },
+        
         dictionary: {
                 custom: {
+                    formScope: 'subcase',
                     subcase_title: {
                         required: () => 'The subcase must have a title'
                     },
@@ -92,72 +94,75 @@ data() {
                     }
                 }
             }
-    }
-},
-            mounted () {
-                    this.$validator.localize('en', this.dictionary)
-                },
+        }
+    },
+        mounted () {
+                this.$validator.localize('en', this.dictionary)
+            },
 
-            computed: {
-                formTitle () {
-                    return this.editedIndex === -1 ? 'New Sub Case' : 'Edit Sub Case'
-                },
+        computed: {
+            formTitle () {
+                return this.editedIndex === -1 ? 'New Sub Case' : 'Edit Sub Case'
             },
-            watch: {
-                dialog (val) {
-                    val || this.close()
-                }
+        },
+        watch: {
+            dialog (val) {
+                val || this.close()
+            }
+        },
+        methods: {
+            close() {
+                this.dialog = false
+                this.editedSubCase = Object.assign({}, this.defaultSubCase)
+                this.editedIndex = -1
+                this.clear()
+                this.read()
             },
-            methods: {
-                close() {
-                    this.dialog = false
-                    setTimeout(() => {
-                        this.editedSubCase = Object.assign({}, this.defaultSubCase)
-                        this.editedIndex = -1
-                    }, 300)
-                    this.read()
-                },
-                save() {
-                    this.$validator.validateAll('subcase').then((result) => {
-                        if(!result) {
-                            alert('The form must be valid')
-                            return
-                        }
-                    
-                    if(this.editedIndex > -1) {
-                        axios.put('/subcase/' + this.caseid, {
-                            editedSubCase: this.editedSubCase,
-                        }).then((response) => {
-                            alert(JSON.stringify(response.data))
-                        }).catch((error) => {
-                            alert(error.response.data.message)
-                        })
-                    } else {
-                        axios.post('/subcase', {
-                            editedSubCase: this.editedSubCase
-                        }).then((response) => {
-                            alert(JSON.stringify(response.data))
-                        }).catch((error) => {
-                            alert(error.response.data.message)
-                        })
+            save() {
+                this.$validator.validateAll('subcase').then((result) => {
+                    if(!result) {
+                        alert('The form must be valid')
+                        return
                     }
-                    this.close()
-                    }).catch(() => {
-                        alert('Not valid, please try again')
+                
+                if(this.editedIndex > -1) {
+                    axios.put('/subcase/' + this.caseid, {
+                        editedSubCase: this.editedSubCase,
+                    }).then((response) => {
+                        alert(JSON.stringify(response.data))
+                    }).catch((error) => {
+                        alert(error.response.data.message)
                     })
-                },
-                 read() {
-                    this.reread()
-                },
-                addNewDeliverable() {
-                    this.editedSubCase.deliverables.push({
-                        title: '',
-                        price: ''
+                } else {
+                    axios.post('/subcase', {
+                        editedSubCase: this.editedSubCase
+                    }).then((response) => {
+                        alert(JSON.stringify(response.data))
+                    }).catch((error) => {
+                        alert(error.response.data.message)
                     })
-                },
-                deleteDeliverable(index) {
-                    this.editedSubCase.deliverables.splice(index, 1);
                 }
+                this.close()
+                }).catch(() => {
+                    alert('Not valid, please try again')
+                })
+            },
+                read() {
+                this.reread()
+            },
+            addNewDeliverable() {
+                this.editedSubCase.deliverables.push({
+                    title: '',
+                    price: ''
+                })
+            },
+            deleteDeliverable(index) {
+                this.editedSubCase.deliverables.splice(index, 1);
+            },
+            clear() {
+                this.$validator.reset()
+                this.errors.clear()
+            }
     }
 }
 </script>

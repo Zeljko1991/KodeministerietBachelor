@@ -41,7 +41,7 @@
                                     <v-container grid-list-md>
                                         <v-layout row wrap>
                                             <v-flex xs12>
-                                                <v-text-field v-model="newHours.hours" label="Add some hrs" required v-validate="'required|numeric'" data-vv-name="subcase_hours" data-vv-scope="subcase_hours" :error-messages="errors.collect('subcase_hours')"></v-text-field>
+                                                <v-text-field v-model="newHours.hours" label="Add some hrs" required v-validate="'required|numeric'" data-vv-name="subcase_hours" data-vv-scope="subcase_hours" :error-messages="errors.collect('subcase_hours', 'subcase_hours')"></v-text-field>
                                                 <v-text-field disabled v-model="newHours.subcase_id" label="ID" required></v-text-field>
                                             </v-flex>
                                         </v-layout>
@@ -72,9 +72,9 @@
                                             <v-container grid-list-md>
                                                 <v-layout wrap>
                                                     <v-flex xs12>
-                                                        <v-text-field v-model="editedSubCase.title" label="Subcase Title" required v-validate="'required'" data-vv-name="subcase_title" data-vv-scope="subcase" :error-messages="errors.collect('subcase_title')"></v-text-field>
-                                                        <v-text-field v-model="editedSubCase.description" label="Subcase Description" required v-validate="'required'" data-vv-name="subcase_description" data-vv-scope="subcase" :error-messages="errors.collect('subcase_description')"></v-text-field>
-                                                        <v-text-field v-model="editedSubCase.price" label="Subcase Price" required v-validate="'required'" data-vv-name="subcase_price" data-vv-scope="subcase" :error-messages="errors.collect('subcase_price')"></v-text-field>
+                                                        <v-text-field v-model="editedSubCase.title" label="Subcase Title" required v-validate="'required'" data-vv-name="subcase_title" data-vv-scope="subcase" :error-messages="errors.collect('subcase_title', 'subcase')"></v-text-field>
+                                                        <v-text-field v-model="editedSubCase.description" label="Subcase Description" required v-validate="'required'" data-vv-name="subcase_description" data-vv-scope="subcase" :error-messages="errors.collect('subcase_description', 'subcase')"></v-text-field>
+                                                        <v-text-field v-model="editedSubCase.price" label="Subcase Price" required v-validate="'required|numeric'" data-vv-name="subcase_price" data-vv-scope="subcase" :error-messages="errors.collect('subcase_price', 'subcase')"></v-text-field>
                                                         <v-text-field disabled v-model="editedSubCase.project_case_id" :value="editedSubCase.project_case_id" label="Project Case number"></v-text-field>
                                                     </v-flex>
                                             <v-card-text>
@@ -83,8 +83,8 @@
                                             <v-card>
                                                 <v-card-text>
                                                     <span class="text-md-right" @click="deleteDeliverable(index)"><v-icon medium color="red">remove_circle</v-icon></span>
-                                                        <v-text-field v-model="deliverable.title" label="Deliverable" required v-validate="'required'" :data-vv-name="'deliverable_title'+index" data-vv-scope="subcase" :error-messages="errors.collect('deliverable_title'+index)"></v-text-field>
-                                                        <v-text-field v-model="deliverable.price" label="Deliverable Price" required v-validate="'numeric'" :data-vv-name="'deliverable_price'+index" data-vv-scope="subcase" :error-messages="errors.collect('deliverable_price'+index)"></v-text-field>
+                                                        <v-text-field v-model="deliverable.title" label="Deliverable" required v-validate="'required'" :data-vv-name="'deliverable_title'+index" data-vv-scope="subcase" :error-messages="errors.collect('deliverable_title'+index, 'subcase')"></v-text-field>
+                                                        <v-text-field v-model="deliverable.price" label="Deliverable Price" required v-validate="'numeric'" :data-vv-name="'deliverable_price'+index" data-vv-scope="subcase" :error-messages="errors.collect('deliverable_price'+index, 'subcase')"></v-text-field>
                                                 </v-card-text>
                                             </v-card>
                                             </v-flex>
@@ -210,6 +210,7 @@ export default {
             },
             dictionary: {
                 custom: {
+                    formScope: ['subcase', 'subcase_hours'],
                     subcase_hours: {
                         required: () => 'Hours are required',
                         numeric: () => 'Hours must be a number'

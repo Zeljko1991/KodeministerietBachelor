@@ -87,11 +87,9 @@ export default {
 
                 close() {
                     this.dialog = false
-                    setTimeout(() => {
-                        this.editedProjectCase = Object.assign({}, this.defaultProjectCase)
-                        this.editedIndex = -1
-                        this.$validator.reset()
-                    }, 300)
+                    this.editedProjectCase = Object.assign({}, this.defaultProjectCase)
+                    this.editedIndex = -1
+                    this.$validator.reset()
                     this.read()
                 },
 

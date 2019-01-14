@@ -5,12 +5,11 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="600px">
           <v-btn slot="activator" color="#3949AB" dark class="mb-2">New Customer</v-btn>
-         <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="save">
+         <v-form ref="form" v-model="valid"  @submit.prevent="save">
             <v-card>
                 <v-card-title>
                     <span class="headline">{{ formTitle }}</span>
                 </v-card-title>
-  
                 <v-card-text>
                     <v-container grid-list-md>  
                         <v-layout wrap>
@@ -252,7 +251,7 @@ export default {
                     },
                     country: {
                         required: () => 'Country is required'
-                    }
+                    },
 
                 }
             }  

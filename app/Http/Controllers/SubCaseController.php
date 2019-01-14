@@ -143,14 +143,24 @@ class SubCaseController extends Controller
         $delivs_exist = Deliverable::where('sub_case_id', '=', $SubCase->id)->pluck('id');
         $newdelivs = array();
 
+        //dd($request->editedSubCase->deliverables);
         //Loop through request deliverables and update or create
         foreach ($request->editedSubCase->deliverables as $deliverable) { 
             if(!isset($deliverable->id)) {
-                Deliverable::create([
-                    'title' => $deliverable->title,
-                    'order' => $i,
-                    'sub_case_id' => $SubCase->id
-                ]); 
+                if(isset($deliverable->price)){
+                    Deliverable::create([
+                        'title' => $deliverable->title,
+                        'order' => $i,
+                        'price' => $deliverable->price,
+                        'sub_case_id' => $SubCase->id
+                    ]);
+                }else {
+                    Deliverable::create([
+                        'title' => $deliverable->title,
+                        'order' => $i,
+                        'sub_case_id' => $SubCase->id
+                    ]);
+                } 
                 $i++;
             } else if(isset($deliverable->id) || $delivs_exist->contains($deliverable->id)) {
                 array_push($newdelivs, $deliverable->id);
@@ -158,6 +168,7 @@ class SubCaseController extends Controller
                 $Deliverable->title = $deliverable->title;
                 $Deliverable->order = $deliverable->order;
                 $Deliverable->stage = $deliverable->stage;
+                $Deliverable->price = $deliverable->price;
                 $Deliverable->sub_case_id = $SubCase->id;
                 $Deliverable->save();
                 $i++;
@@ -183,7 +194,9 @@ class SubCaseController extends Controller
     {
         //Find and delete subcase
         $SubCase = SubCase::find($id);
+        $SubCase->UserWorksOn()->detach();
         $SubCase->delete();
+
         //Response for succesful delete
         return response('Subcase deleted', 200);
     }

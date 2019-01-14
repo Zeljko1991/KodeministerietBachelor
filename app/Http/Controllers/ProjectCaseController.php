@@ -112,12 +112,16 @@ class ProjectCaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $decode = $request->json()->all();
+        $this->validate($request, [
+            'editedProjectCase.title' => 'required',
+            'editedProjectCase.description' => 'required'
+        ]);
+        $request = json_decode(json_encode($request->all()));
         // Create Case
         $ProjectCase = ProjectCase::findOrFail($id);
-        $ProjectCase->title = $decode['editedProjectCase']['title'];
-        $ProjectCase->description = $decode['editedProjectCase']['description'];
-        $ProjectCase->case_status_id = $decode['editedProjectCase']['case_status_id'];
+        $ProjectCase->title = $request->editedProjectCase->title;
+        $ProjectCase->description = $request->editedProjectCase->description;
+        $ProjectCase->case_status_id = $request->editedProjectCase->case_status_id;
         $ProjectCase->save();
 
         return response('Update Successful.', 200);
@@ -173,10 +177,10 @@ class ProjectCaseController extends Controller
      */
     public function updatestatus(Request $request, $id)
     {
-        $decode = $request->json()->all();
+        $request = json_decode(json_encode($request->all()));
         // Create Case
         $ProjectCase = ProjectCase::findOrFail($id);
-        $ProjectCase->case_status_id = $decode['editedProjectCase'];
+        $ProjectCase->case_status_id = $request->editedProjectCase;
         $ProjectCase->save();
 
         return response('Update Successful.', 200);
